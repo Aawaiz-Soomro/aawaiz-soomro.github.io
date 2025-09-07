@@ -8,7 +8,7 @@ export type Project = {
   mainVideo?: string;
   previewGif?: string;
   links?: { live?: string; code?: string };
-  area?: "Robotics" | "Embedded" | "ML" | "Systems" | "Other";
+  area?: "Robotics" | "Embedded" | "AI/ML" | "Systems" | "Other";
   /**
    * Optional project status. Use `status: 'Active'` (preferred) or `active: true` for legacy checks.
    */
@@ -57,26 +57,20 @@ export const PROJECTS: Project[] = [
     slug: "turtlebot3-ros2",
     title: "ROS2 Perception Experiments with TurtleBot3",
     blurb: "Exploring perception and control capabilities using ROS2 on the TurtleBot3 platform with techniques like CV and Machine Learning.",
-    tags: ["Robotics", "ROS2", "Perception", "SLAM", "Navigation"],
+    tags: ["Robotics", "ROS2", "OpenCV", "Gazebo", "SLAM", "Navigation"],
     area: "Robotics",
     status: "Active",
     thumb: "media/turtlebot3/turtlebot3_thumb.jpg",
     previewVideo: "media/turtlebot3/turtlebot3_preview.mp4",
     links: { code: "https://github.com/ojas-mediratta/turtlebot3-ros2" },
-    body: `The **ROS2 Perception Experiments with TurtleBot3** project is my ongoing exploration of perception and control using the TurtleBot3 platform. The focus is on learning the fundamentals of ROS2, experimenting with computer vision pipelines, and eventually integrating perception with navigation and control.
+    body: `This project is an ongoing exploration of perception and control using the TurtleBot3 platform, with a focus on learning the fundamentals of ROS2 and applying them to real-world robotics. My goal is to build up experience with ROS2’s architecture, understanding how nodes, topics, services, and parameters interact, while developing practical skills in computer vision and autonomous navigation.
 
-      So far, I’ve:
-      - Set up the ROS2 environment and gained familiarity with its core concepts (nodes, topics, services, parameters).
-      - Implemented basic teleoperation control of the TurtleBot3 for hands-on interaction and debugging.
-      - Developed an OpenCV script for object detection, which is currently running on a laptop and will be ported to the TurtleBot for onboard perception.
+      So far, I have set up the ROS2 environment and become comfortable with its core concepts, allowing me to get hands-on with the TurtleBot3. I tested basic teleoperation controls to interact with and debug the robot in real time. In parallel, I developed an OpenCV-based object detection script that currently runs on my laptop, with the intention of eventually porting it to the TurtleBot for onboard perception tasks.
 
-      As the course progresses, this project will expand to include:
-      - Integration of computer vision pipelines directly onto the robot.
-      - Experiments with SLAM and autonomous navigation.
-      - Applications of machine learning to improve perception and decision-making.
+      Looking ahead, I'll be expanding the project by integrating the computer vision pipeline directly onto the robot, enabling it to process visual data in real time during operation. I am also preparing to experiment with SLAM (Simultaneous Localization and Mapping) and autonomous navigation, using ROS2’s navigation stack to give the TurtleBot3 the ability to map its environment and move independently. As I gain more experience, I hope to incorporate machine learning techniques to further improve the robot’s perception and decision-making capabilities.
 
-      This is very much a **work in progress** — videos, photos, and technical write-ups will be added as I push further into SLAM, navigation, and perception challenges on the TurtleBot3.`,
-    gallery: []
+      This project is very much a work in progress. As I make advances in SLAM, navigation, and perception on the TurtleBot3, I will continue to share videos, photos, and technical write-ups documenting both the challenges and the solutions I encounter along the way.`,
+    gallery: ["media/turtlebot3/turtlebot3_1.mp4",]
   },
   {
     slug: "buzzcaster-guitar",
