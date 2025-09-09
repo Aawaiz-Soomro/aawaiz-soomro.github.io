@@ -33,6 +33,13 @@ function useGlitchCycle(messages: string[], dwellMs = 2000, scrambleMs = 450) {
       const from = messages[idx] ?? "";
       const to = messages[(idx + 1) % messages.length] ?? "";
       const maxLen = Math.max(from.length, to.length);
+      if (scrambleMs <= 0) {
+        // No scramble: immediately switch to next text after dwell
+        setText(to);
+        setIdx((i) => (i + 1) % messages.length);
+        schedule();
+        return;
+      }
       const start = performance.now();
 
       const step = (now: number) => {
@@ -76,7 +83,30 @@ function useGlitchCycle(messages: string[], dwellMs = 2000, scrambleMs = 450) {
   return { text };
 }
 
+function useIsMdUp() {
+  const [md, setMd] = React.useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    return window.matchMedia('(min-width: 768px)').matches;
+  });
+  React.useEffect(() => {
+    const mql = window.matchMedia('(min-width: 768px)');
+    const handler = (e: MediaQueryListEvent) => setMd(e.matches);
+    mql.addEventListener?.('change', handler);
+    // Safari fallback
+    // @ts-ignore
+    mql.addListener?.(handler);
+    return () => {
+      mql.removeEventListener?.('change', handler);
+      // @ts-ignore
+      mql.removeListener?.(handler);
+    };
+  }, []);
+  return md;
+}
+
 export default function About() {
+  const isMdUp = useIsMdUp();
+  const { text } = useGlitchCycle(STATUS_MESSAGES, 2000, isMdUp ? 450 : 0);
 
   return (
     <Section id="about">
@@ -122,16 +152,16 @@ export default function About() {
               </img>
               <div className="mt-4 text-sm text-subtext flex items-center gap-2">
                 <span className="font-medium whitespace-nowrap">Currently hacking on:</span>
-                {(() => {
-                  const { text } = useGlitchCycle(STATUS_MESSAGES, 2000, 450);
-                  return (
-                    <div className="relative flex-1 h-6">
-                      <span className="block leading-6 font-semibold text-accent-cyan font-mono">
-                        {text}
-                      </span>
-                    </div>
-                  );
-                })()}
+                <div className="relative flex-1 h-6">
+                  {/* Desktop/Tablet: standard (glitchy scramble is enabled via scrambleMs on md+) */}
+                  <span className="hidden md:block leading-6 font-semibold text-accent-cyan font-mono">
+                    {text}
+                  </span>
+                  {/* Mobile: gentle fade only (no scramble) */}
+                  <span className="md:hidden leading-6 font-semibold text-accent-cyan font-mono mobile-fade">
+                    {text}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

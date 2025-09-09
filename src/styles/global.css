@@ -31,3 +31,21 @@ html { scroll-behavior: smooth; }
 a { color: var(--color-accent-blue); transition: color .2s ease; }
 a:hover { color: var(--color-accent-green); }
 .panel { background-color: var(--color-panel); border: 1px solid var(--color-border); border-radius: 1rem; padding: 1rem; }
+
+/* gentle fade for mobile */
+.mobile-fade {
+  animation: fadePulse 2.2s ease-in-out infinite;
+}
+
+@keyframes fadePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* accessibility: kill intense motion everywhere if users prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-fade, .glitch {
+    animation: none !important;
+    transition: none !important;
+  }
+}
