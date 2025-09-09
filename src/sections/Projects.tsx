@@ -20,6 +20,7 @@ function Preview({
   hovering: boolean
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   useEffect(() => {
     if (hovering && videoRef.current) {
@@ -40,17 +41,27 @@ function Preview({
           muted
           playsInline
           loop
-          preload="metadata"
+          preload="none"
           poster={thumb ? withBase(thumb) : undefined}
           src={withBase(previewVideo)}
           aria-label={`${title} preview`}
         />
       ) : thumb ? (
-        <img
-          className="h-44 w-full object-cover md:h-48"
-          src={withBase(thumb)}
-          alt={`${title} thumbnail`}
-        />
+        <div className="relative">
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-panel animate-pulse h-44 md:h-48" />
+          )}
+          <img
+            className={`h-44 w-full object-cover md:h-48 transition-opacity duration-300 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            src={withBase(thumb)}
+            alt={title}
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageLoaded(true)} // Show even if failed to load
+          />
+        </div>
       ) : (
         <div className="flex h-44 w-full items-center justify-center text-subtext md:h-48">
           No preview

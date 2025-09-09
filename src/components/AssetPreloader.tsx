@@ -1,0 +1,120 @@
+import { useState, useEffect } from 'react';
+import { PROJECTS } from '@/data/projects';
+import avatarFile from '@/assets/avatar.jpg';
+
+const withBase = (path?: string) =>
+  path ? `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}` : undefined;
+
+interface AssetLoadingState {
+  isLoading: boolean;
+  progress: number;
+  loadedAssets: number;
+  totalAssets: number;
+}
+
+export function useAssetPreloader(): AssetLoadingState {
+  const [loadingState, setLoadingState] = useState<AssetLoadingState>({
+    isLoading: true,
+    progress: 0,
+    loadedAssets: 0,
+    totalAssets: 0,
+  });
+
+  useEffect(() => {
+    // Collect all critical assets to preload
+    const criticalAssets: string[] = [];
+    
+    // Avatar image
+    criticalAssets.push(avatarFile);
+    
+    // Project thumbnails (most important for initial view)
+    PROJECTS.forEach(project => {
+      if (project.thumb) {
+        criticalAssets.push(withBase(project.thumb)!);
+      }
+    });
+
+    // Set total assets
+    setLoadingState(prev => ({ ...prev, totalAssets: criticalAssets.length }));
+
+    let loadedCount = 0;
+
+    const loadAsset = (src: string): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        if (src.endsWith('.mp4')) {
+          // For videos, just check if they exist (don't fully preload due to size)
+          const video = document.createElement('video');
+          video.onloadedmetadata = () => {
+            loadedCount++;
+            setLoadingState(prev => ({
+              ...prev,
+              loadedAssets: loadedCount,
+              progress: (loadedCount / criticalAssets.length) * 100
+            }));
+            resolve();
+          };
+          video.onerror = () => {
+            loadedCount++;
+            setLoadingState(prev => ({
+              ...prev,
+              loadedAssets: loadedCount,
+              progress: (loadedCount / criticalAssets.length) * 100
+            }));
+            resolve(); // Don't fail the whole loading process for one asset
+          };
+          video.preload = 'metadata';
+          video.src = src;
+        } else {
+          // For images, fully preload
+          const img = new Image();
+          img.onload = () => {
+            loadedCount++;
+            setLoadingState(prev => ({
+              ...prev,
+              loadedAssets: loadedCount,
+              progress: (loadedCount / criticalAssets.length) * 100
+            }));
+            resolve();
+          };
+          img.onerror = () => {
+            loadedCount++;
+            setLoadingState(prev => ({
+              ...prev,
+              loadedAssets: loadedCount,
+              progress: (loadedCount / criticalAssets.length) * 100
+            }));
+            resolve(); // Don't fail the whole loading process for one asset
+          };
+          img.src = src;
+        }
+      });
+    };
+
+    // Load all critical assets
+    Promise.all(criticalAssets.map(asset => loadAsset(asset)))
+      .then(() => {
+        // Add a small delay to ensure smooth transition
+        setTimeout(() => {
+          setLoadingState(prev => ({
+            ...prev,
+            isLoading: false,
+            progress: 100
+          }));
+        }, 500);
+      })
+      .catch((error) => {
+        console.warn('Some assets failed to load:', error);
+        // Still proceed even if some assets fail
+        setTimeout(() => {
+          setLoadingState(prev => ({
+            ...prev,
+            isLoading: false,
+            progress: 100
+          }));
+        }, 500);
+      });
+
+  }, []);
+
+  return loadingState;
+}

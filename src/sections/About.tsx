@@ -107,6 +107,7 @@ function useIsMdUp() {
 export default function About() {
   const isMdUp = useIsMdUp();
   const { text } = useGlitchCycle(STATUS_MESSAGES, 2000, isMdUp ? 450 : 0);
+  const [avatarLoaded, setAvatarLoaded] = React.useState(false);
 
   return (
     <Section id="about">
@@ -145,11 +146,20 @@ export default function About() {
             className="group rounded-3xl border border-border bg-panel md:col-span-2 transition-all hover:border-accent-cyan hover:shadow-sm"
           >
             <div className="p-6">
-              <img
-                src={avatarFile}
-                alt="Headshot"
-                className="w-full rounded-2xl object-cover scale-105">
-              </img>
+              <div className="relative">
+                {!avatarLoaded && (
+                  <div className="w-full aspect-square rounded-2xl bg-panel animate-pulse" />
+                )}
+                <img
+                  src={avatarFile}
+                  alt="Headshot"
+                  className={`w-full rounded-2xl object-cover scale-105 transition-opacity duration-300 ${
+                    avatarLoaded ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  onLoad={() => setAvatarLoaded(true)}
+                  onError={() => setAvatarLoaded(true)}
+                />
+              </div>
               <div className="mt-4 text-sm text-subtext flex items-center gap-2">
                 <span className="font-medium whitespace-nowrap">Currently hacking on:</span>
                 <div className="relative flex-1 h-6">
