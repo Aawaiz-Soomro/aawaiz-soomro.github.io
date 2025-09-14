@@ -26,5 +26,15 @@ export const PUBLICATIONS: Publication[] = [
   //   code: "https://github.com/ojas-mediratta/BLIP-AUV", // optional GitHub code link
   //   thumb: "media/blip-auv/blip_1.jpg",
   //   previewVideo: "media/blip-auv/blip_preview.mp4",
+  // },
+  // {
+  //   title: "Semifinalists: Inventure Prize 2026",
+  //   outlet: "GT Inventure Prize",
+  //   date: "2026",
+  //   type: "article",
+  //   authors: ["Ojas Mediratta", "Erin Floresca"],
+  //   href: "https://inventureprize.gatech.edu/competition/2026", // external link
+  //   thumb: "media/trudose/trudose_articlethumb.jpg",
+  //   previewVideo: "media/trudose/trudose_articlepreview.mp4",
   // }
 ];
