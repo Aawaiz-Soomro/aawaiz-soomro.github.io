@@ -8,17 +8,12 @@ interface LoadingScreenProps {
 }
 
 const LOADING_TIPS = [
-  "Preparing loads of awesomeness...",
   "Does anyone actually read these?",
   "Loading pixels with extra care...",
   "Convincing electrons to behave...",
   "Downloading more RAM... just kidding!",
-  "Calibrating the flux capacitor...",
   "Teaching robots to dream...",
-  "Optimizing for maximum wow factor...",
-  "Please wait while we make magic happen...",
   "Loading... or is it?",
-  "Assembling portfolio pieces...",
   "Compressing time and space...",
   "Buffering your mind = 99%...",
 ];
