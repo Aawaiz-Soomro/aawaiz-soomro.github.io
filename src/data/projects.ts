@@ -62,6 +62,7 @@ export const PROJECTS: Project[] = [
     status: "Active",
     thumb: "media/turtlebot3/turtlebot3_thumb.jpg",
     previewVideo: "media/turtlebot3/turtlebot3_preview.mp4",
+    mainVideo: "media/turtlebot3/turtlebot3_preview.mp4",
     links: { code: "https://github.com/ojas-mediratta/turtlebot3-ros2" },
     body: `This project is an ongoing exploration of perception and control using the TurtleBot3 platform, with a focus on learning the fundamentals of ROS2 and applying them to real-world robotics. My goal is to build up experience with ROS2’s architecture, understanding how nodes, topics, services, and parameters interact, while developing practical skills in computer vision and autonomous navigation.
 
@@ -70,7 +71,9 @@ export const PROJECTS: Project[] = [
       Looking ahead, I'll be expanding the project by integrating the computer vision pipeline directly onto the robot, enabling it to process visual data in real time during operation. I am also preparing to experiment with SLAM (Simultaneous Localization and Mapping) and autonomous navigation, using ROS2’s navigation stack to give the TurtleBot3 the ability to map its environment and move independently. As I gain more experience, I hope to incorporate machine learning techniques to further improve the robot’s perception and decision-making capabilities.
 
       This project is very much a work in progress. As I make advances in SLAM, navigation, and perception on the TurtleBot3, I will continue to share videos, photos, and technical write-ups documenting both the challenges and the solutions I encounter along the way.`,
-    gallery: ["media/turtlebot3/turtlebot3_1.mp4",]
+    gallery: [
+      "media/turtlebot3/turtlebot3_1.mp4",
+      "media/turtlebot3/turtlebot3_2.mp4",]
   },
   // {
   //   slug: "inventure-prize",
