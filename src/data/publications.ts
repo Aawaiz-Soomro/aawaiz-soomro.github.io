@@ -27,7 +27,7 @@ export const PUBLICATIONS: Publication[] = [
   //   previewVideo: "media/blip-auv/blip_preview.mp4",
   // },
   // {
-  //   title: "Semifinalists: Inventure Prize 2026",
+  //   title: "Semifinalists: Inventure Prize 2026 Competition",
   //   outlet: "GT Inventure Prize",
   //   date: "2026",
   //   type: "article",

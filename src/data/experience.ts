@@ -6,6 +6,12 @@ export type Experience = {
 };
 
 export const EXPERIENCES: Experience[] = [
+  // {
+  //   role: "Robotics Engineer Intern",
+  //   org: "Draper Laboratory",
+  //   date: "June 2026 – Present",
+  //   details: [ ]
+  // },
   {
     role: "Graduate Research Assistant",
     org: "Contextual Computing Group @ Georgia Tech",
