@@ -42,7 +42,7 @@ export const PROJECTS: Project[] = [
 
       BLIP continues to serve as a first-of-its-kind testbed for experimental dolphin communication studies. Ongoing work includes expanding its acoustic vocabulary, improving robustness for long-duration ocean trials, and exploring broader applications in marine human–robot interaction research.`,
     gallery: [
-      "media/blip-auv/blip_1.jpg",
+      "media/blip-auv/blip_1.mp4",
       "media/blip-auv/blip_2.jpg",
       "media/blip-auv/blip_3.jpg",
       "media/blip-auv/blip_4.mp4",
@@ -51,7 +51,8 @@ export const PROJECTS: Project[] = [
       "media/blip-auv/blip_7.jpg",
       "media/blip-auv/blip_8.jpg",
       "media/blip-auv/blip_9.jpg",
-      "media/blip-auv/blip_10.jpg",]
+      "media/blip-auv/blip_10.jpg",
+      "media/blip-auv/blip_11.jpg",]
   },
   {
     slug: "turtlebot3-ros2",
