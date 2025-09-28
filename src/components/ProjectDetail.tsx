@@ -9,6 +9,27 @@ import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 const withBase = (path?: string) =>
   path ? `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}` : undefined;
 
+// Helper function to extract YouTube video ID from URL or return ID if already provided
+const getYouTubeVideoId = (input: string): string => {
+  // If it's already a video ID (11 characters, alphanumeric + hyphens/underscores)
+  if (/^[a-zA-Z0-9_-]{11}$/.test(input)) {
+    return input;
+  }
+  
+  // Extract from various YouTube URL formats
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,
+  ];
+  
+  for (const pattern of patterns) {
+    const match = input.match(pattern);
+    if (match) return match[1];
+  }
+  
+  return input; // Return as-is if no pattern matches
+};
+
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const project = useMemo(() => PROJECTS.find(p => p.slug === slug), [slug]);
@@ -111,7 +132,18 @@ export default function ProjectDetail() {
 
           {/* Hero media */}
           <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-panel">
-            {project.mainVideo ? (
+            {project.youtubeVideo ? (
+              <div className="aspect-video w-full">
+                <iframe
+                  className="h-full w-full"
+                  src={`https://www.youtube.com/embed/${getYouTubeVideoId(project.youtubeVideo)}`}
+                  title={`${project.title} video`}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            ) : project.mainVideo ? (
               <video
                 className="h-[340px] sm:h-[420px] md:h-[500px] w-full object-contain"
                 muted
@@ -145,7 +177,9 @@ export default function ProjectDetail() {
               className="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3 [column-fill:balance]"
             >
               {project.gallery.map((g, idx) => {
-                const isVideo = g.endsWith('.mp4') || g.endsWith('.webm');
+                const isVideo = g.endsWith('.mp4') || g.endsWith('.webm') || g.endsWith('.mov');
+                const isImage = g.endsWith('.jpg') || g.endsWith('.jpeg') || g.endsWith('.png') || 
+                               g.endsWith('.gif') || g.endsWith('.webp') || g.endsWith('.svg');
                 const commonClass =
                   'mb-4 w-full rounded-2xl border border-border bg-bg/50 object-cover hover:opacity-90 transition-opacity';
                 return (
@@ -165,7 +199,15 @@ export default function ProjectDetail() {
                         controls
                         preload="metadata"
                       />
+                    ) : isImage ? (
+                      <img
+                        src={withBase(g)}
+                        className={commonClass}
+                        alt={`${project.title} gallery ${idx + 1}`}
+                        loading="lazy"
+                      />
                     ) : (
+                      // Fallback for unknown file types - treat as image
                       <img
                         src={withBase(g)}
                         className={commonClass}

@@ -6,6 +6,7 @@ export type Project = {
   thumb?: string;
   previewVideo?: string;
   mainVideo?: string;
+  youtubeVideo?: string;
   previewGif?: string;
   links?: { link?: string; code?: string };
   area?: "Robotics" | "Embedded" | "AI/ML" | "Other";
@@ -76,15 +77,30 @@ export const PROJECTS: Project[] = [
   {
     slug: "hackGT12",
     title: "Dose: HackGT 12 Winner - Medication Adherence Simplified",
-    blurb: "A smart pill bottle that uses embedded sensing and powerful data analytics to ensure safe, consistent medication adherence.",
+    blurb: "A smart pill bottle that uses embedded sensing and rich data delivery to ensure safe, consistent medication adherence.",
     tags: ["Embedded Systems", "C++", "ESP32", "Rapid Prototyping", "MedTech"],
     area: "Embedded",
     status: "Complete",
     thumb: "media/hackGT12/dose_thumb.jpg",
     previewVideo: "media/hackGT12/dose_preview.mp4",
-    links: { code: "https://github.com/ojas-mediratta/dose", link: "https://devpost.com/software/dose-medication-adherence-simplified" },
-    body: ` `,
-    gallery: [" ",]
+    youtubeVideo: "https://www.youtube.com/watch?v=t18fCTw4IXo",
+    links: { code: "https://github.com/dawsonp2003/HackGT12-Dose", link: "https://devpost.com/software/dose-ebmo9z" },
+    body: `Dose was my HackGT12 Hackathon project. This was my first ever hackathon, and I loved it. Over the course of a weekend, my team and I set out to tackle a problem that’s huge but often invisible: medication non-adherence.
+
+    Medication non-adherence happens when patients don’t take their medication at the prescribed time or in the prescribed way. It might sound simple, but the impact is massive—studies estimate it costs the U.S. healthcare system $100–300 billion every year in avoidable direct costs. Missed doses, overdoses, and inconsistent adherence don’t just create complications for patients, but also ripple outward into failed treatments, unnecessary hospitalizations, and unreliable results in drug trial research.
+
+    That’s where Dose comes in. We designed it as a smart pill bottle that combines embedded sensing with rich data delivery. For patients, it makes adherence straightforward. For researchers and clinicians, it provides the high-quality data needed to truly understand whether treatments are working as intended. `,
+    gallery: [
+      "media/hackGT12/dose_1.jpeg",
+      "media/hackGT12/dose_2.jpeg",
+      "media/hackGT12/dose_3.jpeg", 
+      "media/hackGT12/dose_4.jpeg",
+      "media/hackGT12/dose_5.jpeg",
+      "media/hackGT12/dose_6.jpeg",
+      "media/hackGT12/dose_7.jpeg",
+      "media/hackGT12/dose_8.jpeg",
+      "media/hackGT12/dose_9.jpeg",
+    ]
   },
   {
     slug: "buzzcaster-guitar",
