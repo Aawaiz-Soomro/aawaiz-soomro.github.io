@@ -15,7 +15,7 @@ export const EDUCATION: Education[] = [
         date: "2025 – 2027",
         details: [
             "Concentration: Artificial Intelligence, Perception, and Controls",
-            "Activities and Societies: Graduate Research, AI@GT, HackGT Hackathon, RoboGrads, Transfer2Tech Mentorship",
+            "Activities and Societies: Graduate Research, HackGT Hackathon Overall Winner, Transfer2Tech Mentorship",
             "Coursework: Artificial Intelligence, Machine Learning, Computer Vision, Deep Learning, Deep Reinforcement Learning, Linear Control Systems, Nonlinear Control Systems",
         ],
         logoKey: "gt",

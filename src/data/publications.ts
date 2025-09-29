@@ -16,6 +16,15 @@ export type Publication = {
 };
 
 export const PUBLICATIONS: Publication[] = [
+  {
+    title: "Best Overall Winners! HackGT 12 Hackathon Competition",
+    outlet: "HackGT 12",
+    date: "2026",
+    type: "demo",
+    authors: ["Ojas Mediratta", "Dawson Pent", "James Li", "David Serrao"],
+    href: "https://devpost.com/software/dose-ebmo9z", // external link
+    thumb: "media/hackGT12/dose_pub_thumb.jpeg",
+  }
   // {
   //   title: "Underwater Robotic Platform for Dolphin Vocalization Studies",
   //   outlet: "Tangible, Embedded and Embodied Interaction (TEI) Conference",
@@ -26,14 +35,4 @@ export const PUBLICATIONS: Publication[] = [
   //   thumb: "media/blip-auv/blip_11.jpg",
   //   previewVideo: "media/blip-auv/blip_preview.mp4",
   // },
-  // {
-  //   title: "Semifinalists: Inventure Prize 2026 Competition",
-  //   outlet: "GT Inventure Prize",
-  //   date: "2026",
-  //   type: "article",
-  //   authors: ["Ojas Mediratta", "Erin Floresca"],
-  //   href: "https://inventureprize.gatech.edu/competition/2026", // external link
-  //   thumb: "media/trudose/trudose_articlethumb.jpg",
-  //   previewVideo: "media/trudose/trudose_articlepreview.mp4",
-  // }
 ];
