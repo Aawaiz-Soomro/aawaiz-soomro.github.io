@@ -16,6 +16,16 @@ export type Publication = {
 };
 
 export const PUBLICATIONS: Publication[] = [
+  // {
+  //   title: "Underwater Robotic Platform for Dolphin Vocalization Studies",
+  //   outlet: "Tangible, Embedded and Embodied Interaction (TEI) Conference",
+  //   date: "2026",
+  //   type: "paper",
+  //   authors: ["Riley Mehrman", "Ojas Mediratta", "Dawson Pent", "Charles D. Ramey"],
+  //   href: "https://example.com/project", // external paper link
+  //   thumb: "media/blip-auv/blippub_thumb.png",
+  //   previewVideo: "media/blip-auv/blippub_preview.mp4",
+  // },
   {
     title: "Best Overall Winners! HackGT 12 Hackathon Competition",
     outlet: "HackGT 12",
@@ -24,15 +34,5 @@ export const PUBLICATIONS: Publication[] = [
     authors: ["Ojas Mediratta", "Dawson Pent", "James Li", "David Serrao"],
     href: "https://devpost.com/software/dose-ebmo9z", // external link
     thumb: "media/hackGT12/dose_pub_thumb.jpeg",
-  }
-  // {
-  //   title: "Underwater Robotic Platform for Dolphin Vocalization Studies",
-  //   outlet: "Tangible, Embedded and Embodied Interaction (TEI) Conference",
-  //   date: "2026",
-  //   type: "paper",
-  //   authors: ["Riley Mehrman", "Ojas Mediratta", "Dawson Pent", "Charles D. Ramey"],
-  //   href: "https://example.com/project", // external paper link
-  //   thumb: "media/blip-auv/blip_11.jpg",
-  //   previewVideo: "media/blip-auv/blip_preview.mp4",
-  // },
+  },
 ];
