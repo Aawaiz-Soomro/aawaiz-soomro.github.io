@@ -11,7 +11,8 @@ import { PROFILE } from "@/data/links";
 const STATUS_MESSAGES = [
   "conference papers.",
   "robots.",
-  "job applications.",
+  "research proposals.",
+  "secret TV things.",
   "learning ROS2.",
 ];
 
