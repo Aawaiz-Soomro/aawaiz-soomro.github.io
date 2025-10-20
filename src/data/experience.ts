@@ -7,7 +7,7 @@ export type Experience = {
 
 export const EXPERIENCES: Experience[] = [
   // {
-  //   role: "Robotics Edison Intern",
+  //   role: "Robotics Research Intern",
   //   org: "GE Vernova Advanced Research Center",
   //   date: "May 2026 – Aug 2026",
   //   details: [ ]
