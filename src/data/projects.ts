@@ -54,8 +54,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "turtlebot3-ros2",
-    title: "ROS2 Perception and Intelligence Experiments with TurtleBot3",
-    blurb: "Exploring perception and control capabilities using ROS2 on the TurtleBot3 platform with techniques like CV and Machine Learning.",
+    title: "ROS2 Perception, Planning, and Control Experiments with TurtleBot3",
+    blurb: "Exploring robotics principles in ROS2 using the TurtleBot3 platform, including SLAM, navigation, and computer vision.",
     tags: ["Robotics", "AI/ML", "ROS2", "OpenCV", "Gazebo", "SLAM"],
     area: "Robotics",
     status: "Active",
@@ -63,19 +63,20 @@ export const PROJECTS: Project[] = [
     previewVideo: "media/turtlebot3/turtlebot3_preview.mp4",
     mainVideo: "media/turtlebot3/turtlebot3_preview.mp4",
     links: { code: "https://github.com/ojas-mediratta/turtlebot3-ros2" },
-    body: `This project is an ongoing exploration of perception and control using the TurtleBot3 platform, with a focus on learning the fundamentals of ROS2 and applying them to real-world robotics. My goal is to build up experience with ROS2's architecture, understanding how nodes, topics, services, and parameters interact, while developing practical skills in computer vision and autonomous navigation.
+    body: `This project is an ongoing exploration of perception, localization, and control using the TurtleBot3 platform under ROS 2 (Humble). It serves as both a deep dive into the fundamentals of the ROS 2 ecosystem and a practical foundation in autonomous mobile robotics.
 
-      So far, I have set up the ROS2 environment and become comfortable with its core concepts, allowing me to get hands-on with the TurtleBot3. I tested basic teleoperation controls to interact with and debug the robot in real time. I've successfully implemented an OpenCV-based object detection and tracking system that enables the robot to follow colored objects, maintaining a safe following distance while accounting for object velocity.
+    I began by developing a perception pipeline that detects and tracks colored objects using OpenCV, integrating ROS 2 publishers and subscribers to broadcast processed image data and target coordinates in real time. This evolved into a cascaded PID control system that fuses camera and LIDAR data, enabling the robot to chase moving targets while maintaining safe distance and angular alignment.
 
-      I've also developed a custom ROS2 navigation package that combines LiDAR sensing with dynamic path planning. The system can navigate through pre-defined waypoints while actively avoiding both static obstacles and moving objects in its environment. The package uses a local costmap approach for immediate obstacle avoidance while maintaining global path optimization.
+    Building on this, I implemented a Go-to-Goal navigation system that combines odometry and LIDAR sensing for reactive obstacle avoidance. The controller computes velocity commands based on real-time obstacle vectors, allowing the robot to reach arbitrary goal positions while dynamically avoiding collisions. This work provided a foundation in low-level control, sensor fusion, and motion planning.
 
-      Looking ahead, I'll be expanding the project by integrating more sophisticated machine learning techniques to improve the robot's perception and decision-making capabilities. I am also preparing to experiment with SLAM (Simultaneous Localization and Mapping) to give the TurtleBot3 better environmental awareness during autonomous operation.
+    Most recently, I extended the system to full-scale mapping, localization, and global navigation using the ROS 2 Nav2 stack. I created occupancy maps of both simulated and real environments using slam_toolbox, configured AMCL (Adaptive Monte Carlo Localization) for robust pose estimation, and tuned costmap and controller parameters to improve stability in narrow corridors. I also developed a ROS 2 node that autonomously publishes sequential waypoints to the /goal_pose topic, allowing the robot to traverse multiple global goals without human input. Testing was conducted in Gazebo’s maze environment and successfully replicated on the physical robot, demonstrating consistent waypoint navigation and environment-aware planning.
 
-      This project is very much a work in progress. As I make advances in SLAM, navigation, and perception on the TurtleBot3, I will continue to share videos, photos, and technical write-ups documenting both the challenges and the solutions I encounter along the way.`,
+    Going forward, I plan to integrate SLAM fusion, semantic mapping, and learning-based control to improve perception-driven decision-making. This project continues to be an evolving testbed for advancing my understanding of ROS 2 architecture, from node-level communication to high-level autonomy`,
     gallery: [
       "media/turtlebot3/turtlebot3_1.mp4",
       "media/turtlebot3/turtlebot3_2.mp4",
-      "media/turtlebot3/turtlebot3_3.mp4",]
+      "media/turtlebot3/turtlebot3_3.mp4",
+      "media/turtlebot3/turtlebot3_4.mp4",]
   },
   {
     slug: "buzzcaster-guitar",
