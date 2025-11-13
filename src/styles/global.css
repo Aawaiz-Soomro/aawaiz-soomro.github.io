@@ -33,14 +33,15 @@ html {
   font-size: 16px;
 }
 
-/* Scale up base font size on larger screens for better readability */
-@media (min-width: 1920px) {
+/* Scale up base font size only on large, LOW DPI screens (external monitors)
+   High DPI screens like MacBook Retina displays won't trigger this */
+@media (min-width: 1920px) and (max-resolution: 1.5dppx) {
   html {
     font-size: 18px;
   }
 }
 
-@media (min-width: 2560px) {
+@media (min-width: 2560px) and (max-resolution: 1.5dppx) {
   html {
     font-size: 20px;
   }

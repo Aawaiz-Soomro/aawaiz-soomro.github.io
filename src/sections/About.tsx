@@ -113,16 +113,16 @@ export default function About() {
       <Container>
         <div className="grid gap-10 py-16 md:grid-cols-5 md:items-center md:gap-12 md:py-5">
           <div className="md:col-span-3">
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl xl:text-6xl">
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
               {PROFILE.name}
             </h1>
 
             {/* Typing line */}
-            <p className="mt-2 text-xl lg:text-2xl xl:text-3xl text-accent-cyan">
+            <p className="mt-2 text-xl lg:text-2xl text-accent-cyan">
               <TypingEffect words={PROFILE.titles} />
             </p>
 
-            <p className="mt-6 max-w-2xl leading-relaxed text-base lg:text-lg xl:text-xl text-subtext whitespace-pre-line">
+            <p className="mt-6 max-w-2xl leading-relaxed text-subtext whitespace-pre-line">
               {PROFILE.tagline}
             </p>
 
