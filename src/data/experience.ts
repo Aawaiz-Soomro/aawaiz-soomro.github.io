@@ -26,9 +26,10 @@ export const EXPERIENCES: Experience[] = [
     org: "Contextual Computing Group @ Georgia Tech",
     date: "Aug 2024 – Present",
     details: [
-      "Conducted field robotics research in collaboration with Georgia Aquarium and the Wild Dolphin Project nonprofit, contributing to real-time dolphin communication research initiatives and enrichment for captive cetaceans",
-      "Engineered a custom bone-conduction headset for underwater use by researchers, enabling clear audio playback for real-time dolphin vocalization translation and two-way communication between researchers and dolphins",
-      "Developed and optimized tools for dolphin vocalization analysis using autocorrelation, waveform reconstruction, and spectrogram visualization in Python, enabling researchers to accurately mimic essential sounds for testing",
+      "Led field-robotics work with an aquarium and a nonprofit, running controlled pool trials and open-water deployments of a custom marine robot to advance real-time dolphin communication and enrichment research",
+      "Designed and built a bone-conduction headset for underwater use by researchers, enabling clear audio playback for real-time dolphin vocalization translation and two-way communication between researchers and dolphins",
+      "Packaged analysis pipelines and documentation so collaborators could reproduce results and generate new stimuli without engineer support during field and lab research sessions",
+      "Developed Python tools for autocorrelation, waveform reconstruction, and spectrogram analysis that turned raw recordings into testable audio stimulus libraries and reduced manual preprocessing",
       "Co-authored research papers documenting system design and field findings for submission to international conferences in animal-computer interaction and marine robotics"
     ]
   },
