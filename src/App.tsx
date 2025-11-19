@@ -12,7 +12,6 @@ import ScrollIndicator from "@/components/ScrollIndicator";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAssetPreloader } from "@/components/AssetPreloader";
 import { preloadCriticalAssets } from "@/components/PerformanceUtils";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 
 export default function App() {
   const { isLoading, progress, loadedAssets, totalAssets } = useAssetPreloader();
@@ -36,28 +35,26 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider>
-      <div className="relative min-h-screen antialiased bg-bg text-text">
-        {/* Glow that follows cursor */}
-        <MouseGlow />
+    <div className="relative min-h-screen antialiased bg-bg text-text">
+      {/* Glow that follows cursor */}
+      <MouseGlow />
 
-        {/* Site header */}
-        <Navbar />
+      {/* Site header */}
+      <Navbar />
 
-        {/* Main content */}
-        <main className="relative z-10">
-          <About />
-          <ScrollIndicator />
-          <Projects />
-          <Experience />
-          <Education />
-          <Research />
-          <Contact />
-        </main>
+      {/* Main content */}
+      <main className="relative z-10">
+        <About />
+        <ScrollIndicator />
+        <Projects />
+        <Experience />
+        <Education />
+        <Research />
+        <Contact />
+      </main>
 
-        {/* Footer */}
-        <Footer />
-      </div>
-    </ThemeProvider>
+      {/* Footer */}
+      <Footer />
+    </div>
   );
 }

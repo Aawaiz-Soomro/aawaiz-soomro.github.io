@@ -5,6 +5,8 @@ import Section from "@/components/Section";
 import Gallery from "@/components/Gallery";
 import { PROJECTS } from "@/data/projects";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
+import { DARK_THEME, LIGHT_THEME } from "@/data/theme";
 
 const withBase = (path?: string) =>
   path ? `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}` : undefined;
@@ -33,6 +35,7 @@ const getYouTubeVideoId = (input: string): string => {
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const project = useMemo(() => PROJECTS.find(p => p.slug === slug), [slug]);
+  const { theme } = useTheme();
 
   // Scroll to top when component mounts or slug changes
   useEffect(() => {
@@ -45,6 +48,8 @@ export default function ProjectDetail() {
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
+
+  const glowColor = theme === 'dark' ? DARK_THEME.mouseGlow : LIGHT_THEME.mouseGlow;
 
 
   if (!project) {
@@ -71,7 +76,7 @@ export default function ProjectDetail() {
               top: pos.y,
               left: pos.x,
               transform: "translate(-50%, -50%)",
-              background: `radial-gradient(600px, rgba(89,194,255,0.15), transparent 80%)`,
+              background: `radial-gradient(600px, ${glowColor}, transparent 80%)`,
             }}
           />
         </div>
