@@ -3,7 +3,7 @@ const GLITCH_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345
 import Section from "@/components/Section";
 import Container from "@/components/Container";
 import TypingEffect from "@/components/TypingEffect";
-import avatarFile from "@/assets/avatar.jpg";
+import avatarFile from "@/assets/new-avatar.jpg";
 import { Mail, Phone, MapPin, Github, Linkedin, Download } from "lucide-react";
 import { PROFILE } from "@/data/links";
 
@@ -142,7 +142,7 @@ export default function About() {
 
           {/* Avatar panel */}
           <div
-            className="group rounded-3xl border border-border bg-panel md:col-span-2 transition-all hover:border-accent-cyan hover:shadow-sm hover:-translate-y-1"
+            className="group rounded-3xl border border-border bg-panel md:col-span-2 transition-all hover:border-accent-cyan hover:shadow-sm hover:-translate-y-1 max-w-xs mx-auto w-full"
           >
             <div className="p-6">
               <div className="relative">
@@ -152,9 +152,8 @@ export default function About() {
                 <img
                   src={avatarFile}
                   alt="Headshot"
-                  className={`w-full rounded-2xl object-cover scale-105 transition-opacity duration-300 ${
-                    avatarLoaded ? 'opacity-100' : 'opacity-0'
-                  }`}
+                  className={`w-full rounded-2xl object-cover scale-105 transition-opacity duration-300 ${avatarLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
                   onLoad={() => setAvatarLoaded(true)}
                   onError={() => setAvatarLoaded(true)}
                 />

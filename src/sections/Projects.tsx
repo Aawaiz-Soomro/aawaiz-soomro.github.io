@@ -13,11 +13,13 @@ function Preview({
   thumb,
   previewVideo,
   hovering,
+  objectFit = 'cover',
 }: {
   title: string
   thumb?: string
   previewVideo?: string
   hovering: boolean
+  objectFit?: "cover",
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [imageLoaded, setImageLoaded] = useState(false)
@@ -52,14 +54,13 @@ function Preview({
             <div className="absolute inset-0 bg-panel animate-pulse h-44 md:h-48" />
           )}
           <img
-            className={`h-44 w-full object-cover md:h-48 transition-opacity duration-300 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`h-44 w-full ${objectFit === 'contain' ? 'object-contain p-2' : 'object-cover'} md:h-48 transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
             src={withBase(thumb)}
             alt={title}
             loading="lazy"
             onLoad={() => setImageLoaded(true)}
-            onError={() => setImageLoaded(true)} 
+            onError={() => setImageLoaded(true)}
           />
         </div>
       ) : (
@@ -73,7 +74,7 @@ function Preview({
 
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState<
-    'All' | 'Robotics' | 'Embedded' | 'AI/ML' | 'Other'
+    'All' | 'Personal' | 'University' | 'Commercial'
   >('All')
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null)
   const [hoveredFilter, setHoveredFilter] = useState<string | null>(null)
@@ -81,10 +82,9 @@ export default function Projects() {
 
   const filters = [
     { label: 'All', value: 'All' as const },
-    { label: 'Robotics', value: 'Robotics' as const },
-    { label: 'Embedded', value: 'Embedded' as const },
-    { label: 'AI/ML', value: 'AI/ML' as const }, 
-    { label: 'Other', value: 'Other' as const },
+    { label: 'Personal', value: 'Personal' as const },
+    { label: 'University', value: 'University' as const },
+    { label: 'Commercial', value: 'Commercial' as const },
   ]
 
   const items = useMemo(() => {
@@ -128,9 +128,9 @@ export default function Projects() {
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Projects
           </h2>
-          
+
           {/* Filter buttons */}
-          <div 
+          <div
             className="flex flex-wrap items-center gap-3"
             onMouseLeave={() => setHoveredFilter(null)}
           >
@@ -138,7 +138,7 @@ export default function Projects() {
               const isActive = activeFilter === filter.value && !hoveredFilter
               const isHovered = hoveredFilter === filter.value
               const isHighlighted = isHovered || isActive
-              
+
               return (
                 <button
                   key={filter.value}
@@ -172,6 +172,7 @@ export default function Projects() {
                   thumb={p.thumb}
                   previewVideo={p.previewVideo}
                   hovering={hoveredSlug === p.slug}
+                  objectFit={p.objectFit}
                 />
               </div>
 
@@ -246,13 +247,13 @@ export default function Projects() {
                         <span className="relative inline-flex h-2.5 w-2.5">
                           {/* bright core */}
                           <span
-                          className="absolute inset-0 rounded-full bg-emerald-400 opacity-100 shadow-[0_0_12px_3px_rgba(16,185,129,0.9)]"
-                          aria-hidden
+                            className="absolute inset-0 rounded-full bg-emerald-400 opacity-100 shadow-[0_0_12px_3px_rgba(16,185,129,0.9)]"
+                            aria-hidden
                           />
                           {/* soft halo with enhanced pulse */}
                           <span
-                          className="absolute inset-0 rounded-full bg-emerald-400/80 blur-[4px] animate-[pulse_1.5s_ease-in-out_infinite]"
-                          aria-hidden
+                            className="absolute inset-0 rounded-full bg-emerald-400/80 blur-[4px] animate-[pulse_1.5s_ease-in-out_infinite]"
+                            aria-hidden
                           />
                         </span>
                         Active

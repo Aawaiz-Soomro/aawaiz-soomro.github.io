@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, { useMemo, useState } from "react";
 import Section from "@/components/Section";
 import Container from "@/components/Container";
 import { EXPERIENCES } from "@/data/experience";
@@ -17,7 +17,7 @@ export default function Experience() {
   }, [items, showAll])
 
   const hasMoreItems = items.length > 3
-  
+
   return (
     <Section id="experience" className="py-12 md:py-20">
       <Container>
@@ -28,13 +28,26 @@ export default function Experience() {
               <h3 className="text-lg font-medium ">{exp.role}</h3>
               <p className="text-sm text-accent-green">{exp.org}</p>
               <p className="text-xs text-subtext">{exp.date}</p>
-              
+
               {exp.details?.length ? (
                 <ul className="mt-3 list-disc list-outside pl-5 text-sm text-subtext space-y-1">
                   {exp.details.map((detail, idx) => (
                     <li key={idx} className="leading-relaxed pl-1">{detail}</li>
                   ))}
                 </ul>
+              ) : null}
+
+              {exp.skills?.length ? (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {exp.skills.map((skill, idx) => (
+                    <span
+                      key={idx}
+                      className="rounded-full border border-border bg-bg px-2.5 py-1 text-[11px] text-subtext"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               ) : null}
             </div>
           ))}

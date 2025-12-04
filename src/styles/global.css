@@ -5,7 +5,7 @@
 /* Menlo + Ayu Mirage (Dark) / Atom One Light variables */
 :root {
   --font-sans: Menlo, monospace;
-  
+
   /* Default to dark theme */
   --color-bg: #1f2430;
   --color-panel: #232a36;
@@ -19,8 +19,8 @@
   --color-accent-red: #f28779;
   --color-accent-purple: #d4bfff;
   --color-accent-cyan: #95E6CB;
-  
-  --color-mouse-glow: rgba(89,194,255,0.15);
+
+  --color-mouse-glow: rgba(89, 194, 255, 0.15);
 }
 
 /* Dark Theme - Ayu Mirage */
@@ -37,8 +37,8 @@
   --color-accent-red: #f28779;
   --color-accent-purple: #d4bfff;
   --color-accent-cyan: #95E6CB;
-  
-  --color-mouse-glow: rgba(89,194,255,0.15);
+
+  --color-mouse-glow: rgba(89, 194, 255, 0.15);
 }
 
 /* Light Theme - Cloud */
@@ -55,11 +55,13 @@
   --color-accent-red: #d0372d;
   --color-accent-purple: #7d57c2;
   --color-accent-cyan: #00b7bd;
-  
+
   --color-mouse-glow: rgb(255, 255, 255, 1);
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   background-color: var(--color-bg);
   color: var(--color-text);
@@ -68,7 +70,7 @@ html, body, #root {
 }
 
 /* Base font size scaling for different screen sizes */
-html { 
+html {
   scroll-behavior: smooth;
   font-size: 16px;
 }
@@ -97,12 +99,26 @@ img {
 }
 
 /* For avatar and profile images, ensure smooth scaling */
-img[src*="avatar"], img[alt*="Headshot"] {
+img[src*="avatar"],
+img[alt*="Headshot"] {
   image-rendering: auto;
 }
-a { color: var(--color-accent-blue); transition: color .2s ease; }
-a:hover { color: var(--color-accent-green); }
-.panel { background-color: var(--color-panel); border: 1px solid var(--color-border); border-radius: 1rem; padding: 1rem; }
+
+a {
+  color: var(--color-accent-blue);
+  transition: color .2s ease;
+}
+
+a:hover {
+  color: var(--color-accent-green);
+}
+
+.panel {
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 1rem;
+}
 
 /* gentle fade for mobile */
 .mobile-fade {
@@ -110,13 +126,22 @@ a:hover { color: var(--color-accent-green); }
 }
 
 @keyframes fadePulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 /* accessibility: kill intense motion everywhere if users prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .mobile-fade, .glitch {
+
+  .mobile-fade,
+  .glitch {
     animation: none !important;
     transition: none !important;
   }

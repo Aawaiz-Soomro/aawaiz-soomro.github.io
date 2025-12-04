@@ -21,7 +21,7 @@ export default function Education() {
           {EDUCATION.map((edu, idx) => {
             const Logo = edu.logoKey ? eduLogos[edu.logoKey] : null;
             const size = edu.logoSize ?? 56;
-            const stroke = edu.logoStroke ?? 4.0;
+
 
             return (
               <div
@@ -33,14 +33,11 @@ export default function Education() {
                   {Logo && (
                     <Logo
                       className={
-                        "text-subtext transition-colors group-hover:text-accent-yellow [&_*]:fill-current"
+                        "text-subtext transition-colors group-hover:text-accent-yellow"
                       }
                       style={{
                         width: size,
                         height: size,
-                        strokeWidth: stroke,
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round",
                       }}
                       aria-hidden
                     />

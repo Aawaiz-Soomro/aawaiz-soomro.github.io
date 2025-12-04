@@ -3,62 +3,41 @@ export type Experience = {
   org: string;
   date: string;
   details: string[];
+  skills?: string[];
 };
 
 export const EXPERIENCES: Experience[] = [
-  // {
-  //   role: "Hardware Systems Intern",
-  //   org: "Physical Intelligence (π)",
-  //   date: "Jan 2026 – Apr 2026",
-  //   details: [ ]
-  // },
-  // {
-  //   role: "Robotics Research Intern",
-  //   org: "GE Vernova Advanced Research Center",
-  //   date: "May 2026 – Aug 2026",
-  //   details: [ ]
-  // },
-  // {
-  //   role: "Graduate Research Assistant",
-  //   org: "Laboratory for Intelligent Decision and Autonomous Robotics (LIDAR) @ Georgia Tech",
-  //   date: "Jan 2026 – Present",
-  //   details: [
-  //     "Conducting research on tactile sensing for humanoid loco-manipulation and RL for collaborative transport and whole-body manipulation",
-  //     "Integrated tactile sensors into a humanoid robot platform, enabling enhanced manipulation capabilities for complex tasks",
-  //   ]
-  // },
   {
-    role: "Graduate Research Assistant",
-    org: "Contextual Computing Group @ Georgia Tech",
-    date: "Aug 2024 – Present",
+    role: "Student Teaching Assistant",
+    org: "National University of Computer and Emerging Sciences",
+    date: "Oct 2025 - Present",
     details: [
-      "Built a remotely operated vehicle (ROV) for dolphin research and enrichment, contributing across firmware, electronics, and mechanical design; successfully deployed in 15+ pool trials and 4 open-water trials in the Atlantic",
-      "Designed and implemented an ESP32 firmware stack, orchestrating a cascaded PID-based controller, ESC-driven thrusters, internal sensors, over-the-air telemetry, and LED signaling, unifying system operation in the field",
-      "Engineered PCBs unifying microcontroller, power, and sensor interfaces, cutting wiring volume and failure points for reliability",
-      "Designed mechanical components in Fusion 360, iterating and fabricating rapidly for waterproofing and durability for field use",
-      "Designed and built a bone-conduction headset for underwater use by researchers, enabling clear audio playback for real-time dolphin vocalization translation and two-way communication",
-      "Co-authored research papers documenting system design and field findings for submission to international conferences in animal-computer interaction and marine robotics"
-    ]
+      "Evaluate student assessments and provide academic support to enhance their learning experience in Data Structures."
+    ],
+    skills: ["Assistant Teaching", "Data Structures"]
   },
   {
-    role: "Graduate Teaching Assistant",
-    org: "Georgia Institute of Technology",
-    date: "May 2025 – Present",
+    role: "IT Intern",
+    org: "TAJS SKYLINE",
+    date: "Jun 2025 - Aug 2025",
     details: [
-      "Served as a teaching assistant for Mobile and Ubiquitous Computing and Prototyping Intelligent Devices; graduate-level, project based courses on embedded systems, firmware development, and edge machine learning",
-      "Guided 8 student teams in developing app prototypes and custom microcontroller projects, providing mentorship on report authorship that led to higher project success rates and more polished deliverables.",
-      "Hosted office hours and asynchronous feedback sessions, guiding students through technical and research hurdles"
-    ]
+      "Assisted the technical team in cloud computing and AI technology projects, enhancing IT operations.",
+      "Contributed to research initiatives that explored innovative solutions in modern computing systems.",
+      "Developed problem-solving skills through hands-on experience and collaboration with experienced professionals.",
+      "Recognized by mentors for strong work ethic and technical proficiency during the internship."
+    ],
+    skills: ["Cloud Computing", "Artificial Intelligence (AI)"]
   },
   {
-    role: "Technical Support Agent (Student Lead)",
-    org: "Georgia Tech Office of Information Technology",
-    date: "May 2024 – Jan 2025",
+    role: "Web Developer",
+    org: "MediaByte",
+    date: "Jun 2020 - Aug 2022",
     details: [
-      "Responded to triaged security incidents and lead a team of 12 student assistants to proficiency for support to over 30 departments of Georgia Tech personnel via remote and on-site assistance",
-      "Programmed and deployed a PowerShell script for verifying device imaging and task sequences that reduced setup time for our team by 50% in most cases",
-      "Migrated enterprise device management from the SCCM platform to Microsoft Endpoint/Intune, enabling more streamlined deployment of over 15 distinct user profiles with associated software and service access",
-      "Designed and implemented an automated MS Teams notification tool using Power Automate that reduced missed remote service requests to zero over a 1 month timeline"
-    ]
-  },
+      "Developed over 20 websites utilizing WordPress, PHP, HTML, CSS, and JavaScript.",
+      "Implemented effective SEO strategies to enhance website visibility and improve traffic.",
+      "Optimized website performance and security to ensure a seamless user experience.",
+      "Contributed to MediaByte's growth as a dynamic startup in the digital media landscape."
+    ],
+    skills: ["PHP", "Virtual Private Server (VPS)"]
+  }
 ];

@@ -5,7 +5,7 @@ type BrandmarkProps = React.SVGProps<SVGSVGElement> & {
 };
 
 export default function Brandmark({
-  strokeWidth = 4, 
+  strokeWidth = 4,
   className,
   ...props
 }: BrandmarkProps) {
@@ -27,9 +27,9 @@ export default function Brandmark({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      {/* M */}
+      {/* A */}
       <path
-        d="M14 30 V18 L24 26 L34 18 V30"
+        d="M15 34 L24 14 L33 34 M19 25 H29"
         stroke="currentColor"
         strokeWidth={strokeWidth}
         strokeLinecap="round"
