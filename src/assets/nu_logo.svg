@@ -1,0 +1,23 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 200 200"
+>
+  <!-- Outline "N" -->
+  <path
+    d="M40 150 V50 L110 150 V50"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="10"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <!-- Outline "U" -->
+  <path
+    d="M120 50 V130 Q120 150 140 150 H160 Q180 150 180 130 V50"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="10"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

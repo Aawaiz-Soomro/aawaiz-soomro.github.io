@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Menlo + Ayu Mirage (Dark) / Atom One Light variables */
+:root {
+  --font-sans: Menlo, monospace;
+
+  /* Default to dark theme */
+  --color-bg: #1f2430;
+  --color-panel: #232a36;
+  --color-border: #2b3240;
+  --color-text: #cbccc6;
+  --color-subtext: #828997;
+
+  --color-accent-blue: #59c2ff;
+  --color-accent-green: #bae67e;
+  --color-accent-yellow: #ffcc66;
+  --color-accent-red: #f28779;
+  --color-accent-purple: #d4bfff;
+  --color-accent-purple: #d4bfff;
+  --color-accent-cyan: #95E6CB;
+  --color-accent-pink: #f06292;
+
+  --color-mouse-glow: rgba(89, 194, 255, 0.08);
+}
+
+/* Dark Theme - Ayu Mirage */
+.dark {
+  --color-bg: #1f2430;
+  --color-panel: #232a36;
+  --color-border: #2b3240;
+  --color-text: #cbccc6;
+  --color-subtext: #828997;
+
+  --color-accent-blue: #59c2ff;
+  --color-accent-green: #bae67e;
+  --color-accent-yellow: #ffcc66;
+  --color-accent-red: #f28779;
+  --color-accent-purple: #d4bfff;
+  --color-accent-purple: #d4bfff;
+  --color-accent-cyan: #95E6CB;
+  --color-accent-pink: #f06292;
+
+  --color-mouse-glow: rgba(89, 194, 255, 0.08);
+}
+
+/* Light Theme - Cloud */
+.light {
+  --color-bg: #f1f1f1;
+  --color-panel: #fafbfc;
+  --color-border: #9e9fa0;
+  --color-text: #454545;
+  --color-subtext: #5a5a5a;
+
+  --color-accent-blue: #008abd;
+  --color-accent-green: #678f03;
+  --color-accent-yellow: #cc6d00;
+  --color-accent-red: #d0372d;
+  --color-accent-purple: #7d57c2;
+  --color-accent-cyan: #00b7bd;
+  --color-accent-pink: #e91e63;
+
+  --color-mouse-glow: rgb(255, 255, 255, 1);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Base font size scaling for different screen sizes */
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+/* Scale up base font size only on large, LOW DPI screens (external monitors)
+   High DPI screens like MacBook Retina displays won't trigger this */
+@media (min-width: 1920px) and (max-resolution: 1.5dppx) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 2560px) and (max-resolution: 1.5dppx) {
+  html {
+    font-size: 20px;
+  }
+}
+
+/* Improve image rendering quality - use high-quality scaling */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+/* For avatar and profile images, ensure smooth scaling */
+img[src*="avatar"],
+img[alt*="Headshot"] {
+  image-rendering: auto;
+}
+
+a {
+  color: var(--color-accent-blue);
+  transition: color .2s ease;
+}
+
+a:hover {
+  color: var(--color-accent-green);
+}
+
+.panel {
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+/* gentle fade for mobile */
+.mobile-fade {
+  animation: fadePulse 2.2s ease-in-out infinite;
+}
+
+@keyframes fadePulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* accessibility: kill intense motion everywhere if users prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  .mobile-fade,
+  .glitch {
+    animation: none !important;
+    transition: none !important;
+  }
+}
