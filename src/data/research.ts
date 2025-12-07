@@ -1,4 +1,4 @@
-export type PubType = "Paper" | "Article" | "Talk" | "Poster" | "Video" | "Demo" | "Award" | "Other";
+export type PubType = "Paper" | "Article" | "Talk" | "Poster" | "Video" | "Demo" | "Award" | "Other" | "Cross-Platform Application";
 export type Status = "Under Review" | "Published" | "Accepted" | "In Press";
 
 export type Research = {
