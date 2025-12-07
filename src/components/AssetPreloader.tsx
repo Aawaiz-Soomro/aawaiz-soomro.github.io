@@ -137,5 +137,21 @@ export function useAssetPreloader(): AssetLoadingState {
 
   }, []);
 
+  // Safety timeout to ensure we never get stuck on loading screen
+  useEffect(() => {
+    const safetyTimer = setTimeout(() => {
+      if (loadingState.isLoading) {
+        console.warn('Asset loading timed out - forcing render');
+        setLoadingState(prev => ({
+          ...prev,
+          isLoading: false,
+          progress: 100
+        }));
+      }
+    }, 5000); // 5 seconds max load time
+
+    return () => clearTimeout(safetyTimer);
+  }, [loadingState.isLoading]);
+
   return loadingState;
 }
