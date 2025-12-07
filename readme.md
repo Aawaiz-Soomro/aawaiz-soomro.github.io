@@ -1,4 +1,4 @@
-# Aawaiz — Portfolio Website
+# Aawaiz — Portfolio Website V2
 
 This is my personal portfolio website, built with **React**, **TypeScript**, and **Vite**.  
 It serves as a central place to highlight my projects, research, and experiences in robotics, embedded systems, and applied machine learning.
