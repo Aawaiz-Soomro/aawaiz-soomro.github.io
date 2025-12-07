@@ -71,7 +71,7 @@ export default function Experience() {
                   </div>
 
                   {/* Card - current cards have deeper shadows */}
-                  <div className={`rounded-xl bg-panel transition-all md:hover:-translate-y-0.5 ${current ? 'shadow-[0_4px_30px_rgba(0,0,0,0.6)]' : 'shadow-[0_2px_16px_rgba(0,0,0,0.35)]'}`}>
+                  <div className={`rounded-xl bg-panel border border-border md:hover:border-accent-green transition-all md:hover:-translate-y-0.5 ${current ? 'shadow-[0_4px_30px_rgba(0,0,0,0.6)]' : 'shadow-[0_2px_16px_rgba(0,0,0,0.35)]'}`}>
 
                     {/* Mobile: Clickable card */}
                     <button

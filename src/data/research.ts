@@ -6,7 +6,8 @@ export type Research = {
   outlet?: string;         // conference, journal, site, venue
   date?: string;           // e.g. "Aug 2025"
   type: PubType;
-  authors?: string[];        // optional string for now
+  members?: string[];        // renamed from authors
+  supervisor?: string;       // new field
   status?: Status;  // publication status
   // Media
   href?: string;           // canonical link (paper page, YouTube, arXiv, etc.)
@@ -19,11 +20,12 @@ export type Research = {
 
 export const RESEARCH: Research[] = [
   {
-    title: "AI Powered Influencer MarketPlace",
-    outlet: "Final Year Project @ NUCES-FAST",
+    title: "AI Powered Influencer Marketplace",
+    outlet: "NUCES-FAST",
     date: "2026",
-    type: "Paper",
-    authors: ["Taha", "Aawaiz", "Humam"],
+    type: "Cross-Platform Application",
+    members: ["Taha", "Aawaiz", "Humam"],
+    supervisor: "Dr. Supervisor",
     status: "Under Review",
     // href: "https://example.com/project", 
     // href: "https://example.com/project",
