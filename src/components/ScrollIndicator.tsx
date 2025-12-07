@@ -15,9 +15,9 @@ export default function ScrollIndicator({ targetId = "projects", className = "" 
   };
 
   return (
-    <div className={`flex justify-center py-8 ${className}`}>
-      <ChevronDown 
-        size={32} 
+    <div className={`hidden md:flex justify-center py-4 ${className}`}>
+      <ChevronDown
+        size={28}
         className="text-subtext animate-bounce cursor-pointer hover:text-accent-cyan transition-colors duration-200"
         onClick={handleClick}
       />

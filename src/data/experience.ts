@@ -2,6 +2,7 @@ export type Experience = {
   role: string;
   org: string;
   date: string;
+  location: string;
   details: string[];
   skills?: string[];
 };
@@ -9,8 +10,9 @@ export type Experience = {
 export const EXPERIENCES: Experience[] = [
   {
     role: "Student Teaching Assistant",
-    org: "National University of Computer and Emerging Sciences",
+    org: "NUCES - FAST",
     date: "Oct 2025 - Present",
+    location: "Karachi, PK",
     details: [
       "Evaluate student assessments and provide academic support to enhance their learning experience in Data Structures."
     ],
@@ -20,6 +22,7 @@ export const EXPERIENCES: Experience[] = [
     role: "IT Intern",
     org: "TAJS SKYLINE",
     date: "Jun 2025 - Aug 2025",
+    location: "Karachi, PK",
     details: [
       "Assisted the technical team in cloud computing and AI technology projects, enhancing IT operations.",
       "Contributed to research initiatives that explored innovative solutions in modern computing systems.",
@@ -32,12 +35,13 @@ export const EXPERIENCES: Experience[] = [
     role: "Web Developer",
     org: "MediaByte",
     date: "Jun 2020 - Aug 2022",
+    location: "Remote",
     details: [
       "Developed over 20 websites utilizing WordPress, PHP, HTML, CSS, and JavaScript.",
       "Implemented effective SEO strategies to enhance website visibility and improve traffic.",
       "Optimized website performance and security to ensure a seamless user experience.",
       "Contributed to MediaByte's growth as a dynamic startup in the digital media landscape."
     ],
-    skills: ["PHP", "Virtual Private Server (VPS)"]
+    skills: ["PHP", "WordPress", "SEO"]
   }
 ];

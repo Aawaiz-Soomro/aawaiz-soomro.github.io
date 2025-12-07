@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef } from "react";
 import Container from "@/components/Container";
 import { useScrollSpy } from "@/components/useScrollSpy";
 import { Menu, X, Github, Linkedin, Instagram, Sun, Moon } from "lucide-react";
@@ -33,11 +33,38 @@ export default function Navbar() {
   const [showLogo, setShowLogo] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
+  // Swipe gesture state for mobile menu (Set 21)
+  const touchStartY = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartY.current === null) return;
+    const deltaY = touchStartY.current - e.changedTouches[0].clientY;
+    // Swipe up to close (delta > 50px)
+    if (deltaY > 50) {
+      setOpen(false);
+    }
+    touchStartY.current = null;
+  };
+
   React.useEffect(() => {
-    const handleScroll = () => setShowLogo(window.scrollY > 50);
+    const handleScroll = () => {
+      // Show logo after scrolling past hero section
+      // Mobile: ~400px (hero height), Desktop: 50px (as before)
+      const isMobile = window.innerWidth < 768;
+      const threshold = isMobile ? 400 : 50;
+      setShowLogo(window.scrollY > threshold);
+    };
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
     handleScroll(); // Check initial
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   const buttonColors = theme === 'dark' ? darkButtonColors : lightButtonColors;
@@ -55,9 +82,9 @@ export default function Navbar() {
     []
   );
 
-  // Extract section IDs for scrollspy
-  const sectionIds = nav.map(item => item.href.replace('#', ''));
-  const activeSection = useScrollSpy(sectionIds, 200);
+  // Extract section IDs for scrollspy - memoize to prevent re-initialization
+  const sectionIds = useMemo(() => nav.map(item => item.href.replace('#', '')), [nav]);
+  const activeSection = useScrollSpy(sectionIds, 100);
 
   const navWithAccents = nav.map((item, idx) => {
     const colorIndex = idx % buttonColors.length;
@@ -73,13 +100,13 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-border backdrop-blur" style={{ backgroundColor: theme === 'dark' ? 'rgba(31,36,48,0.6)' : 'rgba(241,241,241,0.8)' }}>
       <Container>
         <div className="relative flex h-16 items-center justify-between">
-          {/* Left: Name */}
+          {/* Left: Logo - always visible on mobile, scroll-triggered on desktop */}
           <a
             href="#top"
-            className={`group relative text-subtext transition-all duration-500 hover:text-accent-cyan ${showLogo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}
+            className={`group relative text-subtext transition-all duration-500 hover:text-accent-cyan ${showLogo ? 'opacity-100 translate-y-0' : 'md:opacity-0 md:-translate-y-4 md:pointer-events-none'}`}
             aria-label="Aawaiz"
           >
-            <div className="relative h-12">
+            <div className="relative h-10 md:h-12">
               <img src={logoFile} alt="Aawaiz Logo" className="h-full w-auto opacity-0" />
               <div
                 className="absolute inset-0 bg-current"
@@ -181,8 +208,10 @@ export default function Navbar() {
         {/* Mobile nav */}
         {open && (
           <div
-            className="grid gap-2 pb-4 md:hidden"
+            className="grid gap-2 pb-4 md:hidden animate-fade-in-up"
             onMouseLeave={() => setHoveredItem(null)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             {navWithAccents.map((n) => {
               const isHighlighted = n.isHovered || n.isActive;

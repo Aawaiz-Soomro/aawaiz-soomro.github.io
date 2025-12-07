@@ -4,7 +4,7 @@
 
 /* Menlo + Ayu Mirage (Dark) / Atom One Light variables */
 :root {
-  --font-sans: Menlo, monospace;
+  --font-sans: 'Fira Code', Menlo, monospace;
 
   /* Default to dark theme */
   --color-bg: #1f2430;
@@ -72,6 +72,8 @@ body,
   color: var(--color-text);
   font-family: var(--font-sans);
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* Base font size scaling for different screen sizes */
@@ -149,5 +151,107 @@ a:hover {
   .glitch {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ===== MOBILE RESPONSIVENESS UTILITIES ===== */
+
+/* Word breaking utilities to prevent text overflow on mobile */
+.break-words {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Touch feedback for interactive elements */
+.touch-feedback {
+  transition: transform 0.1s ease;
+}
+
+.touch-feedback:active {
+  transform: scale(0.95);
+}
+
+/* Minimum touch target size (44x44px per WCAG) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Disable hover effects on touch devices, use active states instead */
+@media (hover: none) and (pointer: coarse) {
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+}
+
+/* ===== ANIMATION & MICRO-INTERACTION UTILITIES (Set 15) ===== */
+
+/* Smooth transition for all interactive elements */
+.transition-smooth {
+  transition: all 0.2s ease-out;
+}
+
+/* Icon hover/active scaling */
+.icon-interactive {
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.icon-interactive:hover {
+  transform: scale(1.1);
+}
+
+.icon-interactive:active {
+  transform: scale(0.95);
+}
+
+/* Fade in animation for elements entering view */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out forwards;
+}
+
+/* Card hover lift effect */
+.card-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+  .transition-smooth,
+  .icon-interactive,
+  .card-lift,
+  .animate-fade-in-up {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
 }

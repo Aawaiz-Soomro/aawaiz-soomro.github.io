@@ -22,7 +22,7 @@ export default {
         "accent-white": "var(--color-text)",
       },
       fontFamily: {
-        sans: ["Menlo", "monospace"],
+        sans: ["'Fira Code'", "Menlo", "monospace"],
       },
       screens: {
         '3xl': '1920px',

@@ -19,21 +19,24 @@ export default function Contact() {
         <div className="mt-8 space-y-4 text-sm text-subtext">
           <a
             href={`mailto:${PROFILE.email}`}
-            className="flex items-center gap-2 underline-offset-4 text-accent-cyan hover:text-accent-purple hover:underline transition-colors"
+            className="flex items-center gap-3 underline-offset-4 text-accent-cyan hover:text-accent-purple hover:underline transition-colors touch-feedback min-h-[44px]"
           >
-            <Mail className="size-4" /> {PROFILE.email}
+            <Mail className="size-5 flex-shrink-0" /> {PROFILE.email}
           </a>
           <a
             href={`mailto:${PROFILE.email2}`}
-            className="flex items-center gap-2 underline-offset-4 text-accent-cyan hover:text-accent-purple hover:underline transition-colors"
+            className="flex items-center gap-3 underline-offset-4 text-accent-cyan hover:text-accent-purple hover:underline transition-colors touch-feedback min-h-[44px]"
           >
-            <Mail className="size-4" /> {PROFILE.email2}
+            <Mail className="size-5 flex-shrink-0" /> {PROFILE.email2}
           </a>
-          <div className="flex items-center gap-2">
-            <Phone className="size-4" /> {PROFILE.phone}
-          </div>
-          <div className="flex items-center gap-2">
-            <MapPin className="size-4" /> {PROFILE.location}
+          <a
+            href={`tel:${PROFILE.phone.replace(/\s/g, '')}`}
+            className="flex items-center gap-3 text-accent-cyan hover:text-accent-purple transition-colors touch-feedback min-h-[44px]"
+          >
+            <Phone className="size-5 flex-shrink-0" /> {PROFILE.phone}
+          </a>
+          <div className="flex items-center gap-3 min-h-[44px]">
+            <MapPin className="size-5 flex-shrink-0" /> {PROFILE.location}
           </div>
         </div>
       </Container>

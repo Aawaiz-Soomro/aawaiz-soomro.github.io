@@ -80,6 +80,15 @@ export default function Projects() {
   >('All')
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null)
   const [showAll, setShowAll] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const filters = [
     { label: 'All', value: 'All' as const },
@@ -93,12 +102,14 @@ export default function Projects() {
     return PROJECTS.filter((p) => p.area === activeFilter)
   }, [activeFilter])
 
+  const initialLimit = isMobile ? 4 : 6
+
   const displayedItems = useMemo(() => {
     if (showAll) return items
-    return items.slice(0, 6)
-  }, [items, showAll])
+    return items.slice(0, initialLimit)
+  }, [items, showAll, initialLimit])
 
-  const hasMoreItems = items.length > 6
+  const hasMoreItems = items.length > initialLimit
 
   useEffect(() => {
     const preloadVideos = () => {
@@ -125,13 +136,13 @@ export default function Projects() {
   return (
     <Section id="projects" className="py-12 md:py-20">
       <Container>
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Projects
           </h2>
 
-          {/* Filter buttons */}
-          <div className="flex flex-wrap items-center gap-2">
+          {/* Filter buttons - horizontal scroll on mobile */}
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2 sm:pb-0">
             {filters.map((filter) => {
               const isActive = activeFilter === filter.value
 
@@ -139,7 +150,7 @@ export default function Projects() {
                 <button
                   key={filter.value}
                   onClick={() => setActiveFilter(filter.value)}
-                  className={`rounded-lg px-3 py-1.5 text-sm transition-all border ${isActive
+                  className={`rounded-lg px-4 py-2 text-sm transition-all border whitespace-nowrap touch-feedback min-h-[44px] ${isActive
                     ? 'bg-accent-purple/10 text-accent-purple border-accent-purple'
                     : 'border-transparent text-subtext hover:border-accent-purple hover:text-accent-purple'
                     }`}
@@ -153,24 +164,27 @@ export default function Projects() {
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {displayedItems.map((p) => (
-            <Link
+            <div
               key={p.slug}
-              to={`/projects/${p.slug}`}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-panel transition-all duration-300 hover:border-accent-purple cursor-pointer p-5"
+              className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-panel transition-all duration-300 hover:border-accent-purple p-5 relative"
               onMouseEnter={() => setHoveredSlug(p.slug)}
               onMouseLeave={() => setHoveredSlug(null)}
             >
+              <Link to={`/projects/${p.slug}`} className="absolute inset-0 z-0" aria-label={`View details for ${p.title}`} />
+
               {/* Image */}
-              <Preview
-                title={p.title}
-                thumb={p.thumb}
-                previewVideo={p.previewVideo}
-                hovering={hoveredSlug === p.slug}
-                objectFit={p.objectFit}
-              />
+              <div className="relative z-10 pointer-events-none">
+                <Preview
+                  title={p.title}
+                  thumb={p.thumb}
+                  previewVideo={p.previewVideo}
+                  hovering={hoveredSlug === p.slug}
+                  objectFit={p.objectFit}
+                />
+              </div>
 
               {/* Content */}
-              <div className="flex flex-1 flex-col mt-4">
+              <div className="flex flex-1 flex-col mt-4 relative z-10 pointer-events-none">
                 {/* Title */}
                 <h3 className="text-lg font-medium text-text mb-3 group-hover:text-accent-purple transition-colors">
                   {p.title}
@@ -183,8 +197,7 @@ export default function Projects() {
 
                 <div className="flex-grow" />
 
-                {/* Tags - Original colorful style, dynamic single line with ellipsis */}
-                {/* Tags - Scrollable/Hidden, no ellipses logic */}
+                {/* Tags */}
                 {p.tags?.length ? (
                   <div className="flex flex-wrap w-full overflow-hidden h-7 gap-2 mb-4">
                     {p.tags.map((t, i) => {
@@ -209,13 +222,13 @@ export default function Projects() {
                 ) : null}
 
                 {/* Footer - Links and Status */}
-                <div className="flex items-center gap-3 mt-auto">
+                <div className="flex items-center gap-3 mt-auto pointer-events-auto">
                   {p.links?.link && (
                     <a
                       href={p.links.link}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm text-subtext hover:text-accent-purple transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm text-subtext hover:text-accent-purple transition-colors z-20 relative"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <ExternalLink className="size-4" />
@@ -227,7 +240,7 @@ export default function Projects() {
                       href={p.links.code}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm text-subtext hover:text-accent-purple transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm text-subtext hover:text-accent-purple transition-colors z-20 relative"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <Github className="size-4" />
@@ -246,7 +259,7 @@ export default function Projects() {
                   )}
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
 
@@ -255,7 +268,7 @@ export default function Projects() {
           <div className="mt-8 flex justify-center">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-2.5 text-sm text-text transition-all hover:border-accent-purple hover:text-accent-purple"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-border px-6 py-3 text-sm text-text transition-all hover:border-accent-purple hover:text-accent-purple w-full sm:w-auto touch-feedback"
             >
               {showAll ? 'Show Less' : 'See More'}
               {showAll ? (

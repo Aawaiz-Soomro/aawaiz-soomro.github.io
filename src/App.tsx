@@ -13,6 +13,7 @@ import ScrollIndicator from "@/components/ScrollIndicator";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAssetPreloader } from "@/components/AssetPreloader";
 import { preloadCriticalAssets } from "@/components/PerformanceUtils";
+import BackToTop from "@/components/BackToTop";
 
 export default function App() {
   const { isLoading, progress, loadedAssets, totalAssets } = useAssetPreloader();
@@ -54,6 +55,9 @@ export default function App() {
         <Research />
         <Contact />
       </main>
+
+      {/* Back to top button */}
+      <BackToTop />
 
       {/* Footer */}
       <Footer />

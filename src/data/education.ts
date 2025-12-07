@@ -16,7 +16,7 @@ export type Education = {
 
 export const EDUCATION: Education[] = [
     {
-        school: "National University of Computer and Emerging Sciences (NUCES-FAST)",
+        school: "NUCES - FAST",
         degree: "B.S. Computer Science",
         date: "Aug 2022 – Aug 2026",
         details: [
@@ -36,8 +36,8 @@ export const EDUCATION: Education[] = [
         logoSize: 72,
     },
     {
-        school: "Rockford Cambridge School",
-        degree: "O/A Levels, Computer Science",
+        school: "Rockford Cambridge",
+        degree: "O/A Levels, CS",
         date: "Feb 2017 – Aug 2022",
         details: [
             "Achieved strong academic performance with A and A* grades in O and A Levels.",
