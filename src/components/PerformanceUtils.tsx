@@ -15,10 +15,9 @@ export function preloadCriticalAssets(): void {
   if ('requestIdleCallback' in window) {
     requestIdleCallback(() => {
       // Preload avatar and first project thumbnail
-      const criticalImages = [
-        '/public/media/blip-auv/blip_thumb.jpg',
-        '/public/media/buzzcaster/buzzcaster_thumb.jpg',
-        '/public/media/et55/et55_thumb.jpg'
+      const criticalImages: string[] = [
+        // Add valid critical project images here if needed
+        // For now, removing broken links
       ];
 
       criticalImages.forEach(url => {

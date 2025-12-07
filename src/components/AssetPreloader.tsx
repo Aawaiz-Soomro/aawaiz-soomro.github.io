@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PROJECTS } from '@/data/projects';
-import avatarFile from '@/assets/avatar.jpg';
+import avatarFile from '@/assets/new-avatar.jpg?w=600&format=webp&quality=75';
 
 const withBase = (path?: string) =>
   path ? `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}` : undefined;
@@ -26,7 +26,7 @@ export function useAssetPreloader(): AssetLoadingState {
   useEffect(() => {
     // Check if assets were already loaded in this session
     const assetsAlreadyLoaded = sessionStorage.getItem(ASSETS_LOADED_KEY) === 'true';
-    
+
     if (assetsAlreadyLoaded) {
       // Skip loading screen for subsequent navigations
       setLoadingState({
@@ -40,10 +40,10 @@ export function useAssetPreloader(): AssetLoadingState {
 
     // Collect all critical assets to preload
     const criticalAssets: string[] = [];
-    
+
     // Avatar image
     criticalAssets.push(avatarFile);
-    
+
     // Project thumbnails (most important for initial view)
     PROJECTS.forEach(project => {
       if (project.thumb) {
@@ -112,7 +112,7 @@ export function useAssetPreloader(): AssetLoadingState {
       .then(() => {
         // Mark assets as loaded for this session
         sessionStorage.setItem(ASSETS_LOADED_KEY, 'true');
-        
+
         // Add a small delay to ensure smooth transition
         setTimeout(() => {
           setLoadingState(prev => ({

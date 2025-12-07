@@ -3,24 +3,31 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { DARK_THEME, LIGHT_THEME } from "@/data/theme";
 
 export default function MouseGlow() {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const glowRef = React.useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
 
   useEffect(() => {
-    const move = (e: MouseEvent) => {
-      setPos({ x: e.clientX, y: e.clientY });
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!glowRef.current) return;
+      const x = e.clientX;
+      const y = e.clientY;
+      const glowColor = theme === 'dark' ? DARK_THEME.mouseGlow : LIGHT_THEME.mouseGlow;
+      glowRef.current.style.background = `radial-gradient(600px at ${x}px ${y}px, ${glowColor}, transparent 80%)`;
     };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
 
-  const glowColor = theme === 'dark' ? DARK_THEME.mouseGlow : LIGHT_THEME.mouseGlow;
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [theme]);
+
+  // Initial style
+  const initialGlowColor = theme === 'dark' ? DARK_THEME.mouseGlow : LIGHT_THEME.mouseGlow;
 
   return (
     <div
+      ref={glowRef}
       className="pointer-events-none fixed inset-0 z-0 transition duration-300"
       style={{
-        background: `radial-gradient(600px at ${pos.x}px ${pos.y}px, ${glowColor}, transparent 80%)`,
+        background: `radial-gradient(600px at 50% 50%, ${initialGlowColor}, transparent 80%)`,
       }}
     />
   );

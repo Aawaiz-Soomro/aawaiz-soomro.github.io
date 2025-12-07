@@ -1,3 +1,16 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Github, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
+
+// Images
+import karachiThumb from '@/media/karachi-transit-guide/thumbnail.png?w=600&format=webp';
+import cryptoThumb from '@/media/Crypto-Price-Predictor/crypto-og-logo.png?w=600&format=webp';
+import productivityThumb from '@/media/Productivity-Master/Productivity-Master-Logo.png?w=600&format=webp';
+import fourBishopsThumb from '@/media/Four-Bishops-AI/Four-Bishops-Logo.png?w=600&format=webp';
+import libraThumb from '@/media/LibraDB/LibraDB-Logo.png?w=600&format=webp';
+import taskFlowThumb from '@/media/Task-Flow/Task-Flow-Logo.png?w=600&format=webp';
+import tetrisThumb from '@/media/Modified-tetris/Modified-Tetris-Logo.png?w=600&format=webp';
+
 export type Project = {
   slug: string;
   title: string;
@@ -27,10 +40,8 @@ export const PROJECTS: Project[] = [
     tags: ["React", "Vercel", "Web App", "Frontend", "UI/UX"],
     area: "Personal",
     status: "Active",
-    thumb: "/media/karachi-transit-guide/thumbnail.png",
+    thumb: karachiThumb,
     objectFit: "contain",
-
-
     links: {
       code: "https://github.com/Aawaiz-Soomro/Karachi_Transit_Guide_V2",
       link: "https://karachi-transit-guide.vercel.app/"
@@ -46,7 +57,7 @@ export const PROJECTS: Project[] = [
     tags: ["Node.js", "Gemini API", "AI/ML", "Predictive Analytics"],
     area: "Personal",
     status: "Active",
-    thumb: "/media/Crypto-Price-Predictor/crypto-og-logo.png",
+    thumb: cryptoThumb,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/Crypto-Price-Predictor-AI"
@@ -62,7 +73,7 @@ export const PROJECTS: Project[] = [
     tags: ["Python", "PyQT5 UI", "OpenCV", "MediaPipe", "YOLO", "Computer Vision"],
     area: "Personal",
     status: "Active",
-    thumb: "/media/Productivity-Master/Productivity-Master-Logo.png",
+    thumb: productivityThumb,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/Productivity-Master"
@@ -80,7 +91,7 @@ export const PROJECTS: Project[] = [
     tags: ["Python", "AI/ML", "Chess", "python-chess", "Minimax", "Alpha-Beta Pruning"],
     area: "University",
     status: "Complete",
-    thumb: "/media/Four-Bishops-AI/Four-Bishops-Logo.png",
+    thumb: fourBishopsThumb,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/FourBishops-AI"
@@ -96,7 +107,7 @@ export const PROJECTS: Project[] = [
     tags: ["Python", "Flask", "SQLite", "Web App", "Backend Development", "Database Design"],
     area: "University",
     status: "Complete",
-    thumb: "/media/LibraDB/LibraDB-Logo.png",
+    thumb: libraThumb,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/Libra-DB-Vercel",
@@ -113,7 +124,7 @@ export const PROJECTS: Project[] = [
     tags: ["C++", "OOP", "System Design", "Data Structures", "File I/O"],
     area: "University",
     status: "Complete",
-    thumb: "/media/Task-Flow/Task-Flow-Logo.png",
+    thumb: taskFlowThumb,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/TaskFlow"
@@ -129,7 +140,7 @@ export const PROJECTS: Project[] = [
     tags: ["C++", "SFML", "Game Dev", "Graphics Programming", "Event Handling"],
     area: "University",
     status: "Complete",
-    thumb: "/media/Modified-tetris/Modified-Tetris-Logo.png",
+    thumb: tetrisThumb,
     objectFit: "contain",
     links: {
       code: "#" // Placeholder
