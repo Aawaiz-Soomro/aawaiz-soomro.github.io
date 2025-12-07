@@ -1,19 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import Navbar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import About from "@/sections/About";
-import Projects from "@/sections/Projects";
-import Research from "@/sections/Research";
-import Experience from "@/sections/Experience";
-import Contact from "@/sections/Contact";
 import MouseGlow from "@/components/MouseGlow";
-import Education from "@/sections/Education";
-import Skills from "@/sections/Skills";
 import ScrollIndicator from "@/components/ScrollIndicator";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAssetPreloader } from "@/components/AssetPreloader";
 import { preloadCriticalAssets } from "@/components/PerformanceUtils";
 import BackToTop from "@/components/BackToTop";
+
+// Lazy load below-the-fold sections
+const Projects = lazy(() => import("@/sections/Projects"));
+const Research = lazy(() => import("@/sections/Research"));
+const Experience = lazy(() => import("@/sections/Experience"));
+const Contact = lazy(() => import("@/sections/Contact"));
+const Education = lazy(() => import("@/sections/Education"));
+const Skills = lazy(() => import("@/sections/Skills"));
 
 export default function App() {
   const { isLoading, progress, loadedAssets, totalAssets } = useAssetPreloader();
@@ -48,12 +50,14 @@ export default function App() {
       <main className="relative z-10">
         <About />
         <ScrollIndicator />
-        <Projects />
-        <Skills />
-        <Experience />
-        <Education />
-        <Research />
-        <Contact />
+        <Suspense fallback={<div className="h-96" />}>
+          <Projects />
+          <Skills />
+          <Experience />
+          <Education />
+          <Research />
+          <Contact />
+        </Suspense>
       </main>
 
       {/* Back to top button */}

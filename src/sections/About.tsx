@@ -115,7 +115,7 @@ export default function About() {
           <div className="md:col-span-3 text-center md:text-left">
             <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl mb-2 mt-1">
               <div className="relative h-[1.5em] w-32 sm:w-40 lg:w-48 mx-auto md:mx-0">
-                <img src={logoFile} alt={PROFILE.name} className="h-full w-auto opacity-0" loading="eager" fetchPriority="high" />
+                <img src={logoFile} alt={PROFILE.name} className="h-full w-auto opacity-0" loading="eager" fetchPriority="high" width={400} height={150} />
                 <div
                   className="absolute inset-0 bg-current"
                   style={{
@@ -179,6 +179,8 @@ export default function About() {
                 alt="Headshot"
                 loading="eager"
                 fetchPriority="high"
+                width={600}
+                height={750}
                 className={`h-full w-full object-cover transition-all duration-500 group-hover:scale-105 ${avatarLoaded ? 'opacity-100' : 'opacity-0'
                   }`}
                 onLoad={() => setAvatarLoaded(true)}
