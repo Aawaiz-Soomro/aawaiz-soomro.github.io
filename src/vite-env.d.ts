@@ -20,3 +20,13 @@ declare module '*&quality=75' {
     const src: string;
     export default src;
 }
+
+declare module '*?as=srcset&w=300;600;900&format=webp' {
+    const src: string;
+    export default src;
+}
+
+declare module '*&as=srcset' {
+    const src: string;
+    export default src;
+}

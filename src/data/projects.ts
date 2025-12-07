@@ -4,12 +4,25 @@ import { Github, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
 
 // Images
 import karachiThumb from '@/media/karachi-transit-guide/thumbnail.png?w=600&format=webp';
+import karachiSrcSet from '@/media/karachi-transit-guide/thumbnail.png?as=srcset&w=300;600;900&format=webp';
+
 import cryptoThumb from '@/media/Crypto-Price-Predictor/crypto-og-logo.png?w=600&format=webp';
+import cryptoSrcSet from '@/media/Crypto-Price-Predictor/crypto-og-logo.png?as=srcset&w=300;600;900&format=webp';
+
 import productivityThumb from '@/media/Productivity-Master/Productivity-Master-Logo.png?w=600&format=webp';
+import productivitySrcSet from '@/media/Productivity-Master/Productivity-Master-Logo.png?as=srcset&w=300;600;900&format=webp';
+
 import fourBishopsThumb from '@/media/Four-Bishops-AI/Four-Bishops-Logo.png?w=600&format=webp';
+import fourBishopsSrcSet from '@/media/Four-Bishops-AI/Four-Bishops-Logo.png?as=srcset&w=300;600;900&format=webp';
+
 import libraThumb from '@/media/LibraDB/LibraDB-Logo.png?w=600&format=webp';
+import libraSrcSet from '@/media/LibraDB/LibraDB-Logo.png?as=srcset&w=300;600;900&format=webp';
+
 import taskFlowThumb from '@/media/Task-Flow/Task-Flow-Logo.png?w=600&format=webp';
+import taskFlowSrcSet from '@/media/Task-Flow/Task-Flow-Logo.png?as=srcset&w=300;600;900&format=webp';
+
 import tetrisThumb from '@/media/Modified-tetris/Modified-Tetris-Logo.png?w=600&format=webp';
+import tetrisSrcSet from '@/media/Modified-tetris/Modified-Tetris-Logo.png?as=srcset&w=300;600;900&format=webp';
 
 export type Project = {
   slug: string;
@@ -17,6 +30,7 @@ export type Project = {
   blurb: string;
   tags: string[];
   thumb?: string;
+  imageSrcSet?: string;
   previewVideo?: string;
   mainVideo?: string;
   youtubeVideo?: string;
@@ -41,6 +55,7 @@ export const PROJECTS: Project[] = [
     area: "Personal",
     status: "Active",
     thumb: karachiThumb,
+    imageSrcSet: karachiSrcSet,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/Karachi_Transit_Guide_V2",
@@ -58,6 +73,7 @@ export const PROJECTS: Project[] = [
     area: "Personal",
     status: "Active",
     thumb: cryptoThumb,
+    imageSrcSet: cryptoSrcSet,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/Crypto-Price-Predictor-AI"
@@ -74,6 +90,7 @@ export const PROJECTS: Project[] = [
     area: "Personal",
     status: "Active",
     thumb: productivityThumb,
+    imageSrcSet: productivitySrcSet,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/Productivity-Master"
@@ -92,6 +109,7 @@ export const PROJECTS: Project[] = [
     area: "University",
     status: "Complete",
     thumb: fourBishopsThumb,
+    imageSrcSet: fourBishopsSrcSet,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/FourBishops-AI"
@@ -108,6 +126,7 @@ export const PROJECTS: Project[] = [
     area: "University",
     status: "Complete",
     thumb: libraThumb,
+    imageSrcSet: libraSrcSet,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/Libra-DB-Vercel",
@@ -125,6 +144,7 @@ export const PROJECTS: Project[] = [
     area: "University",
     status: "Complete",
     thumb: taskFlowThumb,
+    imageSrcSet: taskFlowSrcSet,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/TaskFlow"
@@ -141,6 +161,7 @@ export const PROJECTS: Project[] = [
     area: "University",
     status: "Complete",
     thumb: tetrisThumb,
+    imageSrcSet: tetrisSrcSet,
     objectFit: "contain",
     links: {
       code: "#" // Placeholder

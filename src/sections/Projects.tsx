@@ -13,12 +13,14 @@ const withBase = (path?: string) =>
 function Preview({
   title,
   thumb,
+  imageSrcSet,
   previewVideo,
   hovering,
   objectFit = 'cover',
 }: {
   title: string
   thumb?: string
+  imageSrcSet?: string
   previewVideo?: string
   hovering: boolean
   objectFit?: 'contain' | 'cover'
@@ -59,6 +61,10 @@ function Preview({
             className={`h-44 w-full md:h-48 transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'} ${objectFit === 'contain' ? 'object-contain p-4 bg-white brightness-110 contrast-125' : 'object-cover'
               }`}
             src={withBase(thumb)}
+            srcSet={imageSrcSet}
+            sizes="(max-width: 768px) 100vw, 600px"
+            width={600}
+            height={400}
             alt={title}
             loading="lazy"
             onLoad={() => setImageLoaded(true)}
@@ -177,6 +183,7 @@ export default function Projects() {
                 <Preview
                   title={p.title}
                   thumb={p.thumb}
+                  imageSrcSet={p.imageSrcSet}
                   previewVideo={p.previewVideo}
                   hovering={hoveredSlug === p.slug}
                   objectFit={p.objectFit}

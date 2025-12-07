@@ -35,6 +35,7 @@
     "vite-imagetools": "^9.0.2",
     "vite-plugin-image-optimizer": "^2.0.3",
     "vite-plugin-svgr": "^4.5.0",
+    "vite-plugin-webfont-dl": "^3.11.1",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }

@@ -4,6 +4,7 @@ import Section from "@/components/Section";
 import Container from "@/components/Container";
 import TypingEffect from "@/components/TypingEffect";
 import avatarFile from "@/assets/new-avatar.jpg?w=600&format=webp&quality=75";
+import avatarSrcset from "@/assets/new-avatar.jpg?as=srcset&w=300;600;900&format=webp";
 import { Mail, Phone, MapPin, Github, Linkedin, Download } from "lucide-react";
 import logoFile from "@/assets/Aawaiz.S-Logo.png?w=400&format=webp&quality=75";
 import { PROFILE } from "@/data/links";
@@ -176,6 +177,8 @@ export default function About() {
               )}
               <img
                 src={avatarFile}
+                srcSet={avatarSrcset}
+                sizes="(max-width: 768px) 100vw, 320px"
                 alt="Headshot"
                 loading="eager"
                 fetchPriority="high"
