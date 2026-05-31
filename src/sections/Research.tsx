@@ -32,7 +32,7 @@ function MediaPreview({
     }, [hovering]);
 
     return (
-        <div className="relative overflow-hidden rounded-xl border border-border bg-bg/50 aspect-video md:aspect-none w-full md:w-72 lg:w-80 shrink-0 transition-all duration-500">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-bg/50 aspect-video md:aspect-auto w-full md:w-72 lg:w-80 shrink-0 md:h-full transition-all duration-500">
             {hovering && previewVideo ? (
                 <video
                     ref={videoRef}
@@ -47,7 +47,7 @@ function MediaPreview({
                 />
             ) : thumb ? (
                 <img
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     src={withBase(thumb)}
                     alt={`${title} thumbnail`}
                     loading="lazy"
@@ -149,47 +149,53 @@ export default function Research() {
                                 onMouseLeave={() => setHoveredIndex(null)}
                             >
                                 {/* Visual Preview */}
-                                <MediaPreview
-                                    title={p.title}
-                                    thumb={p.thumb}
-                                    previewVideo={p.previewVideo}
-                                    hovering={hoveredIndex === idx}
-                                />
+                                {p.href ? (
+                                    <a href={p.href} target="_blank" rel="noreferrer" className="flex shrink-0">
+                                        <MediaPreview
+                                            title={p.title}
+                                            thumb={p.thumb}
+                                            previewVideo={p.previewVideo}
+                                            hovering={hoveredIndex === idx}
+                                        />
+                                    </a>
+                                ) : (
+                                    <MediaPreview
+                                        title={p.title}
+                                        thumb={p.thumb}
+                                        previewVideo={p.previewVideo}
+                                        hovering={hoveredIndex === idx}
+                                    />
+                                )}
 
                                 {/* Content */}
                                 <div className="flex min-w-0 flex-1 flex-col justify-between gap-6">
 
 
-                                    <h3 className="text-xl font-bold tracking-tight text-text sm:text-2xl group-hover:text-accent-red transition-colors duration-300">
-                                        {p.title}
-                                    </h3>
+                                    {p.href ? (
+                                        <a href={p.href} target="_blank" rel="noreferrer" className="w-fit">
+                                            <h3 className="text-xl font-bold tracking-tight text-text sm:text-2xl group-hover:text-accent-red transition-colors duration-300">
+                                                {p.title}
+                                            </h3>
+                                        </a>
+                                    ) : (
+                                        <h3 className="text-xl font-bold tracking-tight text-text sm:text-2xl group-hover:text-accent-red transition-colors duration-300">
+                                            {p.title}
+                                        </h3>
+                                    )}
 
 
 
-                                    {(p.href || p.code) && (
+                                    {p.code && (
                                         <div className="flex flex-wrap items-center gap-4">
-                                            {p.href && (
-                                                <a
-                                                    className="inline-flex items-center gap-2 rounded-lg bg-accent-red px-5 py-2 text-sm font-medium text-white transition-transform hover:bg-accent-red/90 hover:scale-105 active:scale-95"
-                                                    href={p.href}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    Read Paper
-                                                    <ExternalLink className="size-4" />
-                                                </a>
-                                            )}
-                                            {p.code && (
-                                                <a
-                                                    className="inline-flex items-center gap-2 rounded-lg border border-input bg-transparent px-5 py-2 text-sm font-medium text-text transition-colors hover:bg-accent-red/5 hover:text-accent-red hover:border-accent-red/30"
-                                                    href={p.code}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    <Github className="size-4" />
-                                                    <span>View Source</span>
-                                                </a>
-                                            )}
+                                            <a
+                                                className="inline-flex items-center gap-2 rounded-lg border border-input bg-transparent px-5 py-2 text-sm font-medium text-text transition-colors hover:bg-accent-red/5 hover:text-accent-red hover:border-accent-red/30"
+                                                href={p.code}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                <Github className="size-4" />
+                                                <span>View Source</span>
+                                            </a>
                                         </div>
                                     )}
 

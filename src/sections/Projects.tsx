@@ -82,7 +82,7 @@ function Preview({
 
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState<
-    'All' | 'Personal' | 'University' | 'Commercial'
+    'All' | 'Personal' | 'University' | 'AI'
   >('All')
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null)
   const [showAll, setShowAll] = useState(false)
@@ -100,12 +100,12 @@ export default function Projects() {
     { label: 'All', value: 'All' as const },
     { label: 'Personal', value: 'Personal' as const },
     { label: 'University', value: 'University' as const },
-    { label: 'Commercial', value: 'Commercial' as const },
+    { label: 'AI', value: 'AI' as const },
   ]
 
   const items = useMemo(() => {
     if (activeFilter === 'All') return PROJECTS
-    return PROJECTS.filter((p) => p.area === activeFilter)
+    return PROJECTS.filter((p) => Array.isArray(p.area) ? p.area.includes(activeFilter) : p.area === activeFilter)
   }, [activeFilter])
 
   const initialLimit = isMobile ? 4 : 6

@@ -9,8 +9,8 @@ import karachiSrcSet from '@/media/karachi-transit-guide/thumbnail.png?as=srcset
 import cryptoThumb from '@/media/Crypto-Price-Predictor/crypto-og-logo.png?w=600&format=webp';
 import cryptoSrcSet from '@/media/Crypto-Price-Predictor/crypto-og-logo.png?as=srcset&w=300;600;900&format=webp';
 
-import productivityThumb from '@/media/Productivity-Master/Productivity-Master-Logo.png?w=600&format=webp';
-import productivitySrcSet from '@/media/Productivity-Master/Productivity-Master-Logo.png?as=srcset&w=300;600;900&format=webp';
+import focusSentinelThumb from '@/media/Productivity-Master/Focus-Sentinel.png?w=600&format=webp';
+import focusSentinelSrcSet from '@/media/Productivity-Master/Focus-Sentinel.png?as=srcset&w=300;600;900&format=webp';
 
 import fourBishopsThumb from '@/media/Four-Bishops-AI/Four-Bishops-Logo.png?w=600&format=webp';
 import fourBishopsSrcSet from '@/media/Four-Bishops-AI/Four-Bishops-Logo.png?as=srcset&w=300;600;900&format=webp';
@@ -24,6 +24,8 @@ import taskFlowSrcSet from '@/media/Task-Flow/Task-Flow-Logo.png?as=srcset&w=300
 import tetrisThumb from '@/media/Modified-tetris/Modified-Tetris-Logo.png?w=600&format=webp';
 import tetrisSrcSet from '@/media/Modified-tetris/Modified-Tetris-Logo.png?as=srcset&w=300;600;900&format=webp';
 
+import influenzaThumb from '@/media/AI-Powered-Influencer-MarketPlace/Influenza_Logo.png';
+
 export type Project = {
   slug: string;
   title: string;
@@ -36,7 +38,7 @@ export type Project = {
   youtubeVideo?: string;
   previewGif?: string;
   links?: { link?: string; code?: string };
-  area?: "Personal" | "University" | "Commercial";
+  area?: "Personal" | "University" | "Commercial" | "AI" | ("Personal" | "University" | "Commercial" | "AI")[];
   status?: 'Active' | 'In Progress' | 'Paused' | 'Archived' | 'Complete';
   active?: boolean;
   body?: string;
@@ -47,6 +49,22 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   // Personal Projects
+  {
+    slug: "influenza",
+    title: "Influenza",
+    blurb: "An AI-powered influencer-brand matching platform using Multimodal Semantic Embeddings and Multi-Head Attention Profiling.",
+    tags: ["React.js", "FastAPI", "Supabase", "PostgreSQL", "OpenCLIP", "pgvector", "PyTorch"],
+    area: ["Personal", "AI"],
+    status: "Active",
+    thumb: influenzaThumb,
+    objectFit: "contain",
+    links: {
+      code: "https://github.com/Aawaiz-Soomro/AI-Influencer-Matching-Platform"
+    },
+    body: `Influenza is an AI-powered influencer-brand matching platform designed to replace informal, metric-driven selection with content-aware semantic matching. By encoding an influencer's complete post history into a 256-dimensional identity vector, the platform ensures brands find collaborators whose content genuinely aligns with their campaign's positioning.
+    
+    The system features a custom Multi-Head Attention Profiler trained on OpenCLIP (ViT-B/32) embeddings, evaluated on a massive dataset of 9.5 million Instagram posts from over 33,000 influencers. The platform is built on a modern stack integrating a React.js frontend, a FastAPI backend, and a Supabase PostgreSQL database that leverages pgvector for real-time cosine similarity retrieval.`,
+  },
   {
     slug: "karachi-transit-guide",
     title: "Karachi Transit Guide",
@@ -70,7 +88,7 @@ export const PROJECTS: Project[] = [
     title: "Crypto Price Predictor AI",
     blurb: "AI-powered application for predicting cryptocurrency prices using the Gemini API.",
     tags: ["Node.js", "Gemini API", "AI/ML", "Predictive Analytics"],
-    area: "Personal",
+    area: ["Personal", "AI"],
     status: "Active",
     thumb: cryptoThumb,
     imageSrcSet: cryptoSrcSet,
@@ -83,19 +101,19 @@ export const PROJECTS: Project[] = [
     The application integrates with the Gemini API to process market data and generate price predictions. It allows users to input specific parameters and receive AI-driven insights into potential market trends. The project demonstrates the integration of Large Language Models (LLMs) into financial analysis tools, providing a practical example of AI application in the fintech domain.`,
   },
   {
-    slug: "productivity-master",
-    title: "Productivity Master",
-    blurb: "Productivity Master is a desktop prototype that combines focus sessions, phone/website distraction alerts, and wellbeing heuristics (SMI/FOI).",
+    slug: "focus-sentinel",
+    title: "Focus Sentinel",
+    blurb: "Focus Sentinel is a desktop prototype that combines focus sessions, phone/website distraction alerts, and wellbeing heuristics (SMI/FOI).",
     tags: ["Python", "PyQT5 UI", "OpenCV", "MediaPipe", "YOLO", "Computer Vision"],
-    area: "Personal",
+    area: ["Personal", "AI"],
     status: "Active",
-    thumb: productivityThumb,
-    imageSrcSet: productivitySrcSet,
+    thumb: focusSentinelThumb,
+    imageSrcSet: focusSentinelSrcSet,
     objectFit: "contain",
     links: {
       code: "https://github.com/Aawaiz-Soomro/Productivity-Master"
     },
-    body: `Productivity Master is a comprehensive desktop application designed to enhance user focus and wellbeing. It integrates advanced computer vision technologies to monitor and assist users during work sessions.
+    body: `Focus Sentinel is a comprehensive desktop application designed to enhance user focus and wellbeing. It integrates advanced computer vision technologies to monitor and assist users during work sessions.
     
     The application features a PyQT5-based user interface that manages focus sessions. It utilizes OpenCV and MediaPipe to track user presence and attention, providing alerts when distractions are detected. Additionally, it employs YOLO for object detection to identify phone usage, alerting the user to minimize distractions. The system also calculates wellbeing heuristics such as the SMI (Saccadic Masking Index) and FOI (Focus of Interest) to provide insights into the user's focus levels and fatigue, promoting a balanced and productive workflow.`,
   },
@@ -106,7 +124,7 @@ export const PROJECTS: Project[] = [
     title: "FourBishops-AI",
     blurb: "A chess variant engine exploring a bishop-heavy board composition with custom evaluation heuristics.",
     tags: ["Python", "AI/ML", "Chess", "python-chess", "Minimax", "Alpha-Beta Pruning"],
-    area: "University",
+    area: ["University", "AI"],
     status: "Complete",
     thumb: fourBishopsThumb,
     imageSrcSet: fourBishopsSrcSet,
