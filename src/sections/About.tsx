@@ -17,8 +17,6 @@ const STATUS_MESSAGES = [
   "Everything AI.",
 ];
 
-const resumeHref = `${import.meta.env.BASE_URL}resume.pdf`;
-
 
 function useGlitchCycle(messages: string[], dwellMs = 2000, scrambleMs = 450) {
   const [idx, setIdx] = React.useState(0);
@@ -149,10 +147,10 @@ export default function About() {
               </p>
             )}
 
-            {/* Resume button - glassmorphism style matching site aesthetic */}
+            {/* Say Hi button - glassmorphism style matching site aesthetic */}
             <div className="mt-8 md:mt-8 flex flex-wrap items-center justify-center md:justify-start gap-3">
               <a
-                href={resumeHref}
+                href="https://www.linkedin.com/in/aawaiz-soomro/"
                 target="_blank"
                 rel="noreferrer"
                 className="resume-button group inline-flex items-center justify-center gap-2.5 
@@ -163,8 +161,8 @@ export default function About() {
                   md:px-4 md:py-2
                   touch-feedback"
               >
-                <Download className="size-4 group-hover:animate-bounce" />
-                <span>Résumé</span>
+                <Linkedin className="size-4 group-hover:animate-bounce" />
+                <span>Say Hi</span>
               </a>
             </div>
           </div>
