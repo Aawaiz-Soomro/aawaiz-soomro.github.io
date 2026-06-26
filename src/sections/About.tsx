@@ -161,8 +161,8 @@ export default function About() {
                   md:px-4 md:py-2
                   touch-feedback"
               >
-                <Linkedin className="size-4 group-hover:animate-bounce" />
                 <span>Say Hi</span>
+                <Linkedin className="size-[1.1rem] mb-[2px] group-hover:animate-bounce" />
               </a>
             </div>
           </div>
