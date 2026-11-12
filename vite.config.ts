@@ -5,12 +5,14 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import { imagetools } from "vite-imagetools";
 import WebfontDownload from "vite-plugin-webfont-dl";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [
     tsconfigPaths() as unknown as PluginOption,
     svgr() as unknown as PluginOption,
     react(),
+    tailwindcss(),
     imagetools(),
     ViteImageOptimizer({
       jpg: {
@@ -45,7 +47,7 @@ export default defineConfig({
       },
     }),
     WebfontDownload([
-      'https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap'
+      'https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap'
     ]),
   ],
   base: "/",

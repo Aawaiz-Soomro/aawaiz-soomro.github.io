@@ -30,3 +30,7 @@ declare module '*&as=srcset' {
     const src: string;
     export default src;
 }
+declare module '*&quality=80' {
+  const src: string;
+  export default src;
+}

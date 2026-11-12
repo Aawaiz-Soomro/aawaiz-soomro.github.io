@@ -1,70 +1,28 @@
-import React, { useEffect, Suspense, lazy } from "react";
-import Navbar from "@/components/NavBar";
-import Footer from "@/components/Footer";
-import About from "@/sections/About";
-import MouseGlow from "@/components/MouseGlow";
-import ScrollIndicator from "@/components/ScrollIndicator";
-import LoadingScreen from "@/components/LoadingScreen";
-import { useAssetPreloader } from "@/components/AssetPreloader";
-import { preloadCriticalAssets } from "@/components/PerformanceUtils";
-import BackToTop from "@/components/BackToTop";
-
-// Lazy load below-the-fold sections
-const Projects = lazy(() => import("@/sections/Projects"));
-const Research = lazy(() => import("@/sections/Research"));
-const Experience = lazy(() => import("@/sections/Experience"));
-const Contact = lazy(() => import("@/sections/Contact"));
-const Education = lazy(() => import("@/sections/Education"));
-const Skills = lazy(() => import("@/sections/Skills"));
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import Hero from "@/sections/Hero";
+import Work from "@/sections/Work";
+import Stack from "@/sections/Stack";
+import Timeline from "@/sections/Timeline";
+import Contact from "@/sections/Contact";
 
 export default function App() {
-  const { isLoading, progress, loadedAssets, totalAssets } = useAssetPreloader();
+  const { hash } = useLocation();
 
-  // Preload additional assets once the initial load is complete
+  // Arriving at /#section (from another page or a shared link) scrolls there.
   useEffect(() => {
-    if (!isLoading) {
-      preloadCriticalAssets();
-    }
-  }, [isLoading]);
-
-  // Show loading screen while assets are loading
-  if (isLoading) {
-    return (
-      <LoadingScreen
-        progress={progress}
-        loadedAssets={loadedAssets}
-        totalAssets={totalAssets}
-      />
-    );
-  }
+    if (!hash) return;
+    const id = decodeURIComponent(hash.slice(1));
+    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView());
+  }, [hash]);
 
   return (
-    <div className="relative min-h-screen antialiased bg-bg text-text">
-      {/* Glow that follows cursor */}
-      <MouseGlow />
-
-      {/* Site header */}
-      <Navbar />
-
-      {/* Main content */}
-      <main className="relative z-10">
-        <About />
-        <ScrollIndicator />
-        <Suspense fallback={<div className="h-96" />}>
-          <Projects />
-          <Skills />
-          <Experience />
-          <Education />
-          <Research />
-          <Contact />
-        </Suspense>
-      </main>
-
-      {/* Back to top button */}
-      <BackToTop />
-
-      {/* Footer */}
-      <Footer />
-    </div>
+    <main>
+      <Hero />
+      <Work />
+      <Stack />
+      <Timeline />
+      <Contact />
+    </main>
   );
 }

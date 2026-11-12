@@ -1,5 +1,9 @@
 # Portfolio redesign plan
 
+> **Status: implemented.** Built as a more aggressive version than first drafted:
+> Tailwind v4, a full-screen vector-field hero, a `⌘K` command menu, and every
+> section rebuilt. All four decisions below went with the recommendation.
+
 Brief: a developer/tech look that is clean, but dynamic and catchy.
 
 Stack stays the same: React 19, Vite, TypeScript, Tailwind v3, GitHub Pages.

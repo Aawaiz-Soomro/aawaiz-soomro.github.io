@@ -3,22 +3,20 @@
 This is my personal portfolio website, built with **React**, **TypeScript**, and **Vite**.  
 It serves as a central place to highlight my projects, research, and experiences in robotics, embedded systems, and applied machine learning.
 
-## 🎨 Design & Inspirations
+## 🎨 Design
 
-The site design was inspired by a mix of modern portfolio trends and my own aesthetic preferences:
+The site is built around one idea: it behaves like the systems I build.
 
-- **Color theme**: Based on the [Ayu Mirage](https://github.com/ayu-theme) palette for a clean, dark-but-soft feel.
-- **Mouse glow effect**: Inspired by [Brittany Chiang’s portfolio](https://brittanychiang.com/) and adapted for React.
-- **Typing effect**: Borrowed from countless developer portfolios online, fine-tuned to fit my site’s introduction.
-- **Layout & feel**: Iteratively shaped after exploring an innumerable number of online portfolios for ideas on section flow, animations, and responsiveness.
-
-The goal was to create something visually engaging but lightweight, putting the focus on content.
+- **Vector field hero**: every project and skill is a point, placed by similarity. The cursor is a nearest-neighbour query: the closest points connect to it and show a similarity score, and clicking a project point opens it. With no cursor, the query drifts on its own. It respects reduced motion and pauses when off screen (`src/components/VectorField.tsx`).
+- **Command menu**: press `⌘K`, `Ctrl+K` or `/` anywhere to jump to a section, open a project, copy my email or switch theme.
+- **Color**: Ayu Mirage (dark) and Ayu Light, each color with one job: yellow for actions, cyan for data. All text meets 4.5:1 contrast. Tokens live in `src/styles/global.css`.
+- **Type**: Fira Code for headings and labels, Instrument Sans for reading.
 
 ## ⚡ Tech Stack
 
-- **React + TypeScript + Vite** for a fast, modern frontend setup.
-- **TailwindCSS** for styling and responsive design.
-- **GitHub Pages** for deployment and hosting.
+- **React 19 + TypeScript + Vite**
+- **Tailwind CSS v4** (CSS-first config via `@theme`, no `tailwind.config.js`)
+- **GitHub Pages** for hosting, deployed from `main`
 
 ## 🚀 Development Setup
 

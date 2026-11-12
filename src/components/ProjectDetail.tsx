@@ -1,232 +1,182 @@
-import React, { useMemo, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import Container from "@/components/Container";
-import Section from "@/components/Section";
-import Gallery from "@/components/Gallery";
+import { useEffect, useMemo } from "react";
+import { Link, useParams } from "react-router-dom";
+import { ArrowLeft, ArrowRight, ExternalLink, Github } from "lucide-react";
 import { PROJECTS } from "@/data/projects";
-import { ArrowLeft, ExternalLink, Github } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
-import { DARK_THEME, LIGHT_THEME } from "@/data/theme";
+import { withBase } from "@/data/links";
 
-const withBase = (path?: string) =>
-  path ? `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}` : undefined;
-
-// Helper function to extract YouTube video ID from URL or return ID if already provided
-const getYouTubeVideoId = (input: string): string => {
-  // If it's already a video ID (11 characters, alphanumeric + hyphens/underscores)
-  if (/^[a-zA-Z0-9_-]{11}$/.test(input)) {
-    return input;
-  }
-  
-  // Extract from various YouTube URL formats
-  const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,
-  ];
-  
-  for (const pattern of patterns) {
-    const match = input.match(pattern);
-    if (match) return match[1];
-  }
-  
-  return input; // Return as-is if no pattern matches
+const getYouTubeVideoId = (input: string) => {
+  if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+  const match = input.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : input;
 };
+
+const isVideo = (path: string) => /\.(mp4|webm|mov)$/i.test(path);
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const project = useMemo(() => PROJECTS.find(p => p.slug === slug), [slug]);
-  const { theme } = useTheme();
+  const index = useMemo(() => PROJECTS.findIndex((p) => p.slug === slug), [slug]);
+  const project = PROJECTS[index];
 
-  // Scroll to top when component mounts or slug changes
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [slug]);
-
-  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, []);
-
-  const glowColor = theme === 'dark' ? DARK_THEME.mouseGlow : LIGHT_THEME.mouseGlow;
-
+    document.title = project ? `${project.title} · Aawaiz Soomro` : "Aawaiz Soomro";
+    return () => {
+      document.title = "Aawaiz Soomro · Backend and AI engineer";
+    };
+  }, [project]);
 
   if (!project) {
     return (
-      <Section id="project-detail-not-found">
-        <Container>
-          <p className="text-subtext">Project not found.</p>
-          <Link to="/" className="mt-4 inline-flex items-center gap-1 text-accent-blue hover:text-accent-purple hover:underline">
-            <ArrowLeft className="size-4" /> Back to home
-          </Link>
-        </Container>
-      </Section>
+      <main className="wrap pb-24 pt-40">
+        <p className="kicker text-signal">404</p>
+        <h1 className="mt-3 font-mono text-5xl font-bold tracking-tight">No project called “{slug}”.</h1>
+        <Link to="/#work" className="mt-8 inline-flex items-center gap-2 font-mono text-accent-ink hover:underline">
+          <ArrowLeft className="size-4" /> See all projects
+        </Link>
+      </main>
     );
   }
 
+  const next = PROJECTS[(index + 1) % PROJECTS.length];
+  const areas = Array.isArray(project.area) ? project.area : project.area ? [project.area] : [];
+  const paragraphs = (project.body ?? "").split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+
   return (
-    <Section id={`project-detail-${slug ?? "unknown"}`} className="relative py-12 md:py-20">
-      <Container>
-        {/* mouse glow under content */}
-        <div className="pointer-events-none fixed inset-0 z-0">
-          <div
-            className="absolute h-[560px] w-[560px] rounded-full blur-3xl"
-            style={{
-              top: pos.y,
-              left: pos.x,
-              transform: "translate(-50%, -50%)",
-              background: `radial-gradient(600px, ${glowColor}, transparent 80%)`,
-            }}
-          />
-        </div>
+    <main className="pb-0 pt-28 sm:pt-36">
+      <article className="wrap">
+        <Link
+          to="/#work"
+          className="group inline-flex items-center gap-2 font-mono text-sm text-muted transition-colors hover:text-ink"
+        >
+          <ArrowLeft className="size-4 transition-transform duration-200 ease-out group-hover:-translate-x-0.5" />
+          ~/work
+        </Link>
 
-        <div className="relative z-10 rounded-3xl border border-border bg-panel p-5 md:p-8">
-          <div className="mb-6">
-            <Link to="/" className="group inline-flex items-center gap-1 rounded-2xl border border-border px-4 py-2 text-sm font-medium text-text transition-colors text-accent-white hover:text-accent-purple hover:border-accent-purple">
-              <ArrowLeft className="size-4" /> Back
-            </Link>
+        <header className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-end">
+          <div>
+            <h1 className="font-mono text-[clamp(2.75rem,8vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.045em]">
+              {project.title}
+            </h1>
+            <p className="mt-6 max-w-2xl text-xl leading-snug text-muted sm:text-2xl">{project.blurb}</p>
           </div>
 
-          {/* Header row */}
-          <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-                {project.title}
-              </h1>
-
-              {/* Tags */}
-              {project.tags?.length ? (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {project.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-accent-purple bg-bg px-2.5 py-1 text-[11px] text-accent-purple"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-
-            {/* Top-right links: Live / Code */}
-            <div className="mb-3 flex items-center gap-4 md:absolute md:right-8 md:top-8 md:mt-0 ">
-              {project.links?.link && (
-                <a
-                  href={project.links.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group inline-flex items-center gap-1 rounded-2xl border border-border px-4 py-2 text-sm font-medium text-text transition-colors text-accent-white hover:text-accent-purple hover:border-accent-purple"
-                >
-                  Live <ExternalLink className="size-4 transition-transform group-hover:translate-x-0.5" />
-                </a>
-              )}
-              {project.links?.code && (
-                <a
-                  href={project.links.code}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group inline-flex items-center gap-1 rounded-2xl border border-border px-4 py-2 text-sm font-medium text-text transition-colors text-accent-white hover:text-accent-purple hover:border-accent-purple"
-                >
-                  Code <Github className="size-4 transition-transform group-hover:translate-x-0.5" />
-                </a>
-              )}
-            </div>
-          </div>
-
-          {/* Hero media */}
-          <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-panel">
-            {project.youtubeVideo ? (
-              <div className="aspect-video w-full">
-                <iframe
-                  className="h-full w-full"
-                  src={`https://www.youtube.com/embed/${getYouTubeVideoId(project.youtubeVideo)}`}
-                  title={`${project.title} video`}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            ) : project.mainVideo ? (
-              <video
-                className="h-[340px] sm:h-[420px] md:h-[500px] w-full object-contain"
-                muted
-                playsInline
-                controls
-                preload="metadata"
-                poster={project.thumb ? withBase(project.thumb) : undefined}
-                src={withBase(project.mainVideo)}
-              />
-            ) : project.thumb ? (
-              <img
-                className="h-[340px] sm:h-[420px] md:h-[500px] w-full object-contain"
-                src={withBase(project.thumb)}
-                alt={`${project.title} hero`}
-              />
-            ) : (
-              <div className="flex h-[340px] items-center justify-center text-subtext">No preview</div>
+          <dl className="grid grid-cols-[6rem_1fr] gap-x-4 gap-y-3 border-t border-line pt-6 font-mono text-sm">
+            {project.status && (
+              <>
+                <dt className="text-faint">status</dt>
+                <dd className="flex items-center gap-2 text-ink">
+                  <span className={`size-2 rounded-full ${project.status === "Active" ? "bg-ok" : "bg-line-strong"}`} aria-hidden="true" />
+                  {project.status}
+                </dd>
+              </>
             )}
-          </div>
+            {areas.length > 0 && (
+              <>
+                <dt className="text-faint">type</dt>
+                <dd className="text-ink">{areas.join(", ")}</dd>
+              </>
+            )}
+            <dt className="text-faint">stack</dt>
+            <dd className="text-ink">{project.tags.join(", ")}</dd>
+            {(project.links?.link || project.links?.code) && (
+              <>
+                <dt className="text-faint">links</dt>
+                <dd className="flex flex-wrap gap-4">
+                  {project.links?.link && (
+                    <a href={project.links.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-accent-ink hover:underline">
+                      Live <ExternalLink className="size-3.5" />
+                    </a>
+                  )}
+                  {project.links?.code && (
+                    <a href={project.links.code} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-accent-ink hover:underline">
+                      Code <Github className="size-3.5" />
+                    </a>
+                  )}
+                </dd>
+              </>
+            )}
+          </dl>
+        </header>
 
-          {/* Body */}
-          {project.body && (
-            <div className="prose prose-invert mt-6 max-w-none whitespace-pre-line">
-              {project.body}
+        <div className="mt-12 overflow-hidden rounded-2xl border border-line bg-white">
+          {project.youtubeVideo ? (
+            <div className="aspect-video w-full bg-black">
+              <iframe
+                className="h-full w-full"
+                src={`https://www.youtube.com/embed/${getYouTubeVideoId(project.youtubeVideo)}`}
+                title={`${project.title} video`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
             </div>
-          )}
-
-          {/* Gallery (masonry) */}
-          {project.gallery?.length ? (
-            <div
-              className="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3 [column-fill:balance]"
-            >
-              {project.gallery.map((g, idx) => {
-                const isVideo = g.endsWith('.mp4') || g.endsWith('.webm') || g.endsWith('.mov');
-                const isImage = g.endsWith('.jpg') || g.endsWith('.jpeg') || g.endsWith('.png') || 
-                               g.endsWith('.gif') || g.endsWith('.webp') || g.endsWith('.svg');
-                const commonClass =
-                  'mb-4 w-full rounded-2xl border border-border bg-bg/50 object-cover hover:opacity-90 transition-opacity';
-                return (
-                  <a
-                    key={idx}
-                    href={withBase(g)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-block break-inside-avoid"
-                  >
-                    {isVideo ? (
-                      <video
-                        src={withBase(g)}
-                        className={commonClass}
-                        muted
-                        playsInline
-                        controls
-                        preload="metadata"
-                      />
-                    ) : isImage ? (
-                      <img
-                        src={withBase(g)}
-                        className={commonClass}
-                        alt={`${project.title} gallery ${idx + 1}`}
-                        loading="lazy"
-                      />
-                    ) : (
-                      // Fallback for unknown file types - treat as image
-                      <img
-                        src={withBase(g)}
-                        className={commonClass}
-                        alt={`${project.title} gallery ${idx + 1}`}
-                        loading="lazy"
-                      />
-                    )}
-                  </a>
-                );
-              })}
-            </div>
+          ) : project.mainVideo ? (
+            <video
+              className="aspect-video w-full bg-black object-contain"
+              muted
+              playsInline
+              controls
+              preload="metadata"
+              poster={project.thumb}
+              src={withBase(project.mainVideo)}
+            />
+          ) : project.thumb ? (
+            <img
+              className="h-[clamp(16rem,45vw,32rem)] w-full object-contain p-6"
+              src={project.thumb}
+              srcSet={project.imageSrcSet}
+              sizes="(min-width: 1400px) 1300px, 100vw"
+              alt={`${project.title} logo`}
+            />
           ) : null}
         </div>
-      </Container>
-    </Section>
+
+        {project.stats && (
+          <dl className="mt-12 grid grid-cols-3 gap-4 border-y border-line py-8">
+            {project.stats.map((s) => (
+              <div key={s.label}>
+                <dt className="sr-only">{s.label}</dt>
+                <dd className="font-mono text-[clamp(1.5rem,4vw,3rem)] font-semibold leading-none tracking-tight">{s.value}</dd>
+                <dd className="mt-2 text-sm text-muted">{s.label}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+
+        <div className="mx-auto mt-14 max-w-[42rem] space-y-6 text-lg leading-[1.7] text-ink/90">
+          {paragraphs.map((p) => (
+            <p key={p.slice(0, 32)}>{p}</p>
+          ))}
+        </div>
+
+        {project.gallery?.length ? (
+          <div className="mt-14 columns-1 gap-4 sm:columns-2 lg:columns-3">
+            {project.gallery.map((g) => (
+              <a key={g} href={withBase(g)} target="_blank" rel="noreferrer" className="mb-4 block break-inside-avoid">
+                {isVideo(g) ? (
+                  <video src={withBase(g)} className="w-full rounded-xl border border-line" muted playsInline controls preload="metadata" />
+                ) : (
+                  <img src={withBase(g)} alt="" loading="lazy" className="w-full rounded-xl border border-line" />
+                )}
+              </a>
+            ))}
+          </div>
+        ) : null}
+      </article>
+
+      <Link
+        to={`/projects/${next.slug}`}
+        className="group mt-24 block border-t border-line bg-surface py-14 transition-colors duration-200 hover:bg-raised sm:py-20"
+      >
+        <div className="wrap flex items-end justify-between gap-6">
+          <div>
+            <p className="kicker">Next project</p>
+            <p className="mt-3 font-mono text-[clamp(2rem,6vw,4.5rem)] font-bold leading-none tracking-[-0.04em] transition-colors group-hover:text-accent-ink">
+              {next.title}
+            </p>
+          </div>
+          <ArrowRight className="mb-2 size-8 shrink-0 text-muted transition-transform duration-300 ease-out group-hover:translate-x-2 group-hover:text-accent-ink" />
+        </div>
+      </Link>
+    </main>
   );
 }

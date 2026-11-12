@@ -1,48 +1,11 @@
-import {
-    Code2,
-    Layout,
-    Database,
-    BrainCircuit,
-    Wrench,
-    type LucideIcon
-} from 'lucide-react';
+/** The stack table. `cluster` ties each row to a region of the hero field. */
+export type StackRow = { id: Cluster; title: string; items: string[] };
+export type Cluster = "ai" | "backend" | "web" | "systems" | "tools";
 
-export type SkillCategory = {
-    id: string;
-    title: string;
-    icon: LucideIcon;
-    skills: string[];
-};
-
-export const SKILL_CATEGORIES: SkillCategory[] = [
-    {
-        id: 'languages',
-        title: 'Languages',
-        icon: Code2,
-        skills: ['Python', 'C++', 'TypeScript', 'JavaScript', 'SQL', 'HTML/CSS']
-    },
-    {
-        id: 'frontend',
-        title: 'Frontend',
-        icon: Layout,
-        skills: ['React', 'Vue', 'TailwindCSS', 'Next.js', 'Framer Motion']
-    },
-    {
-        id: 'backend',
-        title: 'Backend & DB',
-        icon: Database,
-        skills: ['SQL Alchemy', 'Flask', 'PostgreSQL', 'SQLite', 'NeonDB', 'SupaBase']
-    },
-    {
-        id: 'ai',
-        title: 'AI & Data Science',
-        icon: BrainCircuit,
-        skills: ['PyTorch', 'OpenCV', 'TensorFlow', 'AI LLM APIs', 'YOLO', 'Scikit-learn']
-    },
-    {
-        id: 'tools',
-        title: 'Tools & DevOps',
-        icon: Wrench,
-        skills: ['Git', 'Docker', 'Linux', 'Vercel', 'VS Code', 'Anti-Gravity', 'Wordpress']
-    }
+export const STACK: StackRow[] = [
+  { id: "ai", title: "AI and vision", items: ["PyTorch", "OpenCLIP", "OpenCV", "TensorFlow", "YOLO", "MediaPipe", "scikit-learn", "LLM APIs"] },
+  { id: "backend", title: "Backend and data", items: ["Python", "FastAPI", "Flask", "PostgreSQL", "pgvector", "Supabase", "SQLAlchemy", "SQLite", "NeonDB"] },
+  { id: "web", title: "Web", items: ["TypeScript", "React", "Next.js", "Vue", "Tailwind CSS", "Framer Motion", "Node.js"] },
+  { id: "systems", title: "Systems", items: ["C++", "OOP", "Data structures", "SFML", "Minimax search"] },
+  { id: "tools", title: "Tools", items: ["Git", "Docker", "Linux", "Vercel", "WordPress"] },
 ];
