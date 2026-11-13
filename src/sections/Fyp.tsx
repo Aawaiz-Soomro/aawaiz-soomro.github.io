@@ -1,64 +1,94 @@
+import { useEffect, useState, type CSSProperties } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Fade, SectionHead } from "@/components/Reveal";
+import { SectionHead } from "@/components/Reveal";
 import { PROJECTS } from "@/data/projects";
 import { RESEARCH } from "@/data/research";
 import { withBase } from "@/data/links";
+import { useInView, useReducedMotion, useScrollVar } from "@/lib/hooks";
 
-const link = "group inline-flex items-center gap-1.5 border-b border-accent pb-0.5 text-lg transition-colors duration-200 hover:text-accent";
-const arrow = "size-4 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5";
+/** Counts up to a value like "9.5M" or "256-d" when it scrolls into view. */
+function CountUp({ value }: { value: string }) {
+  const match = value.match(/^([\d.]+)(.*)$/);
+  const num = match?.[1] ?? "0";
+  const suffix = match?.[2] ?? value;
+  const target = parseFloat(num);
+  const decimals = (num.split(".")[1] ?? "").length;
+  const [ref, seen] = useInView<HTMLSpanElement>();
+  const reduced = useReducedMotion();
+  const [shown, setShown] = useState(0);
+
+  useEffect(() => {
+    if (!seen) return;
+    if (reduced) return setShown(target);
+    let raf = 0;
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / 1600);
+      setShown(target * (1 - Math.pow(1 - t, 4)));
+      if (t < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [seen, target, reduced]);
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      {shown.toFixed(decimals)}
+      {suffix}
+    </span>
+  );
+}
+
+const pill = "group inline-flex h-12 items-center gap-2 rounded-full px-6 font-medium transition-transform duration-200 ease-out active:scale-90";
 
 export default function Fyp() {
   const paper = RESEARCH[0];
   const project = PROJECTS.find((p) => p.featured);
+  const scrollRef = useScrollVar<HTMLDivElement>();
   if (!paper || !project) return null;
 
   return (
-    <section id="fyp" aria-labelledby="fyp-title" className="bg-surface py-16 sm:py-24">
+    <section id="fyp" aria-labelledby="fyp-title" className="relative z-10 rounded-t-[2.5rem] bg-accent py-16 text-on-accent sm:py-24">
       <div className="wrap">
-        <SectionHead id="fyp-title" title="Final year project" />
+        <SectionHead id="fyp-title" title="FYP" />
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-16">
           <div>
-            <h3 className="text-[clamp(1.6rem,3.4vw,3rem)] font-medium leading-[1.12] tracking-[-0.02em]">{project.blurb}</h3>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-              Trained on {project.stats?.[0].value} Instagram posts from {project.stats?.[1].value} influencers. Built with{" "}
-              {paper.members?.filter((m) => m !== "Aawaiz").join(" and ")}, supervised by {paper.supervisor}. The paper is{" "}
-              {paper.status?.toLowerCase()}.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+            <h3 className="text-[clamp(1.75rem,3.6vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em]">{paper.title}</h3>
+            <dl className="mt-8 grid grid-cols-3 gap-3">
+              {project.stats?.map((s) => (
+                <div key={s.label} className="border-t-2 border-on-accent pt-3">
+                  <dd className="display text-[clamp(2.4rem,7vw,6rem)]">
+                    <CountUp value={s.value} />
+                  </dd>
+                  <dt className="mt-2 text-sm leading-snug">{s.label}</dt>
+                </div>
+              ))}
+            </dl>
+            <div className="mt-9 flex flex-wrap gap-3">
               {paper.href && (
-                <a href={withBase(paper.href)} target="_blank" rel="noreferrer" className={link}>
-                  Read the paper <ArrowUpRight className={arrow} />
+                <a href={withBase(paper.href)} target="_blank" rel="noreferrer" className={`${pill} bg-on-accent text-accent`}>
+                  Read the paper <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:rotate-45" />
                 </a>
               )}
-              <Link to={`/projects/${project.slug}`} className={link}>
-                Project page <ArrowUpRight className={arrow} />
+              <Link to={`/projects/${project.slug}`} className={`${pill} border-2 border-on-accent`}>
+                Project page
               </Link>
-              {project.links?.code && (
-                <a href={project.links.code} target="_blank" rel="noreferrer" className={link}>
-                  Code <ArrowUpRight className={arrow} />
-                </a>
-              )}
             </div>
           </div>
 
           {paper.thumb && (
-            <Fade>
-              <a
-                href={withBase(paper.href)}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Open the paper (PDF)"
-                className="group grid place-items-center overflow-hidden rounded-3xl bg-paper p-8 sm:p-12"
-              >
+            <div ref={scrollRef} style={{ "--p": 0.5 } as CSSProperties} className="grid place-items-center py-4">
+              <a href={withBase(paper.href)} target="_blank" rel="noreferrer" aria-label="Open the paper (PDF)">
                 <img
                   src={withBase(paper.thumb)}
                   alt=""
                   loading="lazy"
-                  className="w-[min(100%,22rem)] rotate-[-4deg] shadow-2xl shadow-black/40 transition-transform duration-700 ease-out group-hover:rotate-0 group-hover:scale-105"
+                  className="w-[min(78vw,22rem)] shadow-2xl shadow-black/40 will-change-transform"
+                  style={{ transform: "rotate(calc((0.5 - var(--p)) * 28deg)) translateY(calc((0.5 - var(--p)) * 60px))" }}
                 />
               </a>
-            </Fade>
+            </div>
           )}
         </div>
       </div>

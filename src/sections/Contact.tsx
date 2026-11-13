@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { ArrowUpRight } from "lucide-react";
 import FitLine from "@/components/FitLine";
 import { Fade } from "@/components/Reveal";
 import { PROFILE, withBase } from "@/data/links";
-import { useInView } from "@/lib/hooks";
+import Wordmark from "@/components/Wordmark";
+import { useInView, useScrollVar } from "@/lib/hooks";
 
 const LINKS = [
   { label: "GitHub", href: PROFILE.social.github },
@@ -16,6 +17,8 @@ export default function Contact() {
   const [copied, setCopied] = useState(false);
   const [ref, seen] = useInView<HTMLHeadingElement>("0px 0px -15% 0px");
 
+  const sigRef = useScrollVar<HTMLDivElement>();
+
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(PROFILE.email);
@@ -27,10 +30,11 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="bg-surface pt-16 sm:pt-24">
+    <section id="contact" aria-labelledby="contact-title" className="relative z-10 -mt-10 rounded-t-[2.5rem] bg-surface pt-16 sm:pt-24">
       <div className="wrap">
         <h2 id="contact-title" ref={ref}>
-          <FitLine text="Let’s connect" kinetic show={seen} />
+          <FitLine text="Let’s" show={seen} />
+          <FitLine text="connect" outline show={seen} delay={200} />
         </h2>
 
         <Fade className="mt-8 grid gap-8 lg:grid-cols-2 lg:items-end">
@@ -61,7 +65,15 @@ export default function Contact() {
           </ul>
         </Fade>
 
-        <footer className="mt-16 flex flex-col gap-1 border-t border-line-strong py-6 text-sm text-faint sm:flex-row sm:justify-between">
+        <div ref={sigRef} style={{ "--p": 0 } as CSSProperties} className="mt-14">
+          {/* The signature writes itself in as the page reaches the end. */}
+          <Wordmark
+            large
+            className="mx-auto block w-[min(100%,40rem)] text-accent"
+          />
+        </div>
+
+        <footer className="mt-8 flex flex-col gap-1 border-t border-line-strong py-6 text-sm text-faint sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} Aawaiz. Vibe coded with React &amp; Tailwind.</p>
           <p>{PROFILE.location}</p>
         </footer>

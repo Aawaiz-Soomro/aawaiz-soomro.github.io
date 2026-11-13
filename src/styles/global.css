@@ -47,6 +47,11 @@
   --animate-marquee: marquee 38s linear infinite;
   --animate-grain: grain 0.9s steps(6) infinite;
 
+  @keyframes wave {
+    0%, 26%, 100% { font-variation-settings: "wdth" 62, "wght" 900; }
+    13% { font-variation-settings: "wdth" 62, "wght" 180; }
+  }
+
   @keyframes blink {
     50% {
       opacity: 0;
@@ -76,7 +81,7 @@
 
   body {
     @apply bg-bg font-sans text-ink antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   ::selection {
@@ -172,6 +177,23 @@
 
   .paper-grid {
     background-color: var(--paper);
+  }
+
+  /* Letters that swing up one by one when a parent gets .letters-in */
+  .ltr {
+    display: inline-block;
+    transform: translateY(115%) rotate(9deg);
+    transform-origin: left bottom;
+    transition: transform 0.95s var(--ease-out) calc(var(--d, 0ms) + var(--i) * 38ms),
+      font-variation-settings 0.3s ease-out;
+  }
+  .letters-in .ltr {
+    transform: none;
+  }
+  /* A thin-to-heavy ripple that runs through a line of letters */
+  .wave .ltr {
+    animation: wave 4.6s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 95ms + 1.4s);
   }
 
   .no-scrollbar {

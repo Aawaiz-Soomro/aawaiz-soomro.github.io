@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { useInView } from "@/lib/hooks";
+import { useInView, useScrollVar } from "@/lib/hooks";
 
 /** A line of text that slides up out of a clip the first time it is seen. */
 export function Rise({ children, delay = 0, className = "", show }: { children: ReactNode; delay?: number; className?: string; show?: boolean }) {
@@ -22,11 +22,26 @@ export function Fade({ children, delay = 0, className = "", show }: { children: 
   );
 }
 
-/** Section title shared by every section. */
+/** Section title: letters swing up, and the word drifts sideways as you scroll. */
 export function SectionHead({ title, id }: { title: string; id: string }) {
+  const [inView, seen] = useInView<HTMLSpanElement>();
+  const scrollRef = useScrollVar<HTMLHeadingElement>();
   return (
-    <h2 id={id} className="mb-8 border-b border-line-strong pb-4 sm:mb-12">
-      <Rise className="display text-[clamp(3.25rem,10vw,8.5rem)]">{title}</Rise>
+    <h2 id={id} ref={scrollRef} className="mb-8 overflow-hidden border-b border-line-strong pb-3 sm:mb-12" style={{ "--p": 0.5 } as CSSProperties}>
+      <span
+        ref={inView}
+        className={`display -my-[0.08em] block whitespace-nowrap py-[0.08em] text-[clamp(3.75rem,15vw,11rem)] will-change-transform ${seen ? "letters-in" : ""}`}
+        style={{ transform: "translateX(calc(max(0, 0.7 - var(--p)) * 26vw))" }}
+      >
+        <span className="sr-only">{title}</span>
+        <span aria-hidden="true">
+          {title.split("").map((ch, i) => (
+            <span key={i} className="ltr" style={{ "--i": i } as CSSProperties}>
+              {ch === " " ? "\u00A0" : ch}
+            </span>
+          ))}
+        </span>
+      </span>
     </h2>
   );
 }

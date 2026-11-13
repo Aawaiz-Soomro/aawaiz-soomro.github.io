@@ -10,6 +10,7 @@ export default function Wordmark({ className = "", large = false }: { className?
       aria-label="Aawaiz Soomro"
       className={`inline-block aspect-[1680/733] bg-current ${className}`}
       style={{
+        ...(large ? { clipPath: "inset(0 calc(max(0, 1 - var(--p, 1) * 2.6) * 100%) 0 0)" } : null),
         maskImage: `url(${src})`,
         WebkitMaskImage: `url(${src})`,
         maskSize: "contain",

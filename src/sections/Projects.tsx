@@ -1,193 +1,100 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { SectionHead } from "@/components/Reveal";
 import { PROJECTS, type Project } from "@/data/projects";
+import { useReducedMotion } from "@/lib/hooks";
 
-const FILTERS = ["All", "AI", "Personal", "University"] as const;
-type Filter = (typeof FILTERS)[number];
+// Ayu Mirage accents, one per card.
+const COLORS = ["#efeadd", "#95e6cb", "#d4bfff", "#ffcc66", "#73d0ff", "#ffad66", "#bae67e", "#f29e74"];
 
-const areas = (p: Project) => (Array.isArray(p.area) ? p.area : p.area ? [p.area] : []);
-const matches = (p: Project, f: Filter) => f === "All" || areas(p).includes(f);
-
+/*
+ * Cards pin under the header and stack: each new card slides over the last,
+ * which shrinks back and dims.
+ */
 export default function Projects() {
-  const [filter, setFilter] = useState<Filter>("All");
-  const trackRef = useRef<HTMLUListElement>(null);
-  const barRef = useRef<HTMLSpanElement>(null);
-  const [edges, setEdges] = useState({ start: true, end: false });
-  const list = PROJECTS.filter((p) => matches(p, filter));
+  const listRef = useRef<HTMLOListElement>(null);
+  const reduced = useReducedMotion();
 
-  // Progress bar and arrow state follow the scroll position.
   useEffect(() => {
-    const track = trackRef.current!;
+    if (reduced) return;
+    const items = Array.from(listRef.current!.children) as HTMLElement[];
+    let raf = 0;
     const update = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      const p = max > 0 ? track.scrollLeft / max : 1;
-      const visible = max > 0 ? track.clientWidth / track.scrollWidth : 1;
-      if (barRef.current) {
-        barRef.current.style.width = `${visible * 100}%`;
-        barRef.current.style.left = `${p * (1 - visible) * 100}%`;
-      }
-      setEdges({ start: track.scrollLeft < 8, end: track.scrollLeft > max - 8 });
+      raf = 0;
+      items.forEach((li, i) => {
+        const card = li.firstElementChild as HTMLElement;
+        const next = items[i + 1];
+        const r = li.getBoundingClientRect();
+        const q = next ? Math.min(1, Math.max(0, 1 - (next.getBoundingClientRect().top - r.top) / r.height)) : 0;
+        card.style.transform = `scale(${1 - q * 0.08}) rotate(${q * (i % 2 ? 1.5 : -1.5)}deg)`;
+        card.style.filter = `brightness(${1 - q * 0.45})`;
+      });
+    };
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(update);
     };
     update();
-    track.addEventListener("scroll", update, { passive: true });
-    const ro = new ResizeObserver(update);
-    ro.observe(track);
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on);
     return () => {
-      track.removeEventListener("scroll", update);
-      ro.disconnect();
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
     };
-  }, [filter]);
-
-  // Click-and-drag with a mouse; touch uses native scrolling.
-  useEffect(() => {
-    const track = trackRef.current!;
-    let down = false;
-    let moved = 0;
-    let startX = 0;
-    let startScroll = 0;
-    const onDown = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" || e.button !== 0) return;
-      down = true;
-      moved = 0;
-      startX = e.clientX;
-      startScroll = track.scrollLeft;
-    };
-    const onMove = (e: PointerEvent) => {
-      if (!down) return;
-      const dx = e.clientX - startX;
-      moved = Math.max(moved, Math.abs(dx));
-      if (moved > 6) {
-        track.style.scrollSnapType = "none";
-        track.style.cursor = "grabbing";
-        track.scrollLeft = startScroll - dx;
-      }
-    };
-    const onUp = () => {
-      if (!down) return;
-      down = false;
-      track.style.scrollSnapType = "";
-      track.style.cursor = "";
-    };
-    // A drag should not count as a click on the card underneath.
-    const onClick = (e: MouseEvent) => {
-      if (moved > 6) {
-        e.preventDefault();
-        e.stopPropagation();
-        moved = 0;
-      }
-    };
-    track.addEventListener("pointerdown", onDown);
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-    track.addEventListener("click", onClick, true);
-    return () => {
-      track.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-      track.removeEventListener("click", onClick, true);
-    };
-  }, []);
-
-  const step = (dir: 1 | -1) => {
-    const track = trackRef.current!;
-    const card = track.querySelector("li");
-    track.scrollBy({ left: dir * ((card?.clientWidth ?? 360) + 20) * 2, behavior: "smooth" });
-  };
-
-  const choose = (f: Filter) => {
-    setFilter(f);
-    trackRef.current?.scrollTo({ left: 0 });
-  };
+  }, [reduced]);
 
   return (
-    <section id="projects" aria-labelledby="projects-title" className="overflow-hidden py-20 sm:py-28">
+    <section id="projects" aria-labelledby="projects-title" className="py-16 sm:py-24">
       <div className="wrap">
         <SectionHead id="projects-title" title="Projects" />
-
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <div role="group" aria-label="Filter projects" className="flex flex-wrap gap-x-6 gap-y-2">
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                type="button"
-                aria-pressed={filter === f}
-                onClick={() => choose(f)}
-                className={`border-b-2 pb-1 text-lg transition-colors duration-200 ${
-                  filter === f ? "border-accent text-ink" : "border-transparent text-muted hover:text-ink"
-                }`}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
-          <div className="hidden gap-2 sm:flex">
-            {([-1, 1] as const).map((dir) => (
-              <button
-                key={dir}
-                type="button"
-                onClick={() => step(dir)}
-                disabled={dir === -1 ? edges.start : edges.end}
-                aria-label={dir === -1 ? "Previous projects" : "Next projects"}
-                className="grid size-12 place-items-center rounded-full border border-line-strong text-ink transition-[background-color,color,opacity,transform] duration-200 ease-out hover:bg-accent hover:text-on-accent active:scale-90 disabled:pointer-events-none disabled:opacity-30"
-              >
-                {dir === -1 ? <ArrowLeft className="size-5" /> : <ArrowRight className="size-5" />}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <ul
-        ref={trackRef}
-        className="no-scrollbar flex cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto scroll-px-4 px-4 pb-4 sm:scroll-px-8 sm:px-8 lg:scroll-px-[max(2.5rem,calc((100vw-96rem)/2+2.5rem))] lg:px-[max(2.5rem,calc((100vw-96rem)/2+2.5rem))]"
-      >
-        {list.map((p) => (
-          <li key={p.slug} className="w-[min(82vw,23.5rem)] shrink-0 snap-start">
-            <ProjectCard project={p} />
-          </li>
-        ))}
-      </ul>
-
-      <div className="wrap mt-6">
-        <div className="relative h-px bg-line-strong">
-          <span ref={barRef} className="absolute -top-px h-[3px] rounded-full bg-accent" />
-        </div>
+        <ol ref={listRef}>
+          {PROJECTS.map((p, i) => (
+            <li key={p.slug} className="sticky mb-5 sm:mb-8" style={{ top: `calc(4.75rem + ${i * 8}px)` }}>
+              <ProjectCard project={p} index={i} />
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
 }
 
-function ProjectCard({ project: p }: { project: Project }) {
+function ProjectCard({ project: p, index }: { project: Project; index: number }) {
   return (
     <Link
       to={`/projects/${p.slug}`}
-      draggable={false}
-      className="group flex h-full select-none flex-col rounded-3xl bg-paper p-4 text-paper-ink transition-transform duration-500 ease-out hover:-translate-y-2"
+      className="group grid min-h-[min(64svh,34rem)] origin-top gap-4 rounded-[2rem] p-4 text-paper-ink will-change-transform active:brightness-95 sm:p-6 md:min-h-[27rem] md:grid-cols-2 md:gap-8"
+      style={{ backgroundColor: COLORS[index % COLORS.length] }}
     >
-      <div className="grid h-48 place-items-center overflow-hidden rounded-2xl bg-white/70">
+      <div className="grid min-h-40 place-items-center overflow-hidden rounded-3xl bg-white/65 md:order-2">
         {p.thumb && (
           <img
             src={p.thumb}
             srcSet={p.imageSrcSet}
-            sizes="360px"
+            sizes="(min-width: 768px) 45vw, 90vw"
             alt=""
             loading="lazy"
-            draggable={false}
-            className="h-full w-full object-contain p-3 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
+            className="max-h-56 w-full object-contain p-4 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-110 md:max-h-80"
           />
         )}
       </div>
-      <h3 className="display mt-5 px-1 text-[2.5rem]">{p.title}</h3>
-      <p className="mt-3 line-clamp-3 px-1 leading-snug text-paper-ink/75">{p.blurb}</p>
-      <p className="mt-auto flex items-center justify-between gap-3 px-1 pt-6 text-sm">
-        <span className="truncate text-paper-ink/60">{p.tags.slice(0, 3).join(", ")}</span>
-        <ArrowUpRight
-          aria-hidden="true"
-          className="size-5 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-        />
-      </p>
+      <div className="flex flex-col px-1 pb-1">
+        <p className="flex items-center justify-between font-mono text-xs uppercase tracking-[0.08em]">
+          <span>
+            {String(index + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}
+          </span>
+          <span>{p.status}</span>
+        </p>
+        <h3 className="display mt-4 text-[clamp(2.75rem,7vw,5.5rem)]">{p.title}</h3>
+        <p className="mt-3 line-clamp-2 max-w-md text-lg leading-snug text-paper-ink/80">{p.blurb}</p>
+        <p className="mt-auto flex items-end justify-between gap-4 pt-5">
+          <span className="font-mono text-xs uppercase tracking-[0.06em] text-paper-ink/70">{p.tags.slice(0, 3).join(" / ")}</span>
+          <span className="grid size-12 shrink-0 place-items-center rounded-full bg-paper-ink text-white transition-transform duration-500 ease-out group-hover:rotate-45 group-active:rotate-45">
+            <ArrowUpRight className="size-5" />
+          </span>
+        </p>
+      </div>
     </Link>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Wordmark from "@/components/Wordmark";
 import { PROFILE, SECTIONS } from "@/data/links";
@@ -14,9 +14,14 @@ export default function NavBar() {
   const active = useActiveSection(home ? IDS : NONE);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const barRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (barRef.current) barRef.current.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -82,6 +87,7 @@ export default function NavBar() {
             </span>
           </button>
         </nav>
+        <span ref={barRef} aria-hidden="true" className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-accent" />
       </header>
 
       <div

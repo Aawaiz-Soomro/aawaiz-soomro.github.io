@@ -1,29 +1,31 @@
-import { useEffect, useLayoutEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { useMediaQuery, useReducedMotion } from "@/lib/hooks";
 
 /*
  * One line of display type scaled to fill its container's width.
- * With `kinetic`, letters near the pointer thin out, like a lens passing over.
+ * Letters swing up one by one. With a mouse they thin out under the pointer;
+ * on touch screens a ripple runs through them instead.
  */
 export default function FitLine({
   text,
   outline = false,
-  kinetic = false,
   show = true,
   delay = 0,
   className = "",
+  style,
 }: {
   text: string;
   outline?: boolean;
-  kinetic?: boolean;
   show?: boolean;
   delay?: number;
   className?: string;
+  style?: CSSProperties;
 }) {
   const wrapRef = useRef<HTMLSpanElement>(null);
   const innerRef = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
   const finePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
+  const [onScreen, setOnScreen] = useState(false);
 
   useLayoutEffect(() => {
     const wrap = wrapRef.current!;
@@ -41,7 +43,13 @@ export default function FitLine({
   }, [text]);
 
   useEffect(() => {
-    if (!kinetic || reduced || !finePointer) return;
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting));
+    io.observe(wrapRef.current!);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (reduced || !finePointer) return;
     const letters = Array.from(innerRef.current!.querySelectorAll<HTMLElement>("[data-l]"));
     let raf = 0;
     let px = -9999;
@@ -52,7 +60,7 @@ export default function FitLine({
         const r = el.getBoundingClientRect();
         const d = Math.hypot(px - (r.left + r.width / 2), py - (r.top + r.height / 2));
         const near = Math.exp(-((d / (r.height * 0.9)) ** 2));
-        el.style.fontVariationSettings = `"wdth" 62, "wght" ${Math.round(900 - near * 680)}`;
+        el.style.fontVariationSettings = `"wdth" 62, "wght" ${Math.round(900 - near * 700)}`;
       }
     };
     const onMove = (e: PointerEvent) => {
@@ -60,30 +68,26 @@ export default function FitLine({
       py = e.clientY;
       if (!raf) raf = requestAnimationFrame(apply);
     };
-    const onLeave = () => {
-      px = py = -9999;
-      if (!raf) raf = requestAnimationFrame(apply);
-    };
     window.addEventListener("pointermove", onMove, { passive: true });
-    document.addEventListener("pointerleave", onLeave);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
-      document.removeEventListener("pointerleave", onLeave);
     };
-  }, [kinetic, reduced, finePointer, text]);
+  }, [reduced, finePointer, text]);
+
+  const wave = show && onScreen && !finePointer;
 
   return (
-    <span
-      ref={wrapRef}
-      className={`rise w-full ${show ? "in" : ""} ${className}`}
-      style={{ "--d": `${delay}ms` } as CSSProperties}
-    >
-      <span ref={innerRef} className={`display !inline-block whitespace-nowrap ${outline ? "outline-text" : ""}`}>
+    <span ref={wrapRef} className={`-my-[0.08em] block w-full overflow-hidden py-[0.08em] ${className}`} style={style}>
+      <span
+        ref={innerRef}
+        className={`display inline-block whitespace-nowrap ${outline ? "outline-text" : ""} ${show ? "letters-in" : ""} ${wave ? "wave" : ""}`}
+        style={{ "--d": `${delay}ms` } as CSSProperties}
+      >
         <span className="sr-only">{text}</span>
         <span aria-hidden="true">
           {text.split("").map((ch, i) => (
-            <span key={i} data-l className="inline-block transition-[font-variation-settings] duration-300 ease-out">
+            <span key={i} data-l className="ltr" style={{ "--i": i } as CSSProperties}>
               {ch === " " ? " " : ch}
             </span>
           ))}

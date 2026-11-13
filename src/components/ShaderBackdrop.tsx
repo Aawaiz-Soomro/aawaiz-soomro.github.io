@@ -24,7 +24,7 @@ void main(){
   vec2 mp = (m - .5 * r) / r.y;
   float d = length(p - mp);
   float glow = exp(-d * d * 3.);
-  float tt = t * .05;
+  float tt = t * .085;
 
   vec2 q = vec2(fbm(p * 1.1 + tt), fbm(p * 1.1 + vec2(5.2, 1.3) - tt));
   vec2 w = vec2(fbm(p * 1.4 + 3. * q + vec2(1.7, 9.2) + tt * .7), fbm(p * 1.4 + 3. * q + vec2(8.3, 2.8) - tt * .5));
@@ -35,9 +35,11 @@ void main(){
   vec3 mint = vec3(.584, .902, .796);
 
   vec3 col = mix(base, slate, smoothstep(.3, .85, f));
-  col = mix(col, mint, pow(smoothstep(.5, .95, f + glow * .2), 3.) * .2);
+  col = mix(col, mint, pow(smoothstep(.45, .95, f + glow * .25), 3.) * .42);
 
-  col += mint * glow * .04;
+  float c = abs(fract(f * 10.) - .5);
+  col += mint * smoothstep(.03, .0, c) * (.05 + glow * .16);
+  col += mint * glow * .07;
 
   col *= smoothstep(1.35, .15, length(p * vec2(.75, 1.)));
   col = mix(base, col, smoothstep(.0, .3, uv.y));
@@ -81,6 +83,7 @@ export default function ShaderBackdrop({ className = "" }: { className?: string 
     let raf = 0;
     let visible = true;
     const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+    let lastPointer = -1e9;
 
     const resize = () => {
       const { width, height } = canvas.getBoundingClientRect();
@@ -93,6 +96,11 @@ export default function ShaderBackdrop({ className = "" }: { className?: string 
 
     const draw = (now: number) => {
       raf = 0;
+      // With no pointer around (phones), the light wanders on its own.
+      if (now - lastPointer > 2200) {
+        mouse.tx = canvas.width * (0.5 + 0.34 * Math.cos(now * 0.00045));
+        mouse.ty = canvas.height * (0.55 + 0.28 * Math.sin(now * 0.0007));
+      }
       mouse.x += (mouse.tx - mouse.x) * 0.05;
       mouse.y += (mouse.ty - mouse.y) * 0.05;
       gl.uniform2f(uR, canvas.width, canvas.height);
@@ -106,6 +114,7 @@ export default function ShaderBackdrop({ className = "" }: { className?: string 
     };
 
     const onMove = (e: PointerEvent) => {
+      lastPointer = performance.now();
       const rect = canvas.getBoundingClientRect();
       mouse.tx = (e.clientX - rect.left) * SCALE;
       mouse.ty = (rect.height - (e.clientY - rect.top)) * SCALE;

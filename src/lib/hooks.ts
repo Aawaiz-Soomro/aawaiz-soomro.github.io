@@ -122,3 +122,35 @@ export function useMediaQuery(query: string) {
   }, [query]);
   return match;
 }
+
+/**
+ * Writes scroll progress to the element's --p custom property (0 to 1).
+ * "through": from entering the bottom of the screen to leaving the top.
+ * "page": how much of its own height has scrolled past the top.
+ */
+export function useScrollVar<T extends HTMLElement>(mode: "through" | "page" = "through") {
+  const [el, setEl] = useState<T | null>(null);
+  useEffect(() => {
+    if (!el) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const raw = mode === "page" ? -r.top / Math.max(1, r.height) : (vh - r.top) / (vh + r.height);
+      el.style.setProperty("--p", Math.min(1, Math.max(0, raw)).toFixed(4));
+    };
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
+    };
+  }, [el, mode]);
+  return setEl;
+}

@@ -80,7 +80,7 @@ export default function Experience() {
           <SectionHead id="experience-title" title="Experience" />
           <ol className="border-t border-line">
             {EXPERIENCES.map((e, i) => (
-              <Row key={e.role} index={i} title={e.role} org={e.org} date={e.date} place={e.location} defaultOpen={i === 0}>
+              <Row key={e.role} index={i} title={e.role} org={e.org} date={e.date} place={e.location}>
                 <Points items={e.details} />
                 {e.skills && <Chips items={e.skills} />}
               </Row>
@@ -89,14 +89,14 @@ export default function Experience() {
         </div>
       </section>
 
-      <section id="education" aria-labelledby="education-title" className="pb-16 sm:pb-24">
+      <section id="education" aria-labelledby="education-title" className="pb-24 sm:pb-32">
         <div className="wrap">
           <SectionHead id="education-title" title="Education" />
           <ol className="border-t border-line">
             {EDUCATION.map((e, i) => {
               const details = e.details ?? [];
               return (
-                <Row key={e.school} index={i} title={e.degree} org={e.school} date={e.date} defaultOpen={i === 0}>
+                <Row key={e.school} index={i} title={e.degree} org={e.school} date={e.date}>
                   <Points items={details.filter((d): d is string => typeof d === "string")} />
                   {details
                     .filter((d): d is { title: string; points: string[] } => typeof d !== "string")
