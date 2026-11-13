@@ -35,12 +35,9 @@ void main(){
   vec3 mint = vec3(.584, .902, .796);
 
   vec3 col = mix(base, slate, smoothstep(.3, .85, f));
-  col = mix(col, mint, pow(smoothstep(.5, .95, f + glow * .2), 3.) * .3);
+  col = mix(col, mint, pow(smoothstep(.5, .95, f + glow * .2), 3.) * .2);
 
-  // Contour lines, like a surface being surveyed.
-  float c = abs(fract(f * 11.) - .5);
-  col += mint * smoothstep(.035, .0, c) * (.035 + glow * .12);
-  col += mint * glow * .05;
+  col += mint * glow * .04;
 
   col *= smoothstep(1.35, .15, length(p * vec2(.75, 1.)));
   col = mix(base, col, smoothstep(.0, .3, uv.y));

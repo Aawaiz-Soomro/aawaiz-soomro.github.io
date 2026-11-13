@@ -119,11 +119,6 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
         <span ref={countRef} className="display text-[clamp(4.5rem,13vw,10rem)] text-ink">
           000
         </span>
-        <span className="tag pb-2 text-muted">Portfolio 2026</span>
-      </div>
-      <div className="wrap absolute inset-x-0 top-6 flex justify-between sm:top-8">
-        <span className="tag text-muted">Aawaiz Soomro</span>
-        <span className="tag text-accent">Loading</span>
       </div>
     </div>
   );

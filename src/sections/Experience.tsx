@@ -33,12 +33,12 @@ function Row({
           onClick={() => setOpen((o) => !o)}
           className="group grid w-full grid-cols-[1fr_auto] items-center gap-x-6 gap-y-2 px-2 py-6 text-left transition-colors duration-300 hover:bg-surface sm:px-5 md:grid-cols-[11rem_1fr_auto] md:py-8"
         >
-          <span className="col-span-2 font-mono text-xs uppercase tracking-[0.08em] text-muted md:col-span-1">{date}</span>
+          <span className="col-span-2 text-sm text-muted md:col-span-1">{date}</span>
           <span>
             <span className="display block text-[clamp(2rem,4.6vw,3.75rem)] transition-colors duration-300 group-hover:text-accent">{title}</span>
-            <span className="mt-2 block font-mono text-xs uppercase tracking-[0.08em] text-accent">
+            <span className="mt-2 block text-accent">
               {org}
-              {place && <span className="text-muted"> · {place}</span>}
+              {place && <span className="text-muted">, {place}</span>}
             </span>
           </span>
           <span
@@ -70,22 +70,14 @@ const Points = ({ items }: { items: string[] }) => (
   </ul>
 );
 
-const Chips = ({ items }: { items: string[] }) => (
-  <ul className="mt-5 flex flex-wrap gap-2">
-    {items.map((s) => (
-      <li key={s} className="rounded-full border border-line-strong px-3 py-1 font-mono text-xs text-ink">
-        {s}
-      </li>
-    ))}
-  </ul>
-);
+const Chips = ({ items }: { items: string[] }) => <p className="mt-4 text-muted">{items.join(", ")}</p>;
 
 export default function Experience() {
   return (
     <>
-      <section id="experience" aria-labelledby="experience-title" className="border-t border-line-strong py-20 sm:py-28">
+      <section id="experience" aria-labelledby="experience-title" className="py-16 sm:py-24">
         <div className="wrap">
-          <SectionHead index="05" id="experience-title" title="Experience" note="Where I’ve worked." />
+          <SectionHead id="experience-title" title="Experience" />
           <ol className="border-t border-line">
             {EXPERIENCES.map((e, i) => (
               <Row key={e.role} index={i} title={e.role} org={e.org} date={e.date} place={e.location} defaultOpen={i === 0}>
@@ -97,9 +89,9 @@ export default function Experience() {
         </div>
       </section>
 
-      <section id="education" aria-labelledby="education-title" className="pb-20 sm:pb-28">
+      <section id="education" aria-labelledby="education-title" className="pb-16 sm:pb-24">
         <div className="wrap">
-          <SectionHead index="06" id="education-title" title="Education" note="Where I’ve studied." />
+          <SectionHead id="education-title" title="Education" />
           <ol className="border-t border-line">
             {EDUCATION.map((e, i) => {
               const details = e.details ?? [];
@@ -110,7 +102,7 @@ export default function Experience() {
                     .filter((d): d is { title: string; points: string[] } => typeof d !== "string")
                     .map((g) => (
                       <div key={g.title} className="mt-6">
-                        <p className="tag text-accent">{g.title}</p>
+                        <p className="font-medium text-ink">{g.title}</p>
                         <Chips items={g.points} />
                       </div>
                     ))}

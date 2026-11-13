@@ -22,15 +22,11 @@ export function Fade({ children, delay = 0, className = "", show }: { children: 
   );
 }
 
-/** Numbered section heading shared by every section. */
-export function SectionHead({ index, title, note, id }: { index: string; title: string; note?: ReactNode; id: string }) {
+/** Section title shared by every section. */
+export function SectionHead({ title, id }: { title: string; id: string }) {
   return (
-    <header className="mb-10 flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border-b border-line-strong pb-5 sm:mb-14">
-      <h2 id={id} className="flex items-start gap-3 sm:gap-5">
-        <span className="tag mt-1 text-accent sm:mt-2">{index}</span>
-        <Rise className="display text-[clamp(3.5rem,11vw,9.5rem)]">{title}</Rise>
-      </h2>
-      {note && <div className="max-w-sm pb-1 text-muted sm:text-right">{note}</div>}
-    </header>
+    <h2 id={id} className="mb-8 border-b border-line-strong pb-4 sm:mb-12">
+      <Rise className="display text-[clamp(3.25rem,10vw,8.5rem)]">{title}</Rise>
+    </h2>
   );
 }

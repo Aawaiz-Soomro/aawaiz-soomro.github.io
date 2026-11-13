@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { SectionHead } from "@/components/Reveal";
 import { PROJECTS, type Project } from "@/data/projects";
 
@@ -104,22 +104,21 @@ export default function Projects() {
   return (
     <section id="projects" aria-labelledby="projects-title" className="overflow-hidden py-20 sm:py-28">
       <div className="wrap">
-        <SectionHead index="02" id="projects-title" title="Projects" note="Things I’ve built. Drag or swipe through them." />
+        <SectionHead id="projects-title" title="Projects" />
 
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <div role="group" aria-label="Filter projects" className="flex flex-wrap gap-2">
+          <div role="group" aria-label="Filter projects" className="flex flex-wrap gap-x-6 gap-y-2">
             {FILTERS.map((f) => (
               <button
                 key={f}
                 type="button"
                 aria-pressed={filter === f}
                 onClick={() => choose(f)}
-                className={`h-10 rounded-full border px-4 font-mono text-xs uppercase tracking-[0.08em] transition-colors duration-200 ${
-                  filter === f ? "border-accent bg-accent text-on-accent" : "border-line-strong text-muted hover:border-ink hover:text-ink"
+                className={`border-b-2 pb-1 text-lg transition-colors duration-200 ${
+                  filter === f ? "border-accent text-ink" : "border-transparent text-muted hover:text-ink"
                 }`}
               >
                 {f}
-                <sup className="ml-1 opacity-70">{PROJECTS.filter((p) => matches(p, f)).length}</sup>
               </button>
             ))}
           </div>
@@ -146,7 +145,7 @@ export default function Projects() {
       >
         {list.map((p) => (
           <li key={p.slug} className="w-[min(82vw,23.5rem)] shrink-0 snap-start">
-            <ProjectCard project={p} index={PROJECTS.indexOf(p) + 1} />
+            <ProjectCard project={p} />
           </li>
         ))}
       </ul>
@@ -160,22 +159,14 @@ export default function Projects() {
   );
 }
 
-function ProjectCard({ project: p, index }: { project: Project; index: number }) {
+function ProjectCard({ project: p }: { project: Project }) {
   return (
     <Link
       to={`/projects/${p.slug}`}
       draggable={false}
-      className="paper-grid group flex h-full select-none flex-col rounded-[1.75rem] p-4 text-paper-ink transition-transform duration-500 ease-out hover:-translate-y-2 hover:-rotate-1"
+      className="group flex h-full select-none flex-col rounded-3xl bg-paper p-4 text-paper-ink transition-transform duration-500 ease-out hover:-translate-y-2"
     >
-      <div className="flex items-center justify-between px-1 font-mono text-[11px] uppercase tracking-[0.08em]">
-        <span>No. {String(index).padStart(2, "0")}</span>
-        <span className="flex items-center gap-1.5">
-          <span className={`size-1.5 rounded-full ${p.status === "Active" ? "bg-emerald-600" : "bg-paper-ink/40"}`} aria-hidden="true" />
-          {p.status}
-        </span>
-      </div>
-
-      <div className="mt-3 grid h-48 place-items-center overflow-hidden rounded-2xl border border-paper-ink/10 bg-white/60">
+      <div className="grid h-48 place-items-center overflow-hidden rounded-2xl bg-white/70">
         {p.thumb && (
           <img
             src={p.thumb}
@@ -184,29 +175,19 @@ function ProjectCard({ project: p, index }: { project: Project; index: number })
             alt=""
             loading="lazy"
             draggable={false}
-            className="h-full w-full object-contain p-3 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-110"
+            className="h-full w-full object-contain p-3 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
           />
         )}
       </div>
-
-      <h3 className="display mt-5 px-1 text-[2.75rem]">{p.title}</h3>
-      <p className="mt-3 line-clamp-3 px-1 text-[15px] leading-snug text-paper-ink/75">{p.blurb}</p>
-
-      <div className="mt-auto flex items-end justify-between gap-3 px-1 pt-5">
-        <ul className="flex flex-wrap gap-1.5" aria-label="Built with">
-          {p.tags.slice(0, 3).map((t) => (
-            <li key={t} className="rounded-full border border-paper-ink/25 px-2.5 py-1 font-mono text-[11px]">
-              {t}
-            </li>
-          ))}
-        </ul>
-        <span
+      <h3 className="display mt-5 px-1 text-[2.5rem]">{p.title}</h3>
+      <p className="mt-3 line-clamp-3 px-1 leading-snug text-paper-ink/75">{p.blurb}</p>
+      <p className="mt-auto flex items-center justify-between gap-3 px-1 pt-6 text-sm">
+        <span className="truncate text-paper-ink/60">{p.tags.slice(0, 3).join(", ")}</span>
+        <ArrowUpRight
           aria-hidden="true"
-          className="grid size-11 shrink-0 place-items-center rounded-full bg-paper-ink text-accent transition-transform duration-500 ease-out group-hover:rotate-90"
-        >
-          <Plus className="size-5" />
-        </span>
-      </div>
+          className="size-5 shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+        />
+      </p>
     </Link>
   );
 }

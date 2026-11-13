@@ -58,23 +58,15 @@ export default function NavBar() {
                   onClick={(e) => go(e, s.id)}
                   aria-current={active === s.id ? "location" : undefined}
                   className={`group relative px-3 py-2 font-mono text-xs uppercase tracking-[0.08em] transition-colors duration-200 ${
-                    active === s.id ? "text-accent" : "text-muted hover:text-ink"
+                    active === s.id ? "text-ink" : "text-muted hover:text-ink"
                   }`}
                 >
-                  <span className={`transition-opacity duration-200 ${active === s.id ? "opacity-100" : "opacity-0 group-hover:opacity-60"}`}>[</span>
-                  <span className="mx-1">{s.label}</span>
-                  <span className={`transition-opacity duration-200 ${active === s.id ? "opacity-100" : "opacity-0 group-hover:opacity-60"}`}>]</span>
+                  {s.label}
+                  <span aria-hidden="true" className={`absolute inset-x-3 bottom-0.5 h-px origin-left bg-accent transition-transform duration-300 ease-out ${active === s.id ? "scale-x-100" : "scale-x-0"}`} />
                 </Link>
               </li>
             ))}
           </ul>
-
-          <a
-            href={`mailto:${PROFILE.email}`}
-            className="hidden h-10 items-center rounded-full bg-ink px-5 font-mono text-xs uppercase tracking-[0.08em] text-bg transition-[background-color,transform] duration-200 ease-out hover:bg-accent active:scale-95 lg:inline-flex"
-          >
-            Say hi
-          </a>
 
           <button
             type="button"
@@ -109,8 +101,7 @@ export default function NavBar() {
                 style={{ "--d": `${open ? 180 + i * 60 : 0}ms` } as CSSProperties}
               >
                 <span className="!flex items-baseline gap-3">
-                  <span className="font-mono text-xs text-accent">0{i + 1}</span>
-                  <span className="display text-[clamp(2.75rem,15vw,4.5rem)]">{s.label}</span>
+                                    <span className="display text-[clamp(2.75rem,15vw,4.5rem)]">{s.label}</span>
                 </span>
               </Link>
             </li>

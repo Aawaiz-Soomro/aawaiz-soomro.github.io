@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Hero from "@/sections/Hero";
-import About, { Marquee } from "@/sections/About";
+import About from "@/sections/About";
 import Projects from "@/sections/Projects";
 import Fyp from "@/sections/Fyp";
 import Skills from "@/sections/Skills";
@@ -21,7 +21,6 @@ export default function App() {
   return (
     <main>
       <Hero />
-      <Marquee />
       <About />
       <Projects />
       <Fyp />

@@ -169,7 +169,7 @@ export default function ProjectDetail() {
       >
         <div className="wrap flex items-end justify-between gap-6">
           <div>
-            <p className="tag text-accent">Next project</p>
+            <p className="text-muted">Next project</p>
             <p className="mt-3 display text-[clamp(3rem,9vw,8rem)] transition-colors duration-300 group-hover:text-accent">
               {next.title}
             </p>

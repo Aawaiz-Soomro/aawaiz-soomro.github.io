@@ -137,19 +137,9 @@
     -webkit-text-stroke: 1.5px var(--accent);
   }
 
-  /* Small bracketed mono label: [LIKE THIS] */
+  /* Small mono label */
   .tag {
     @apply font-mono text-xs uppercase tracking-[0.08em];
-  }
-  .tag::before {
-    content: "[";
-    margin-right: 0.35em;
-    opacity: 0.6;
-  }
-  .tag::after {
-    content: "]";
-    margin-left: 0.35em;
-    opacity: 0.6;
   }
 
   /* Line that slides up out of a clip when it gets the .in class */
@@ -182,9 +172,6 @@
 
   .paper-grid {
     background-color: var(--paper);
-    background-image: linear-gradient(rgb(23 26 33 / 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(23 26 33 / 0.07) 1px, transparent 1px);
-    background-size: 22px 22px;
   }
 
   .no-scrollbar {
