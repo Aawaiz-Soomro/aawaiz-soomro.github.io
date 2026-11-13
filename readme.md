@@ -5,12 +5,13 @@ It serves as a central place to highlight my projects, research, and experiences
 
 ## 🎨 Design
 
-One system: a flat dark ground, rounded colour blocks in Ayu Mirage accents (`src/data/palette.ts`), dark ink on the blocks, and heavy condensed type (Archivo variable).
+A flat dark ground, Ayu Mirage accent colours (`src/data/palette.ts`), and heavy condensed type (Archivo variable).
 
-- **Opening**: a counter, then a deck of colour sheets peels away.
-- **Hero**: one colour block with my signature written across it (traced into vector strokes in `src/data/signature.ts`). It repaints itself; a tap or click floods a new colour from that point and writes the signature again.
-- **Pen line**: one thin line draws itself down the page behind everything as you scroll (`src/components/ScrollLine.tsx`).
-- **Projects**: stacking cards. **Skills**: scroll-reactive rows. **Experience**: a pinned year that rolls like a counter as cards pass.
+- **Hero**: a physics playground (`src/components/Playground.tsx`, matter-js, loaded on demand). My name is the floor; word-pills about me and my photo drop in and pile on it. Drag them, throw them, or tap empty space to pop them.
+- **Pen line**: one thin line draws itself down the page behind everything as you scroll.
+- **Projects**: stacking cards. **Skills**: scroll-reactive rows of outlined type.
+- **Experience / Education**: big outlined titles; colour sweeps across each one like ink as it reaches the middle of the screen.
+- **Signature**: traced into vector strokes and written out at the end of the page.
 - Motion respects `prefers-reduced-motion`.
 
 ## ⚡ Tech Stack
