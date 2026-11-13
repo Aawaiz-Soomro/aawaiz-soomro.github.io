@@ -4,6 +4,7 @@ import App from "@/App";
 import ProjectDetail from "@/components/ProjectDetail";
 import NavBar from "@/components/NavBar";
 import Preloader from "@/components/Preloader";
+import Backdrop from "@/components/Backdrop";
 import { ReadyContext } from "@/contexts/ReadyContext";
 
 // The opening plays once per browser session, and never with reduced motion.
@@ -35,6 +36,7 @@ export default function AppRoutes() {
       >
         Skip to content
       </a>
+      <Backdrop />
       {intro && <Preloader onDone={done} />}
       <NavBar />
       <Routes>

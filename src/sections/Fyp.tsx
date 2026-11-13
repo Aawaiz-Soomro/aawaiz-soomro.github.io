@@ -49,7 +49,7 @@ export default function Fyp() {
   if (!paper || !project) return null;
 
   return (
-    <section id="fyp" aria-labelledby="fyp-title" className="relative z-10 rounded-t-[2.5rem] bg-accent py-16 text-on-accent sm:py-24">
+    <section id="fyp" aria-labelledby="fyp-title" className="mx-2 rounded-[2rem] bg-accent py-14 text-on-accent sm:mx-4 sm:py-20">
       <div className="wrap">
         <SectionHead id="fyp-title" title="FYP" />
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-16">

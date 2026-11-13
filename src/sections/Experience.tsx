@@ -41,7 +41,7 @@ function Row({ entry, color }: { entry: Entry; color: string }) {
         scrollRef(el);
       }}
       data-active={active}
-      className="group relative overflow-hidden border-b border-line"
+      className="group relative mb-3 overflow-hidden rounded-[1.75rem] border border-line"
       style={{ "--p": 0.5 } as CSSProperties}
     >
       <span
@@ -51,8 +51,7 @@ function Row({ entry, color }: { entry: Entry; color: string }) {
       />
       <div className="relative grid gap-x-10 gap-y-1 px-3 py-6 transition-colors duration-300 group-hover:text-paper-ink group-data-[active=true]:text-paper-ink sm:px-6 md:grid-cols-[minmax(0,15rem)_1fr] md:items-center md:py-9">
         <p
-          className="display text-[clamp(3.5rem,11vw,8rem)] text-line-strong transition-colors duration-300 will-change-transform group-hover:text-paper-ink group-data-[active=true]:text-paper-ink"
-          style={{ transform: "translateX(calc(max(0, 0.45 - var(--p)) * -60vw))" }}
+          className="display text-[clamp(3.5rem,11vw,8rem)] text-line-strong transition-colors duration-300 group-hover:text-paper-ink group-data-[active=true]:text-paper-ink"
         >
           {year}
         </p>
@@ -74,7 +73,7 @@ export default function Experience() {
       <section id="experience" aria-labelledby="experience-title" className="py-16 sm:py-24">
         <div className="wrap">
           <SectionHead id="experience-title" title="Experience" />
-          <ol className="border-t border-line">
+          <ol>
             {WORK.map((e, i) => (
               <Row key={e.title} entry={e} color={COLORS[i % COLORS.length]} />
             ))}
@@ -82,10 +81,10 @@ export default function Experience() {
         </div>
       </section>
 
-      <section id="education" aria-labelledby="education-title" className="pb-28 sm:pb-36">
+      <section id="education" aria-labelledby="education-title" className="pb-16 sm:pb-24">
         <div className="wrap">
           <SectionHead id="education-title" title="Education" />
-          <ol className="border-t border-line">
+          <ol>
             {STUDY.map((e, i) => (
               <Row key={e.title} entry={e} color={COLORS[(i + WORK.length) % COLORS.length]} />
             ))}

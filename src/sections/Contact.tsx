@@ -7,10 +7,10 @@ import { PROFILE, withBase } from "@/data/links";
 import { useInView, useMediaQuery } from "@/lib/hooks";
 
 const LINKS = [
-  { label: "GitHub", handle: "@aawaiz-soomro", href: PROFILE.social.github, icon: Github, color: "#95e6cb", tilt: -3 },
-  { label: "LinkedIn", handle: "/in/aawaiz-soomro", href: PROFILE.social.linkedin, icon: Linkedin, color: "#73d0ff", tilt: 2 },
-  { label: "Instagram", handle: "@aawaizsoomro", href: PROFILE.social.instagram, icon: Instagram, color: "#d4bfff", tilt: -2 },
-  { label: "Résumé", handle: "PDF", href: withBase(PROFILE.resumeUrl)!, icon: FileDown, color: "#ffcc66", tilt: 3 },
+  { label: "GitHub", handle: "@aawaiz-soomro", href: PROFILE.social.github, icon: Github, color: "#95e6cb" },
+  { label: "LinkedIn", handle: "/in/aawaiz-soomro", href: PROFILE.social.linkedin, icon: Linkedin, color: "#73d0ff" },
+  { label: "Instagram", handle: "@aawaizsoomro", href: PROFILE.social.instagram, icon: Instagram, color: "#d4bfff" },
+  { label: "Résumé", handle: "PDF", href: withBase(PROFILE.resumeUrl)!, icon: FileDown, color: "#ffcc66" },
 ];
 
 export default function Contact() {
@@ -30,7 +30,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="relative z-10 -mt-10 rounded-t-[2.5rem] bg-surface pt-16 sm:pt-24">
+    <section id="contact" aria-labelledby="contact-title" className="pt-8 sm:pt-12">
       <div className="wrap">
         <h2 id="contact-title" ref={ref}>
           {wide ? (
@@ -71,15 +71,15 @@ export default function Contact() {
 
         {/* Social links as coloured tiles */}
         <ul className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          {LINKS.map(({ label, handle, href, icon: Icon, color, tilt }, i) => (
+          {LINKS.map(({ label, handle, href, icon: Icon, color }, i) => (
             <li key={label}>
               <Fade delay={i * 90}>
                 <a
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="group flex aspect-[5/4] flex-col justify-between rounded-[1.75rem] p-4 text-paper-ink transition-transform duration-500 ease-out hover:-translate-y-2 hover:!rotate-0 active:scale-95 sm:p-5"
-                  style={{ backgroundColor: color, rotate: `${tilt}deg` }}
+                  className="group flex aspect-[5/4] flex-col justify-between rounded-[2rem] p-4 text-paper-ink transition-transform duration-500 ease-out hover:-translate-y-2 active:scale-95 sm:p-5"
+                  style={{ backgroundColor: color }}
                 >
                   <span className="flex items-start justify-between">
                     <Icon className="size-8 transition-transform duration-500 ease-out group-hover:scale-125 sm:size-10" aria-hidden="true" />
