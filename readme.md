@@ -7,10 +7,10 @@ It serves as a central place to highlight my projects, research, and experiences
 
 One system: a flat dark ground, rounded colour blocks in Ayu Mirage accents (`src/data/palette.ts`), dark ink on the blocks, and heavy condensed type (Archivo variable).
 
-- **Opening**: my signature, traced into vector strokes (`src/data/signature.ts`), is written out; when the panel lifts it stays printed on the hero.
-- **Hero**: a single block that repaints itself, with a new colour flooding out from wherever you tap or click.
-- **Headings**: letters rise thin and ink in to full weight once, then react to hover or a tap.
-- **Projects**: stacking cards. **Skills**: scroll-reactive rows. **Experience**: rows that fill with colour.
+- **Opening**: a counter, then a deck of colour sheets peels away.
+- **Hero**: one colour block with my signature written across it (traced into vector strokes in `src/data/signature.ts`). It repaints itself; a tap or click floods a new colour from that point and writes the signature again.
+- **Pen line**: one thin line draws itself down the page behind everything as you scroll (`src/components/ScrollLine.tsx`).
+- **Projects**: stacking cards. **Skills**: scroll-reactive rows. **Experience**: a pinned year that rolls like a counter as cards pass.
 - Motion respects `prefers-reduced-motion`.
 
 ## ⚡ Tech Stack

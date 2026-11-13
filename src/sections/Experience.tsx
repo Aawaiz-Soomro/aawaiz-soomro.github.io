@@ -1,91 +1,121 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { SectionHead } from "@/components/Reveal";
 import { EXPERIENCES } from "@/data/experience";
 import { EDUCATION } from "@/data/education";
-import { PALETTE as COLORS } from "@/data/palette";
-import { useMediaQuery } from "@/lib/hooks";
+import { PALETTE } from "@/data/palette";
+import { useScrollVar } from "@/lib/hooks";
 
-type Entry = { title: string; org: string; date: string; line: string };
+type Entry = { kind: "Work" | "Study"; title: string; org: string; date: string; line: string; year: string };
 
-const WORK: Entry[] = EXPERIENCES.map((e) => ({ title: e.role, org: `${e.org}, ${e.location}`, date: e.date, line: e.details[0] }));
-const STUDY: Entry[] = EDUCATION.map((e) => ({
-  title: e.degree,
-  org: e.school,
-  date: e.date,
-  line: (e.details ?? []).find((d): d is string => typeof d === "string") ?? "",
-}));
+const yearOf = (date: string) => date.match(/\d{4}/)?.[0] ?? "";
+const work = (i: number): Entry => {
+  const e = EXPERIENCES[i];
+  return { kind: "Work", title: e.role, org: `${e.org}, ${e.location}`, date: e.date, line: e.details[0], year: yearOf(e.date) };
+};
+const study = (i: number): Entry => {
+  const e = EDUCATION[i];
+  const line = (e.details ?? []).find((d): d is string => typeof d === "string") ?? "";
+  return { kind: "Study", title: e.degree, org: e.school, date: e.date, line, year: yearOf(e.date) };
+};
 
+// Work and study on one line of time, newest start first.
+const ENTRIES: Entry[] = [work(0), work(1), study(0), work(2), study(1)];
 
-/*
- * A row with a big year. With a mouse it fills with colour on hover; on touch
- * screens the row in the middle of the screen fills as you scroll.
- */
-function Row({ entry, color }: { entry: Entry; color: string }) {
+/** Four digits that roll to a new year like a counter. */
+function Odometer({ value }: { value: string }) {
+  return (
+    <span className="display outline-text flex h-[0.84em] overflow-hidden" aria-hidden="true">
+      {value.split("").map((d, i) => (
+        <span
+          key={i}
+          className="flex flex-col transition-transform duration-700 ease-out"
+          style={{ transform: `translateY(-${Number(d) * 10}%)`, transitionDelay: `${i * 60}ms`, height: "8.4em" }}
+        >
+          {"0123456789".split("").map((n) => (
+            <span key={n} className="block h-[0.84em]">
+              {n}
+            </span>
+          ))}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+function Card({ entry, index, active, onActive }: { entry: Entry; index: number; active: boolean; onActive: (i: number) => void }) {
   const ref = useRef<HTMLLIElement>(null);
-  const touch = !useMediaQuery("(hover: hover) and (pointer: fine)");
-  const [active, setActive] = useState(false);
-  const year = entry.date.match(/\d{4}/)?.[0] ?? "";
+  const scrollRef = useScrollVar<HTMLLIElement>();
+  const tilt = index % 2 ? 10 : -10;
 
   useEffect(() => {
-    if (!touch) return setActive(false);
-    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { rootMargin: "-49.5% 0px -49.5% 0px" });
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && onActive(index), { rootMargin: "-49.5% 0px -49.5% 0px" });
     io.observe(ref.current!);
     return () => io.disconnect();
-  }, [touch]);
+  }, [index, onActive]);
 
   return (
     <li
-      ref={ref}
-      data-active={active}
-      className="group relative mb-3 overflow-hidden rounded-[2rem] border border-line"
+      ref={(el) => {
+        ref.current = el;
+        scrollRef(el);
+      }}
+      style={{ "--p": 0.5 } as CSSProperties}
     >
-      <span
-        aria-hidden="true"
-        className="absolute inset-0 origin-bottom scale-y-0 transition-transform duration-500 ease-out group-hover:scale-y-100 group-data-[active=true]:scale-y-100"
-        style={{ backgroundColor: color }}
-      />
-      <div className="relative grid gap-x-10 gap-y-1 px-3 py-6 transition-colors duration-300 group-hover:text-paper-ink group-data-[active=true]:text-paper-ink sm:px-6 md:grid-cols-[minmax(0,15rem)_1fr] md:items-center md:py-9">
-        <p
-          className="display text-[clamp(3.5rem,11vw,8rem)] text-line-strong transition-colors duration-300 group-hover:text-paper-ink group-data-[active=true]:text-paper-ink"
-        >
-          {year}
+      {/* Swings into place as it rises into view. */}
+      <article
+        className={`origin-bottom rounded-[2rem] p-5 text-paper-ink transition-[filter] duration-500 will-change-transform sm:p-8 md:min-h-[19rem] ${
+          active ? "" : "brightness-[0.45] saturate-[0.7]"
+        }`}
+        style={{
+          backgroundColor: PALETTE[index % PALETTE.length],
+          transform: `translateY(calc(max(0, 0.3 - var(--p)) * 260px)) rotate(calc(max(0, 0.3 - var(--p)) * ${tilt * 3}deg))`,
+        }}
+      >
+        <p className="flex items-center justify-between font-mono text-xs uppercase tracking-[0.08em]">
+          <span>{entry.kind}</span>
+          <span>{entry.date}</span>
         </p>
-        <div>
-          <h3 className="display text-[clamp(2rem,4.8vw,4rem)]">{entry.title}</h3>
-          <p className="mt-2 font-medium">
-            {entry.org} <span className="opacity-70">({entry.date})</span>
-          </p>
-          <p className="mt-2 max-w-2xl opacity-80">{entry.line}</p>
-        </div>
-      </div>
+        <h3 className="display mt-8 text-[clamp(2.5rem,6vw,5rem)] sm:mt-12">{entry.title}</h3>
+        <p className="mt-3 text-lg font-medium">{entry.org}</p>
+        <p className="mt-2 max-w-xl text-paper-ink/80">{entry.line}</p>
+      </article>
     </li>
   );
 }
 
+/*
+ * A big year stays pinned and rolls to each entry's year as its card crosses
+ * the middle of the screen.
+ */
 export default function Experience() {
-  return (
-    <>
-      <section id="experience" aria-labelledby="experience-title" className="py-16 sm:py-24">
-        <div className="wrap">
-          <SectionHead id="experience-title" title="Experience" />
-          <ol>
-            {WORK.map((e, i) => (
-              <Row key={e.title} entry={e} color={COLORS[i % COLORS.length]} />
-            ))}
-          </ol>
-        </div>
-      </section>
+  const [active, setActive] = useState(0);
+  const entry = ENTRIES[active];
 
-      <section id="education" aria-labelledby="education-title" className="pb-16 sm:pb-24">
-        <div className="wrap">
-          <SectionHead id="education-title" title="Education" />
-          <ol>
-            {STUDY.map((e, i) => (
-              <Row key={e.title} entry={e} color={COLORS[(i + WORK.length) % COLORS.length]} />
+  return (
+    <section id="experience" aria-labelledby="experience-title" className="py-16 sm:py-24">
+      <div className="wrap">
+        <SectionHead id="experience-title" title="Experience" />
+
+        <div className="md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-12">
+          <div className="sticky top-16 z-10 -mx-4 flex items-end justify-between border-b border-line-strong bg-bg/90 px-4 py-3 backdrop-blur-md sm:-mx-8 sm:px-8 md:top-28 md:mx-0 md:block md:self-start md:border-0 md:bg-transparent md:p-0 md:backdrop-blur-none">
+            <p className="text-[clamp(4.25rem,21vw,6rem)] md:text-[clamp(7rem,15vw,14rem)]">
+              <span className="sr-only">{entry.year}</span>
+              <Odometer value={entry.year} />
+            </p>
+            <p className="pb-1 text-right font-mono text-xs uppercase tracking-[0.08em] text-muted md:mt-5 md:text-left">
+              <span className="text-accent">{entry.kind}</span>
+              <br />
+              {String(active + 1).padStart(2, "0")} / {String(ENTRIES.length).padStart(2, "0")}
+            </p>
+          </div>
+
+          <ol className="mt-6 space-y-5 md:mt-0 md:space-y-8">
+            {ENTRIES.map((e, i) => (
+              <Card key={e.title} entry={e} index={i} active={i === active} onActive={setActive} />
             ))}
           </ol>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

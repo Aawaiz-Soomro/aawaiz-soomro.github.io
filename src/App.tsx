@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Hero from "@/sections/Hero";
+import ScrollLine from "@/components/ScrollLine";
 import Projects from "@/sections/Projects";
 import Fyp from "@/sections/Fyp";
 import Skills from "@/sections/Skills";
@@ -18,7 +19,8 @@ export default function App() {
   }, [hash]);
 
   return (
-    <main>
+    <main className="relative isolate">
+      <ScrollLine />
       <Hero />
       <Projects />
       <Fyp />

@@ -13,12 +13,15 @@ export default function NavBar() {
   const home = pathname === "/";
   const active = useActiveSection(home ? IDS : NONE);
   const [scrolled, setScrolled] = useState(false);
+  // On the home page the hero already carries the signature, so the logo waits until it has scrolled away.
+  const [pastHero, setPastHero] = useState(false);
   const [open, setOpen] = useState(false);
   const barRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 24);
+      setPastHero(window.scrollY > window.innerHeight * 0.55);
       const max = document.documentElement.scrollHeight - window.innerHeight;
       if (barRef.current) barRef.current.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
     };
@@ -51,7 +54,7 @@ export default function NavBar() {
         }`}
       >
         <nav aria-label="Main" className="wrap flex h-16 items-center justify-between gap-6">
-          <Link to="/" aria-label="Home" className="relative z-[60] text-ink transition-colors duration-200 hover:text-accent">
+          <Link to="/" aria-label="Home" className={`relative z-[60] text-ink transition-[color,opacity] duration-300 hover:text-accent ${home && !pastHero ? "pointer-events-none opacity-0" : ""}`}>
             <Signature className="h-9 w-auto" />
           </Link>
 

@@ -18,6 +18,8 @@ function shouldPlayIntro() {
 
 export default function AppRoutes() {
   const [intro, setIntro] = useState(shouldPlayIntro);
+  const [ready, setReady] = useState(() => !intro);
+  const reveal = useCallback(() => setReady(true), []);
   const done = useCallback(() => {
     try {
       sessionStorage.setItem("intro", "1");
@@ -28,14 +30,14 @@ export default function AppRoutes() {
   }, []);
 
   return (
-    <ReadyContext.Provider value={!intro}>
+    <ReadyContext.Provider value={ready}>
       <a
         href="#projects"
         className="sr-only z-[95] rounded-full bg-accent px-4 py-2 font-mono text-sm text-on-accent focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         Skip to content
       </a>
-      {intro && <Preloader onDone={done} />}
+      {intro && <Preloader onReady={reveal} onDone={done} />}
       <NavBar />
       <Routes>
         <Route path="/" element={<App />} />
