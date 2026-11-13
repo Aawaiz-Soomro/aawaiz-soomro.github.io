@@ -4,13 +4,14 @@ import FitLine from "@/components/FitLine";
 import { Fade } from "@/components/Reveal";
 import Signature from "@/components/Signature";
 import { PROFILE, withBase } from "@/data/links";
+import { BLUE, LILAC, MINT, YELLOW } from "@/data/palette";
 import { useInView, useMediaQuery } from "@/lib/hooks";
 
 const LINKS = [
-  { label: "GitHub", handle: "@aawaiz-soomro", href: PROFILE.social.github, icon: Github, color: "#95e6cb" },
-  { label: "LinkedIn", handle: "/in/aawaiz-soomro", href: PROFILE.social.linkedin, icon: Linkedin, color: "#73d0ff" },
-  { label: "Instagram", handle: "@aawaizsoomro", href: PROFILE.social.instagram, icon: Instagram, color: "#d4bfff" },
-  { label: "Résumé", handle: "PDF", href: withBase(PROFILE.resumeUrl)!, icon: FileDown, color: "#ffcc66" },
+  { label: "GitHub", handle: "@aawaiz-soomro", href: PROFILE.social.github, icon: Github, color: MINT },
+  { label: "LinkedIn", handle: "/in/aawaiz-soomro", href: PROFILE.social.linkedin, icon: Linkedin, color: BLUE },
+  { label: "Instagram", handle: "@aawaizsoomro", href: PROFILE.social.instagram, icon: Instagram, color: LILAC },
+  { label: "Résumé", handle: "PDF", href: withBase(PROFILE.resumeUrl)!, icon: FileDown, color: YELLOW },
 ];
 
 export default function Contact() {
@@ -30,7 +31,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="pt-8 sm:pt-12">
+    <section id="contact" aria-labelledby="contact-title" className="pt-16 sm:pt-24">
       <div className="wrap">
         <h2 id="contact-title" ref={ref}>
           {wide ? (

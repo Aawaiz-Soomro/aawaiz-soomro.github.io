@@ -24,7 +24,6 @@ export const PROFILE = {
 
 /** Sections on the home page, in order. Used by the nav and command palette. */
 export const SECTIONS = [
-  { id: "about", label: "About" },
   { id: "projects", label: "Projects" },
   { id: "fyp", label: "FYP" },
   { id: "skills", label: "Skills" },

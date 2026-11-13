@@ -4,7 +4,6 @@ import App from "@/App";
 import ProjectDetail from "@/components/ProjectDetail";
 import NavBar from "@/components/NavBar";
 import Preloader from "@/components/Preloader";
-import Backdrop from "@/components/Backdrop";
 import { ReadyContext } from "@/contexts/ReadyContext";
 
 // The opening plays once per browser session, and never with reduced motion.
@@ -31,12 +30,11 @@ export default function AppRoutes() {
   return (
     <ReadyContext.Provider value={!intro}>
       <a
-        href="#about"
+        href="#projects"
         className="sr-only z-[95] rounded-full bg-accent px-4 py-2 font-mono text-sm text-on-accent focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         Skip to content
       </a>
-      <Backdrop />
       {intro && <Preloader onDone={done} />}
       <NavBar />
       <Routes>

@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SectionHead } from "@/components/Reveal";
 import { EXPERIENCES } from "@/data/experience";
 import { EDUCATION } from "@/data/education";
-import { useMediaQuery, useScrollVar } from "@/lib/hooks";
+import { PALETTE as COLORS } from "@/data/palette";
+import { useMediaQuery } from "@/lib/hooks";
 
 type Entry = { title: string; org: string; date: string; line: string };
 
@@ -14,7 +15,6 @@ const STUDY: Entry[] = EDUCATION.map((e) => ({
   line: (e.details ?? []).find((d): d is string => typeof d === "string") ?? "",
 }));
 
-const COLORS = ["#95e6cb", "#d4bfff", "#ffcc66", "#73d0ff", "#ffad66"];
 
 /*
  * A row with a big year. With a mouse it fills with colour on hover; on touch
@@ -22,7 +22,6 @@ const COLORS = ["#95e6cb", "#d4bfff", "#ffcc66", "#73d0ff", "#ffad66"];
  */
 function Row({ entry, color }: { entry: Entry; color: string }) {
   const ref = useRef<HTMLLIElement>(null);
-  const scrollRef = useScrollVar<HTMLLIElement>();
   const touch = !useMediaQuery("(hover: hover) and (pointer: fine)");
   const [active, setActive] = useState(false);
   const year = entry.date.match(/\d{4}/)?.[0] ?? "";
@@ -36,13 +35,9 @@ function Row({ entry, color }: { entry: Entry; color: string }) {
 
   return (
     <li
-      ref={(el) => {
-        ref.current = el;
-        scrollRef(el);
-      }}
+      ref={ref}
       data-active={active}
-      className="group relative mb-3 overflow-hidden rounded-[1.75rem] border border-line"
-      style={{ "--p": 0.5 } as CSSProperties}
+      className="group relative mb-3 overflow-hidden rounded-[2rem] border border-line"
     >
       <span
         aria-hidden="true"

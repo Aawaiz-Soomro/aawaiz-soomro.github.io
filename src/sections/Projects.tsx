@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { SectionHead } from "@/components/Reveal";
 import { PROJECTS, type Project } from "@/data/projects";
+import { CARD_COLORS } from "@/data/palette";
 import { useReducedMotion } from "@/lib/hooks";
 
-// Ayu Mirage accents, one per card.
-const COLORS = ["#efeadd", "#95e6cb", "#d4bfff", "#ffcc66", "#73d0ff", "#ffad66", "#bae67e", "#f29e74"];
 
 /*
  * Cards pin under the header and stack: each new card slides over the last,
@@ -65,7 +64,7 @@ function ProjectCard({ project: p, index }: { project: Project; index: number })
     <Link
       to={`/projects/${p.slug}`}
       className="group grid min-h-[min(64svh,34rem)] origin-top gap-4 rounded-[2rem] p-4 text-paper-ink will-change-transform active:brightness-95 sm:p-6 md:min-h-[27rem] md:grid-cols-2 md:gap-8"
-      style={{ backgroundColor: COLORS[index % COLORS.length] }}
+      style={{ backgroundColor: CARD_COLORS[index % CARD_COLORS.length] }}
     >
       <div className="grid min-h-40 place-items-center overflow-hidden rounded-3xl bg-white/65 md:order-2">
         {p.thumb && (

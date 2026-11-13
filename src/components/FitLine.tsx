@@ -31,8 +31,11 @@ export default function FitLine({
     const wrap = wrapRef.current!;
     const inner = innerRef.current!;
     const fit = () => {
+      // Measure at full weight, whatever the letters are doing right now.
+      inner.classList.add("measuring");
       inner.style.fontSize = "100px";
       const natural = inner.getBoundingClientRect().width;
+      inner.classList.remove("measuring");
       if (natural > 0) inner.style.fontSize = `${(100 * wrap.clientWidth) / natural}px`;
     };
     fit();

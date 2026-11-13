@@ -49,8 +49,9 @@ export default function Fyp() {
   if (!paper || !project) return null;
 
   return (
-    <section id="fyp" aria-labelledby="fyp-title" className="mx-2 rounded-[2rem] bg-accent py-14 text-on-accent sm:mx-4 sm:py-20">
+    <section id="fyp" aria-labelledby="fyp-title" className="py-16 sm:py-24">
       <div className="wrap">
+       <div className="rounded-[2rem] bg-accent px-4 py-8 text-on-accent sm:px-10 sm:py-12">
         <SectionHead id="fyp-title" title="FYP" />
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-16">
           <div>
@@ -84,13 +85,14 @@ export default function Fyp() {
                   src={withBase(paper.thumb)}
                   alt=""
                   loading="lazy"
-                  className="w-[min(78vw,22rem)] shadow-2xl shadow-black/40 will-change-transform"
+                  className="w-[min(70vw,22rem)] shadow-2xl shadow-black/40 will-change-transform"
                   style={{ transform: "rotate(calc((0.5 - var(--p)) * 28deg)) translateY(calc((0.5 - var(--p)) * 60px))" }}
                 />
               </a>
             </div>
           )}
         </div>
+       </div>
       </div>
     </section>
   );

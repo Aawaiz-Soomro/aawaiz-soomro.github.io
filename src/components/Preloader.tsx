@@ -42,10 +42,10 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 z-[80] grid place-items-center bg-bg transition-transform ease-in-out"
+      className="fixed inset-0 z-[80] bg-bg transition-transform ease-in-out"
       style={{ transitionDuration: `${EXIT}ms`, transform: leaving ? "translateY(-100%)" : "none" }}
     >
-      <Signature draw={drawing} duration={DRAW} delay={150} className="w-[min(74vw,36rem)] -translate-y-[4vh] text-ink" />
+      <Signature draw={drawing} duration={DRAW} delay={150} className="absolute left-1/2 top-[40svh] w-[min(74vw,30rem)] -translate-x-1/2 -translate-y-1/2 text-ink" />
       <span ref={countRef} className="display absolute bottom-6 left-4 text-[clamp(4.5rem,13vw,10rem)] text-accent sm:bottom-8 sm:left-8 lg:left-10">
         000
       </span>

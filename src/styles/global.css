@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #12151c;
+  --bg: #14161c;
   --surface: #191d26;
   --raised: #212631;
   --line: #2a303c;
@@ -47,6 +47,10 @@
   --animate-marquee: marquee 38s linear infinite;
   --animate-grain: grain 0.9s steps(6) infinite;
 
+  @keyframes flood {
+    from { clip-path: circle(0% at var(--x) var(--y)); }
+    to { clip-path: circle(150% at var(--x) var(--y)); }
+  }
   @keyframes letter-in {
     0% { transform: translateY(118%) rotate(10deg); font-variation-settings: "wdth" 62, "wght" 100; }
     50% { transform: translateY(0) rotate(0deg); font-variation-settings: "wdth" 62, "wght" 100; }
@@ -142,9 +146,14 @@
     letter-spacing: -0.005em;
   }
 
+  /* Outlined type: mint on the dark ground, ink inside a colour block. */
   .outline-text {
     color: transparent;
     -webkit-text-stroke: 1.5px var(--accent);
+  }
+  .text-paper-ink .outline-text,
+  .text-on-accent .outline-text {
+    -webkit-text-stroke-color: var(--paper-ink);
   }
 
   /* Small mono label */
@@ -200,6 +209,10 @@
   }
   .letters-done .ltr {
     transform: none;
+  }
+  .measuring .ltr {
+    animation: none !important;
+    font-variation-settings: "wdth" 62, "wght" 900 !important;
   }
   /* One pass of thin-to-heavy, used on tap */
   .ripple .ltr {
