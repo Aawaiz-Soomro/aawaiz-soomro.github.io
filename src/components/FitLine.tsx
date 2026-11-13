@@ -3,8 +3,8 @@ import { useMediaQuery, useReducedMotion } from "@/lib/hooks";
 
 /*
  * One line of display type scaled to fill its container's width.
- * Letters swing up one by one. With a mouse they thin out under the pointer;
- * on touch screens a ripple runs through them instead.
+ * Letters rise thin and ink in to full weight, once. After that they react to
+ * the pointer on hover, or to a tap on touch screens.
  */
 export default function FitLine({
   text,
@@ -25,7 +25,7 @@ export default function FitLine({
   const innerRef = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
   const finePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
-  const [onScreen, setOnScreen] = useState(false);
+  const [phase, setPhase] = useState<"in" | "done">("in");
 
   useLayoutEffect(() => {
     const wrap = wrapRef.current!;
@@ -42,11 +42,22 @@ export default function FitLine({
     return () => ro.disconnect();
   }, [text]);
 
+  // After the one-off entrance, hold the final state so nothing replays.
   useEffect(() => {
-    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting));
-    io.observe(wrapRef.current!);
-    return () => io.disconnect();
-  }, []);
+    if (!show) return;
+    const id = window.setTimeout(() => setPhase("done"), delay + text.length * 48 + 1400);
+    return () => clearTimeout(id);
+  }, [show, delay, text]);
+
+  // On touch screens a tap sends one ripple through the line.
+  const ripple = () => {
+    if (finePointer || reduced || phase !== "done") return;
+    const el = innerRef.current!;
+    el.classList.remove("ripple");
+    void el.offsetWidth;
+    el.classList.add("ripple");
+    window.setTimeout(() => el.classList.remove("ripple"), 850 + text.length * 38);
+  };
 
   useEffect(() => {
     if (reduced || !finePointer) return;
@@ -75,13 +86,12 @@ export default function FitLine({
     };
   }, [reduced, finePointer, text]);
 
-  const wave = show && onScreen && !finePointer;
-
   return (
     <span ref={wrapRef} className={`-my-[0.08em] block w-full overflow-hidden py-[0.08em] ${className}`} style={style}>
       <span
         ref={innerRef}
-        className={`display inline-block whitespace-nowrap ${outline ? "outline-text" : ""} ${show ? "letters-in" : ""} ${wave ? "wave" : ""}`}
+        className={`display inline-block whitespace-nowrap ${outline ? "outline-text" : ""} ${!show ? "" : phase === "done" ? "letters-done" : "letters-in"}`}
+        onPointerDown={ripple}
         style={{ "--d": `${delay}ms` } as CSSProperties}
       >
         <span className="sr-only">{text}</span>

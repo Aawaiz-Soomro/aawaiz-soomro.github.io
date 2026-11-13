@@ -1,76 +1,72 @@
-import { useId, useState } from "react";
-import { Plus } from "lucide-react";
-import { Fade, SectionHead } from "@/components/Reveal";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { SectionHead } from "@/components/Reveal";
 import { EXPERIENCES } from "@/data/experience";
 import { EDUCATION } from "@/data/education";
+import { useMediaQuery, useScrollVar } from "@/lib/hooks";
 
-function Row({
-  index,
-  title,
-  org,
-  date,
-  place,
-  children,
-  defaultOpen = false,
-}: {
-  index: number;
-  title: string;
-  org: string;
-  date: string;
-  place?: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}) {
-  const [open, setOpen] = useState(defaultOpen);
-  const id = useId();
+type Entry = { title: string; org: string; date: string; line: string };
+
+const WORK: Entry[] = EXPERIENCES.map((e) => ({ title: e.role, org: `${e.org}, ${e.location}`, date: e.date, line: e.details[0] }));
+const STUDY: Entry[] = EDUCATION.map((e) => ({
+  title: e.degree,
+  org: e.school,
+  date: e.date,
+  line: (e.details ?? []).find((d): d is string => typeof d === "string") ?? "",
+}));
+
+const COLORS = ["#95e6cb", "#d4bfff", "#ffcc66", "#73d0ff", "#ffad66"];
+
+/*
+ * A row with a big year. With a mouse it fills with colour on hover; on touch
+ * screens the row in the middle of the screen fills as you scroll.
+ */
+function Row({ entry, color }: { entry: Entry; color: string }) {
+  const ref = useRef<HTMLLIElement>(null);
+  const scrollRef = useScrollVar<HTMLLIElement>();
+  const touch = !useMediaQuery("(hover: hover) and (pointer: fine)");
+  const [active, setActive] = useState(false);
+  const year = entry.date.match(/\d{4}/)?.[0] ?? "";
+
+  useEffect(() => {
+    if (!touch) return setActive(false);
+    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { rootMargin: "-49.5% 0px -49.5% 0px" });
+    io.observe(ref.current!);
+    return () => io.disconnect();
+  }, [touch]);
+
   return (
-    <li className="border-b border-line">
-      <Fade delay={index * 60}>
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls={id}
-          onClick={() => setOpen((o) => !o)}
-          className="group grid w-full grid-cols-[1fr_auto] items-center gap-x-6 gap-y-2 px-2 py-6 text-left transition-colors duration-300 hover:bg-surface sm:px-5 md:grid-cols-[11rem_1fr_auto] md:py-8"
+    <li
+      ref={(el) => {
+        ref.current = el;
+        scrollRef(el);
+      }}
+      data-active={active}
+      className="group relative overflow-hidden border-b border-line"
+      style={{ "--p": 0.5 } as CSSProperties}
+    >
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 origin-bottom scale-y-0 transition-transform duration-500 ease-out group-hover:scale-y-100 group-data-[active=true]:scale-y-100"
+        style={{ backgroundColor: color }}
+      />
+      <div className="relative grid gap-x-10 gap-y-1 px-3 py-6 transition-colors duration-300 group-hover:text-paper-ink group-data-[active=true]:text-paper-ink sm:px-6 md:grid-cols-[minmax(0,15rem)_1fr] md:items-center md:py-9">
+        <p
+          className="display text-[clamp(3.5rem,11vw,8rem)] text-line-strong transition-colors duration-300 will-change-transform group-hover:text-paper-ink group-data-[active=true]:text-paper-ink"
+          style={{ transform: "translateX(calc(max(0, 0.45 - var(--p)) * -60vw))" }}
         >
-          <span className="col-span-2 text-sm text-muted md:col-span-1">{date}</span>
-          <span>
-            <span className="display block text-[clamp(2rem,4.6vw,3.75rem)] transition-colors duration-300 group-hover:text-accent">{title}</span>
-            <span className="mt-2 block text-accent">
-              {org}
-              {place && <span className="text-muted">, {place}</span>}
-            </span>
-          </span>
-          <span
-            aria-hidden="true"
-            className={`grid size-11 place-items-center rounded-full border border-line-strong transition-[transform,background-color,color] duration-500 ease-out ${
-              open ? "rotate-45 bg-accent text-on-accent" : "text-ink"
-            }`}
-          >
-            <Plus className="size-5" />
-          </span>
-        </button>
-        <div id={id} className={`grid transition-[grid-template-rows] duration-500 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-          <div className="overflow-hidden" inert={!open}>
-            <div className="px-2 pb-8 sm:px-5 md:pl-[calc(11rem+2.75rem)]">{children}</div>
-          </div>
+          {year}
+        </p>
+        <div>
+          <h3 className="display text-[clamp(2rem,4.8vw,4rem)]">{entry.title}</h3>
+          <p className="mt-2 font-medium">
+            {entry.org} <span className="opacity-70">({entry.date})</span>
+          </p>
+          <p className="mt-2 max-w-2xl opacity-80">{entry.line}</p>
         </div>
-      </Fade>
+      </div>
     </li>
   );
 }
-
-const Points = ({ items }: { items: string[] }) => (
-  <ul className="max-w-2xl space-y-2.5 text-lg leading-relaxed text-muted">
-    {items.map((p) => (
-      <li key={p} className="relative pl-6 before:absolute before:left-0 before:top-[0.7em] before:h-px before:w-3 before:bg-accent">
-        {p}
-      </li>
-    ))}
-  </ul>
-);
-
-const Chips = ({ items }: { items: string[] }) => <p className="mt-4 text-muted">{items.join(", ")}</p>;
 
 export default function Experience() {
   return (
@@ -79,36 +75,20 @@ export default function Experience() {
         <div className="wrap">
           <SectionHead id="experience-title" title="Experience" />
           <ol className="border-t border-line">
-            {EXPERIENCES.map((e, i) => (
-              <Row key={e.role} index={i} title={e.role} org={e.org} date={e.date} place={e.location}>
-                <Points items={e.details} />
-                {e.skills && <Chips items={e.skills} />}
-              </Row>
+            {WORK.map((e, i) => (
+              <Row key={e.title} entry={e} color={COLORS[i % COLORS.length]} />
             ))}
           </ol>
         </div>
       </section>
 
-      <section id="education" aria-labelledby="education-title" className="pb-24 sm:pb-32">
+      <section id="education" aria-labelledby="education-title" className="pb-28 sm:pb-36">
         <div className="wrap">
           <SectionHead id="education-title" title="Education" />
           <ol className="border-t border-line">
-            {EDUCATION.map((e, i) => {
-              const details = e.details ?? [];
-              return (
-                <Row key={e.school} index={i} title={e.degree} org={e.school} date={e.date}>
-                  <Points items={details.filter((d): d is string => typeof d === "string")} />
-                  {details
-                    .filter((d): d is { title: string; points: string[] } => typeof d !== "string")
-                    .map((g) => (
-                      <div key={g.title} className="mt-6">
-                        <p className="font-medium text-ink">{g.title}</p>
-                        <Chips items={g.points} />
-                      </div>
-                    ))}
-                </Row>
-              );
-            })}
+            {STUDY.map((e, i) => (
+              <Row key={e.title} entry={e} color={COLORS[(i + WORK.length) % COLORS.length]} />
+            ))}
           </ol>
         </div>
       </section>

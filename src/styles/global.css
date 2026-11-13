@@ -47,9 +47,14 @@
   --animate-marquee: marquee 38s linear infinite;
   --animate-grain: grain 0.9s steps(6) infinite;
 
-  @keyframes wave {
-    0%, 26%, 100% { font-variation-settings: "wdth" 62, "wght" 900; }
-    13% { font-variation-settings: "wdth" 62, "wght" 180; }
+  @keyframes letter-in {
+    0% { transform: translateY(118%) rotate(10deg); font-variation-settings: "wdth" 62, "wght" 100; }
+    50% { transform: translateY(0) rotate(0deg); font-variation-settings: "wdth" 62, "wght" 100; }
+    100% { transform: none; font-variation-settings: "wdth" 62, "wght" 900; }
+  }
+  @keyframes ripple {
+    0%, 100% { font-variation-settings: "wdth" 62, "wght" 900; }
+    45% { font-variation-settings: "wdth" 62, "wght" 140; }
   }
 
   @keyframes blink {
@@ -179,21 +184,27 @@
     background-color: var(--paper);
   }
 
-  /* Letters that swing up one by one when a parent gets .letters-in */
+  /*
+   * Display letters. They rise thin and then ink in to full weight, once,
+   * when a parent gets .letters-in. .letters-done holds the final state.
+   */
   .ltr {
     display: inline-block;
-    transform: translateY(115%) rotate(9deg);
-    transform-origin: left bottom;
-    transition: transform 0.95s var(--ease-out) calc(var(--d, 0ms) + var(--i) * 38ms),
-      font-variation-settings 0.3s ease-out;
+    transform: translateY(118%);
+    transition: font-variation-settings 0.3s ease-out;
   }
   .letters-in .ltr {
     transform: none;
+    animation: letter-in 1.3s var(--ease-out) backwards;
+    animation-delay: calc(var(--d, 0ms) + var(--i) * 48ms);
   }
-  /* A thin-to-heavy ripple that runs through a line of letters */
-  .wave .ltr {
-    animation: wave 4.6s ease-in-out infinite;
-    animation-delay: calc(var(--i) * 95ms + 1.4s);
+  .letters-done .ltr {
+    transform: none;
+  }
+  /* One pass of thin-to-heavy, used on tap */
+  .ripple .ltr {
+    animation: ripple 0.85s ease-in-out;
+    animation-delay: calc(var(--i) * 38ms);
   }
 
   .no-scrollbar {

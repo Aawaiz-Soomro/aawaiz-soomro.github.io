@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Wordmark from "@/components/Wordmark";
+import Signature from "@/components/Signature";
 import { PROFILE, SECTIONS } from "@/data/links";
 import { useActiveSection } from "@/lib/hooks";
 import { scrollToSection } from "@/lib/scroll";
@@ -52,7 +52,7 @@ export default function NavBar() {
       >
         <nav aria-label="Main" className="wrap flex h-16 items-center justify-between gap-6">
           <Link to="/" aria-label="Home" className="relative z-[60] text-ink transition-colors duration-200 hover:text-accent">
-            <Wordmark className="h-9" />
+            <Signature className="h-9 w-auto" />
           </Link>
 
           <ul className="hidden items-center gap-1 lg:flex">

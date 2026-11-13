@@ -5,11 +5,11 @@ It serves as a central place to highlight my projects, research, and experiences
 
 ## 🎨 Design
 
-- **Opening**: grain assembles into my signature while a counter runs to 100, then the page lifts in. Plays once per session and is skipped with reduced motion.
-- **Hero**: a slow WebGL noise field that follows the pointer, with my name set in heavy condensed type whose letters thin out under the cursor.
-- **Type**: Archivo (variable width and weight) for display and body, Fira Code for small bracketed labels.
-- **Color**: deep slate with the mint accent from the Ayu Mirage palette, cream "paper" cards for projects, and film grain over everything.
-- **Projects**: a drag/swipe carousel of cards; each opens its own page.
+- **Signature**: traced from my handwriting into vector strokes (`src/data/signature.ts`), so it can be written out stroke by stroke in the opening and at the end of the page.
+- **Headings**: Archivo variable font. Letters rise thin and ink in to full weight once, then react to the pointer (or a tap).
+- **Hero**: a WebGL noise field with a light that follows the pointer.
+- **Projects**: stacking cards in Ayu Mirage accent colours. **Skills**: scroll-reactive rows. **Experience**: rows that fill with colour.
+- Motion respects `prefers-reduced-motion`.
 
 ## ⚡ Tech Stack
 
