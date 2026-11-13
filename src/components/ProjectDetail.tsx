@@ -28,9 +28,9 @@ export default function ProjectDetail() {
   if (!project) {
     return (
       <main className="wrap pb-24 pt-40">
-        <p className="kicker text-signal">404</p>
-        <h1 className="mt-3 font-mono text-5xl font-bold tracking-tight">No project called “{slug}”.</h1>
-        <Link to="/#work" className="mt-8 inline-flex items-center gap-2 font-mono text-accent-ink hover:underline">
+        <p className="tag text-accent">404</p>
+        <h1 className="mt-3 display text-6xl">No project called “{slug}”.</h1>
+        <Link to="/#projects" className="mt-8 inline-flex items-center gap-2 font-mono text-accent-ink hover:underline">
           <ArrowLeft className="size-4" /> See all projects
         </Link>
       </main>
@@ -45,22 +45,22 @@ export default function ProjectDetail() {
     <main className="pb-0 pt-28 sm:pt-36">
       <article className="wrap">
         <Link
-          to="/#work"
+          to="/#projects"
           className="group inline-flex items-center gap-2 font-mono text-sm text-muted transition-colors hover:text-ink"
         >
           <ArrowLeft className="size-4 transition-transform duration-200 ease-out group-hover:-translate-x-0.5" />
-          ~/work
+          All projects
         </Link>
 
         <header className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-end">
           <div>
-            <h1 className="font-mono text-[clamp(2.75rem,8vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.045em]">
+            <h1 className="display text-[clamp(3.5rem,12vw,10rem)]">
               {project.title}
             </h1>
             <p className="mt-6 max-w-2xl text-xl leading-snug text-muted sm:text-2xl">{project.blurb}</p>
           </div>
 
-          <dl className="grid grid-cols-[6rem_1fr] gap-x-4 gap-y-3 border-t border-line pt-6 font-mono text-sm">
+          <dl className="grid grid-cols-[6rem_1fr] gap-x-4 gap-y-3 border-t border-line pt-6 font-mono text-xs uppercase tracking-[0.06em]">
             {project.status && (
               <>
                 <dt className="text-faint">status</dt>
@@ -98,7 +98,7 @@ export default function ProjectDetail() {
           </dl>
         </header>
 
-        <div className="mt-12 overflow-hidden rounded-2xl border border-line bg-white">
+        <div className="paper-grid mt-12 overflow-hidden rounded-[1.75rem]">
           {project.youtubeVideo ? (
             <div className="aspect-video w-full bg-black">
               <iframe
@@ -121,7 +121,7 @@ export default function ProjectDetail() {
             />
           ) : project.thumb ? (
             <img
-              className="h-[clamp(16rem,45vw,32rem)] w-full object-contain p-6"
+              className="h-[clamp(16rem,45vw,32rem)] w-full object-contain p-8 mix-blend-multiply"
               src={project.thumb}
               srcSet={project.imageSrcSet}
               sizes="(min-width: 1400px) 1300px, 100vw"
@@ -135,7 +135,7 @@ export default function ProjectDetail() {
             {project.stats.map((s) => (
               <div key={s.label}>
                 <dt className="sr-only">{s.label}</dt>
-                <dd className="font-mono text-[clamp(1.5rem,4vw,3rem)] font-semibold leading-none tracking-tight">{s.value}</dd>
+                <dd className="display text-[clamp(2.25rem,5vw,4.5rem)] text-accent">{s.value}</dd>
                 <dd className="mt-2 text-sm text-muted">{s.label}</dd>
               </div>
             ))}
@@ -169,8 +169,8 @@ export default function ProjectDetail() {
       >
         <div className="wrap flex items-end justify-between gap-6">
           <div>
-            <p className="kicker">Next project</p>
-            <p className="mt-3 font-mono text-[clamp(2rem,6vw,4.5rem)] font-bold leading-none tracking-[-0.04em] transition-colors group-hover:text-accent-ink">
+            <p className="tag text-accent">Next project</p>
+            <p className="mt-3 display text-[clamp(3rem,9vw,8rem)] transition-colors duration-300 group-hover:text-accent">
               {next.title}
             </p>
           </div>

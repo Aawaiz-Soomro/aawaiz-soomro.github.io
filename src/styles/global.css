@@ -1,55 +1,23 @@
 @import "tailwindcss";
 
-/* Theme is switched with a class on <html>: "dark" (default) or "light". */
-@custom-variant dark (&:where(.dark, .dark *));
+:root {
+  --bg: #12151c;
+  --surface: #191d26;
+  --raised: #212631;
+  --line: #2a303c;
+  --line-strong: #3d4554;
 
-/* ------------------------------------------------------------------
-   Raw values. Ayu Mirage (dark) and Ayu Light, each color with one job.
-   Every text color here is checked to reach 4.5:1 on bg and surface.
-   ------------------------------------------------------------------ */
-:root,
-.dark {
-  --bg: #171b24;
-  --surface: #1f2430;
-  --raised: #262d3b;
-  --line: #2a3141;
-  --line-strong: #3a4356;
+  --ink: #ece8dd;
+  --muted: #a2a9b6;
+  --faint: #7f8796;
 
-  --ink: #e6e4dc;
-  --muted: #a6adbb;
-  --faint: #7d8697; /* large or decorative text only */
+  --accent: #95e6cb; /* the mint from the original site */
+  --on-accent: #12151c;
+  --ok: #95e6cb;
 
-  --accent: #ffcc66; /* fills: buttons, active states */
-  --accent-ink: #ffcc66; /* accent used as text on bg */
-  --on-accent: #171b24;
-  --signal: #5ccfe6; /* the vector field and data readouts */
-  --ok: #87d96c;
-  --warn: #f29e74;
-
-  --scrim: 23 27 36; /* bg as rgb, for gradients over the field */
+  --paper: #efeadd; /* project cards */
+  --paper-ink: #171a21;
   color-scheme: dark;
-}
-
-.light {
-  --bg: #fbfaf7;
-  --surface: #f1efe9;
-  --raised: #ffffff;
-  --line: #e4e1d8;
-  --line-strong: #c8c4b8;
-
-  --ink: #1d222c;
-  --muted: #5a6270;
-  --faint: #7a818c;
-
-  --accent: #ffb84d;
-  --accent-ink: #9a5a00;
-  --on-accent: #1d222c;
-  --signal: #08708a;
-  --ok: #356d12;
-  --warn: #a8441b;
-
-  --scrim: 251 250 247;
-  color-scheme: light;
 }
 
 @theme inline {
@@ -62,43 +30,52 @@
   --color-muted: var(--muted);
   --color-faint: var(--faint);
   --color-accent: var(--accent);
-  --color-accent-ink: var(--accent-ink);
+  --color-accent-ink: var(--accent);
   --color-on-accent: var(--on-accent);
-  --color-signal: var(--signal);
   --color-ok: var(--ok);
-  --color-warn: var(--warn);
+  --color-paper: var(--paper);
+  --color-paper-ink: var(--paper-ink);
 }
 
 @theme {
-  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Fira Code", ui-monospace, Menlo, monospace;
-
-  /* Type scale: 14 / 16 / 20 / 28 / 40 / 64, plus a fluid display size */
-  --text-display: clamp(3.25rem, 10.5vw, 9.5rem);
-  --text-display--line-height: 0.92;
-  --text-display--letter-spacing: -0.045em;
-
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
 
   --animate-blink: blink 1.1s steps(1) infinite;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-grain: grain 0.9s steps(6) infinite;
+
   @keyframes blink {
     50% {
       opacity: 0;
     }
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-3%, 2%); }
+    40% { transform: translate(2%, -3%); }
+    60% { transform: translate(-2%, -2%); }
+    80% { transform: translate(3%, 3%); }
+    100% { transform: translate(0, 0); }
   }
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 4rem;
+    scroll-padding-top: 4.5rem;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
     @apply bg-bg font-sans text-ink antialiased;
-    font-feature-settings: "ss01", "cv11";
     overflow-x: hidden;
   }
 
@@ -113,8 +90,17 @@
     border-radius: 4px;
   }
 
-  .font-mono {
-    font-variant-ligatures: contextual;
+  /* Film grain over the whole site */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -10%;
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0.11;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.1 -0.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: var(--animate-grain);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -133,27 +119,78 @@
 }
 
 @layer components {
-  /* Page gutter shared by every section */
   .wrap {
-    @apply mx-auto w-full max-w-[88rem] px-4 sm:px-8 lg:px-12;
+    @apply mx-auto w-full max-w-[96rem] px-4 sm:px-8 lg:px-10;
   }
 
-  /* Small mono label used for section kickers and metadata */
-  .kicker {
-    @apply font-mono text-sm text-muted;
+  /* Heavy condensed display type */
+  .display {
+    font-family: var(--font-sans);
+    font-variation-settings: "wdth" 62, "wght" 900;
+    text-transform: uppercase;
+    line-height: 0.84;
+    letter-spacing: -0.005em;
   }
-}
 
-/* Smooth swap when the project filter changes (View Transitions API) */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 220ms;
-  animation-timing-function: var(--ease-out);
-}
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent);
+  }
 
-@keyframes rise {
-  from {
+  /* Small bracketed mono label: [LIKE THIS] */
+  .tag {
+    @apply font-mono text-xs uppercase tracking-[0.08em];
+  }
+  .tag::before {
+    content: "[";
+    margin-right: 0.35em;
+    opacity: 0.6;
+  }
+  .tag::after {
+    content: "]";
+    margin-left: 0.35em;
+    opacity: 0.6;
+  }
+
+  /* Line that slides up out of a clip when it gets the .in class */
+  .rise {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.08em;
+    margin-block: -0.08em;
+  }
+  .rise > * {
+    display: block;
+    transform: translateY(115%);
+    transition: transform 1s var(--ease-out);
+    transition-delay: var(--d, 0ms);
+  }
+  .rise.in > * {
+    transform: none;
+  }
+
+  .fade {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
+    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    transition-delay: var(--d, 0ms);
+  }
+  .fade.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .paper-grid {
+    background-color: var(--paper);
+    background-image: linear-gradient(rgb(23 26 33 / 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(23 26 33 / 0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }

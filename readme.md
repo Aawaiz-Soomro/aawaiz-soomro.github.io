@@ -5,12 +5,11 @@ It serves as a central place to highlight my projects, research, and experiences
 
 ## 🎨 Design
 
-The site is built around one idea: it behaves like the systems I build.
-
-- **Vector field hero**: every project and skill is a point, placed by similarity. The cursor is a nearest-neighbour query: the closest points connect to it and show a similarity score, and clicking a project point opens it. With no cursor, the query drifts on its own. It respects reduced motion and pauses when off screen (`src/components/VectorField.tsx`).
-- **Command menu**: press `⌘K`, `Ctrl+K` or `/` anywhere to jump to a section, open a project, copy my email or switch theme.
-- **Color**: Ayu Mirage (dark) and Ayu Light, each color with one job: yellow for actions, cyan for data. All text meets 4.5:1 contrast. Tokens live in `src/styles/global.css`.
-- **Type**: Fira Code for headings and labels, Instrument Sans for reading.
+- **Opening**: grain assembles into my signature while a counter runs to 100, then the page lifts in. Plays once per session and is skipped with reduced motion.
+- **Hero**: a slow WebGL noise field that follows the pointer, with my name set in heavy condensed type whose letters thin out under the cursor.
+- **Type**: Archivo (variable width and weight) for display and body, Fira Code for small bracketed labels.
+- **Color**: deep slate with the mint accent from the Ayu Mirage palette, cream "paper" cards for projects, and film grain over everything.
+- **Projects**: a drag/swipe carousel of cards; each opens its own page.
 
 ## ⚡ Tech Stack
 

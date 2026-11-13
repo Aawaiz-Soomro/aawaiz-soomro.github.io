@@ -47,7 +47,7 @@ export default defineConfig({
       },
     }),
     WebfontDownload([
-      'https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap'
+      'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Fira+Code:wght@400;500&display=swap'
     ]),
   ],
   base: "/",

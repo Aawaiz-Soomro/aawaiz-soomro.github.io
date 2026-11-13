@@ -92,3 +92,33 @@ export function useActiveSection(ids: string[]) {
   }, [ids]);
   return active;
 }
+
+/** Adds true once the element has scrolled into view. */
+export function useInView<T extends Element>(margin = "0px 0px -12% 0px") {
+  const [el, setEl] = useState<T | null>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    if (!el || seen) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) setSeen(true);
+      },
+      { rootMargin: margin }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [el, seen, margin]);
+  return [setEl, seen] as const;
+}
+
+export function useMediaQuery(query: string) {
+  const [match, setMatch] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const onChange = () => setMatch(mql.matches);
+    onChange();
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, [query]);
+  return match;
+}

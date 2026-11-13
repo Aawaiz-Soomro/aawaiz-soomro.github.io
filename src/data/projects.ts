@@ -21,7 +21,6 @@ import taskFlowSrcSet from '@/media/Task-Flow/Task-Flow-Logo.png?as=srcset&w=300
 import tetrisThumb from '@/media/Modified-tetris/Modified-Tetris-Logo.png?w=600&format=webp';
 import tetrisSrcSet from '@/media/Modified-tetris/Modified-Tetris-Logo.png?as=srcset&w=300;600;900&format=webp';
 
-import type { Cluster } from '@/data/skills';
 import influenzaThumb from '@/media/AI-Powered-Influencer-MarketPlace/Influenza_Logo.png?w=900&format=webp';
 
 export type Project = {
@@ -42,8 +41,6 @@ export type Project = {
   body?: string;
   gallery?: string[];
   objectFit?: 'contain' | 'cover';
-  /** Where the project sits in the hero field: weights per cluster. */
-  clusters: Partial<Record<Cluster, number>>;
   featured?: boolean;
   stats?: { value: string; label: string }[];
 
@@ -54,7 +51,6 @@ export const PROJECTS: Project[] = [
   {
     slug: "influenza",
     featured: true,
-    clusters: { ai: 0.55, backend: 0.45 },
     stats: [
       { value: "9.5M", label: "Instagram posts embedded" },
       { value: "33K", label: "influencers profiled" },
@@ -76,7 +72,6 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "karachi-transit-guide",
-    clusters: { web: 1 },
     title: "Karachi Transit Guide",
     blurb: "A comprehensive transit guide for Karachi, helping commuters navigate the city's public transport system.",
     tags: ["React", "Vercel", "Web App", "Frontend", "UI/UX"],
@@ -95,7 +90,6 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "crypto-price-predictor",
-    clusters: { ai: 0.55, web: 0.45 },
     title: "Crypto Price Predictor AI",
     blurb: "AI-powered application for predicting cryptocurrency prices using the Gemini API.",
     tags: ["Node.js", "Gemini API", "AI/ML", "Predictive Analytics"],
@@ -113,7 +107,6 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "focus-sentinel",
-    clusters: { ai: 0.75, systems: 0.25 },
     title: "Focus Sentinel",
     blurb: "Focus Sentinel is a desktop prototype that combines focus sessions, phone/website distraction alerts, and wellbeing heuristics (SMI/FOI).",
     tags: ["Python", "PyQT5 UI", "OpenCV", "MediaPipe", "YOLO", "Computer Vision"],
@@ -133,7 +126,6 @@ export const PROJECTS: Project[] = [
   // University Projects
   {
     slug: "four-bishops-ai",
-    clusters: { ai: 0.45, systems: 0.55 },
     title: "FourBishops-AI",
     blurb: "A chess variant engine exploring a bishop-heavy board composition with custom evaluation heuristics.",
     tags: ["Python", "AI/ML", "Chess", "python-chess", "Minimax", "Alpha-Beta Pruning"],
@@ -151,7 +143,6 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "libradb",
-    clusters: { backend: 0.8, web: 0.2 },
     title: "LibraDB",
     blurb: "A Library Management System built with Flask and SQLite, featuring role-aware portals and librarian approvals.",
     tags: ["Python", "Flask", "SQLite", "Web App", "Backend Development", "Database Design"],
@@ -170,7 +161,6 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "taskflow",
-    clusters: { systems: 1 },
     title: "TaskFlow",
     blurb: "A C++ task management system built with OOP principles, offering tagging, team management, and alerts.",
     tags: ["C++", "OOP", "System Design", "Data Structures", "File I/O"],
@@ -188,7 +178,6 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "tetris-sfml",
-    clusters: { systems: 0.85, tools: 0.15 },
     title: "Tetris (SFML)",
     blurb: "A classic Tetris game implementation using C++ and the SFML library.",
     tags: ["C++", "SFML", "Game Dev", "Graphics Programming", "Event Handling"],

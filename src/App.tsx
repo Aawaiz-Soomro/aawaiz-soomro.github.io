@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Hero from "@/sections/Hero";
-import Work from "@/sections/Work";
-import Stack from "@/sections/Stack";
-import Timeline from "@/sections/Timeline";
+import About, { Marquee } from "@/sections/About";
+import Projects from "@/sections/Projects";
+import Fyp from "@/sections/Fyp";
+import Skills from "@/sections/Skills";
+import Experience from "@/sections/Experience";
 import Contact from "@/sections/Contact";
 
 export default function App() {
@@ -19,9 +21,12 @@ export default function App() {
   return (
     <main>
       <Hero />
-      <Work />
-      <Stack />
-      <Timeline />
+      <Marquee />
+      <About />
+      <Projects />
+      <Fyp />
+      <Skills />
+      <Experience />
       <Contact />
     </main>
   );
