@@ -7,7 +7,7 @@ It serves as a central place to highlight my projects, research, and experiences
 
 A flat dark ground, Ayu Mirage accent colours (`src/data/palette.ts`), and heavy condensed type (Archivo variable).
 
-- **Hero**: my portrait as about 8,000 dots (`src/components/PortraitField.tsx`, data baked into `public/portrait.bin`). They fly in and assemble, sway slightly as if in 3D, flee from the pointer or a finger, burst on a tap, and scatter as the page scrolls.
+- **Hero**: a halftone of my face (`src/components/PortraitField.tsx`, data baked into `public/portrait.bin`). Every dot is one colour and only its size carries light and dark, so the face has no outline. The dots fly in and assemble, sway slightly by depth, flee from the pointer or a finger, burst on a tap, and scatter as the page scrolls.
 - **Pen line**: one thin line draws itself down the page behind everything as you scroll.
 - **Projects**: stacking cards. **Skills**: scroll-reactive rows of outlined type.
 - **Experience / Education**: big outlined titles; colour sweeps across each one like ink as it reaches the middle of the screen.

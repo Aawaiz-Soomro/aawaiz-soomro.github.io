@@ -3,17 +3,19 @@ import { withBase } from "@/data/links";
 import { useReducedMotion } from "@/lib/hooks";
 
 /*
- * The hero portrait: my photo as a few thousand dots (baked into
- * public/portrait.bin: position, brightness and a depth value per dot).
+ * The hero portrait: a halftone of my face (baked into public/portrait.bin:
+ * position, brightness and a depth value per dot). Every dot is the same
+ * colour; only its size carries light and dark, and the dark areas are left
+ * as bare background, so the face has no outline and sits in the page.
  *
  * The dots fly in and assemble. Brighter areas sit "closer", so shifting dots
  * by depth makes the face turn slightly: it follows the pointer, or sways on
  * its own on touch screens. Dots flee from a moving pointer or finger, a tap
  * sends a shockwave through them, and they scatter as the page scrolls away.
  */
-const COLS = 104; // grid width used when baking
-const INK = [236, 232, 221];
-const BUCKETS = 8;
+const COLS = 78; // grid width used when baking
+const INK = "236,232,221";
+const DUST = 160; // loose dots drifting around the portrait
 
 export default function PortraitField({ active, floorRef }: { active: boolean; floorRef: RefObject<HTMLElement | null> }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -33,15 +35,14 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
       .then((buf) => {
         if (cancelled) return;
         const head = new Uint16Array(buf, 0, 2);
-        const n = head[0];
+        const m = head[0]; // portrait dots
+        const n = m + DUST;
         const aspect = head[1] / 1000;
-        const nx = new Uint16Array(buf, 4, n);
-        const ny = new Uint16Array(buf, 4 + n * 2, n);
-        const lumRaw = new Uint8Array(buf, 4 + n * 4, n);
-        const depRaw = new Uint8Array(buf, 4 + n * 5, n);
+        const nx = new Uint16Array(buf, 4, m);
+        const ny = new Uint16Array(buf, 4 + m * 2, m);
+        const lumRaw = new Uint8Array(buf, 4 + m * 4, m);
+        const depRaw = new Uint8Array(buf, 4 + m * 5, m);
 
-        // Draw order: by brightness bucket, so each bucket is one fill.
-        const order = Array.from({ length: n }, (_, i) => i).sort((a, b) => lumRaw[a] - lumRaw[b]);
         const hx = new Float32Array(n);
         const hy = new Float32Array(n);
         const px = new Float32Array(n);
@@ -53,9 +54,17 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
         const delay = new Float32Array(n);
         const dirX = new Float32Array(n);
         const dirY = new Float32Array(n);
+        const ux = new Float32Array(n);
+        const uy = new Float32Array(n);
         for (let i = 0; i < n; i++) {
-          lum[i] = lumRaw[i] / 255;
-          dep[i] = depRaw[i] / 255 - 0.5;
+          if (i < m) {
+            lum[i] = lumRaw[i] / 255;
+            dep[i] = depRaw[i] / 255 - 0.5;
+          } else {
+            lum[i] = 0.1 + Math.random() * 0.22;
+            ux[i] = Math.random();
+            uy[i] = Math.random();
+          }
           const a = Math.random() * Math.PI * 2;
           dirX[i] = Math.cos(a);
           dirY[i] = Math.sin(a);
@@ -69,33 +78,43 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
         let started = 0;
         let raf = 0;
         let visible = true;
+        // Full sharpness by default; stepped down once if the device cannot keep up.
+        let dprCap = 3;
+        let slow = 0;
+        let frames = 0;
+        let prev = 0;
         const pointer = { x: -9999, y: -9999, live: false, fine: false, t: 0 };
         const tilt = { x: 0, y: 0 };
 
         const layout = () => {
           const rect = host.getBoundingClientRect();
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const dpr = Math.min(window.devicePixelRatio || 1, dprCap);
           W = rect.width;
           H = rect.height;
           canvas.width = Math.round(W * dpr);
           canvas.height = Math.round(H * dpr);
           ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
           // The portrait fills the space above the name and sinks a little behind it.
-          const top = 76;
+          const top = 72;
           const floor = floorRef.current ? floorRef.current.getBoundingClientRect().top - rect.top : H * 0.6;
-          const boxH = Math.max(160, (floor - top) / 0.84);
+          const boxH = Math.max(160, (floor - top) / 0.86);
           boxW = Math.min(boxH / aspect, W * 0.96);
           const bx = (W - boxW) / 2;
           cell = boxW / COLS;
           for (let i = 0; i < n; i++) {
-            hx[i] = bx + (nx[i] / 65535) * boxW;
-            hy[i] = top + (ny[i] / 65535) * boxW * aspect;
+            if (i < m) {
+              hx[i] = bx + (nx[i] / 65535) * boxW;
+              hy[i] = top + (ny[i] / 65535) * boxW * aspect;
+            } else {
+              hx[i] = ux[i] * W;
+              hy[i] = uy[i] * H;
+            }
             if (!placed) {
               // Start scattered; dots nearer the middle arrive first.
               const far = 0.4 + Math.random() * 0.9;
               px[i] = hx[i] + dirX[i] * far * Math.max(W, H) * 0.7;
               py[i] = hy[i] + dirY[i] * far * Math.max(W, H) * 0.7;
-              delay[i] = Math.hypot(nx[i] / 65535 - 0.5, ny[i] / 65535 - 0.42) * 1100 + Math.random() * 350;
+              delay[i] = i < m ? Math.hypot(nx[i] / 65535 - 0.5, ny[i] / 65535 - 0.45) * 1100 + Math.random() * 350 : 600 + Math.random() * 1200;
             }
           }
           placed = true;
@@ -109,6 +128,17 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
           }
           if (!started) started = now;
           const t = now - started;
+          if (dprCap > 2 && t > 3200 && prev) {
+            frames++;
+            if (now - prev > 26) slow++;
+            if (frames === 90) {
+              if (slow > 45) {
+                dprCap = 2;
+                layout();
+              } else frames = slow = 0;
+            }
+          }
+          prev = now;
           const scroll = Math.min(1, Math.max(0, window.scrollY / Math.max(1, H)));
           const scatter = Math.pow(scroll, 1.4) * Math.max(W, 500) * 0.9;
 
@@ -121,20 +151,24 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
           }
           tilt.x += (tx - tilt.x) * 0.06;
           tilt.y += (ty - tilt.y) * 0.06;
-          const amp = boxW * 0.032;
+          const amp = boxW * 0.03;
           const reach = Math.max(70, boxW * 0.2);
           const reach2 = reach * reach;
           const fleeing = pointer.live && now - pointer.t < 900;
 
           ctx.clearRect(0, 0, W, H);
           const moved: number[] = [];
-          let bucket = -1;
-          let open = false;
-          for (let k = 0; k < n; k++) {
-            const i = order[k];
+          ctx.fillStyle = `rgba(${INK},${(1 - Math.min(1, scroll * 1.5)).toFixed(3)})`;
+          ctx.beginPath();
+          for (let i = 0; i < n; i++) {
             if (!reduced) {
-              const goalX = hx[i] + dep[i] * tilt.x * amp + dirX[i] * scatter;
-              const goalY = hy[i] + dep[i] * tilt.y * amp + dirY[i] * scatter - scatter * 0.35;
+              let goalX = hx[i] + dep[i] * tilt.x * amp + dirX[i] * scatter;
+              let goalY = hy[i] + dep[i] * tilt.y * amp + dirY[i] * scatter - scatter * 0.35;
+              if (i >= m) {
+                // dust wanders
+                goalX += Math.sin(now * 0.0003 + i) * 18;
+                goalY += Math.cos(now * 0.00024 + i * 1.7) * 18;
+              }
               if (t > delay[i]) {
                 vx[i] = (vx[i] + (goalX - px[i]) * 0.07) * 0.84;
                 vy[i] = (vy[i] + (goalY - py[i]) * 0.07) * 0.84;
@@ -160,33 +194,22 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
 
             // Dots knocked out of place are drawn in mint afterwards.
             const off = Math.abs(px[i] - hx[i]) + Math.abs(py[i] - hy[i]);
-            if (off > amp + 5 && scroll < 0.02 && t > 2600) {
+            if (i < m && off > amp + 6 && scroll < 0.02 && t > 2600) {
               moved.push(i);
               continue;
             }
-            const b = Math.min(BUCKETS - 1, (lum[i] * BUCKETS) | 0);
-            if (b !== bucket) {
-              if (open) ctx.fill();
-              bucket = b;
-              const a = (0.3 + 0.7 * ((b + 0.5) / BUCKETS)) * (1 - Math.min(1, scroll * 1.5));
-              ctx.fillStyle = `rgba(${INK[0]},${INK[1]},${INK[2]},${a.toFixed(3)})`;
-              ctx.beginPath();
-              open = true;
-            }
-            const s = (0.26 + 0.86 * lum[i]) * cell;
-            if (s < 2.6) ctx.rect(px[i] - s / 2, py[i] - s / 2, s, s);
-            else {
-              ctx.moveTo(px[i] + s / 2, py[i]);
-              ctx.arc(px[i], py[i], s / 2, 0, 6.283);
-            }
+            const r = Math.max(0.45, (0.08 + 0.92 * Math.pow(lum[i], 1.15)) * cell * 0.5);
+            ctx.moveTo(px[i] + r, py[i]);
+            ctx.arc(px[i], py[i], r, 0, 6.283);
           }
-          if (open) ctx.fill();
+          ctx.fill();
           if (moved.length) {
             ctx.fillStyle = "#95e6cb";
             ctx.beginPath();
             for (const i of moved) {
-              const s = Math.max(1.6, (0.3 + 0.8 * lum[i]) * cell);
-              ctx.rect(px[i] - s / 2, py[i] - s / 2, s, s);
+              const r = Math.max(0.8, (0.08 + 0.92 * Math.pow(lum[i], 1.15)) * cell * 0.5);
+              ctx.moveTo(px[i] + r, py[i]);
+              ctx.arc(px[i], py[i], r, 0, 6.283);
             }
             ctx.fill();
           }
