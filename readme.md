@@ -5,13 +5,12 @@ It serves as a central place to highlight my projects, research, and experiences
 
 ## 🎨 Design
 
-A flat dark ground, Ayu Mirage accent colours (`src/data/palette.ts`), and heavy condensed type (Archivo variable).
+One theme throughout: rounded pastel tiles (Ayu Mirage accents, `src/data/palette.ts`) with dark ink type, a corner icon and a round ink arrow button, on a flat dark page. Heavy condensed type (Archivo variable). The shared tile is `src/components/Tile.tsx`.
 
-- **Hero**: a halftone of my face (`src/components/PortraitField.tsx`, data baked into `public/portrait.bin`). Every dot is one colour and only its size carries light and dark, so the face has no outline. The dots fly in and assemble, sway slightly by depth, flee from the pointer or a finger, burst on a tap, and scatter as the page scrolls.
-- **Pen line**: one thin line draws itself down the page behind everything as you scroll.
-- **Projects**: stacking cards. **Skills**: scroll-reactive rows of outlined type.
-- **Experience / Education**: big outlined titles; colour sweeps across each one like ink as it reaches the middle of the screen.
-- **Signature**: traced into vector strokes and written out at the end of the page.
+- **Hero**: a board of tiles that tip into place: name, a halftone portrait (`src/components/PortraitField.tsx`, data in `public/portrait.bin`), role, status, and a way in. The portrait's ink dots fly in and assemble, sway, flee from the pointer or a finger, and burst on a tap.
+- **Projects**: stacking cards. **FYP**: a mint tile with count-up stats. **Skills**: scroll-reactive rows of outlined type.
+- **Experience / Education**: one tile per entry, with a date pill.
+- **Contact**: email bar, copy button and social tiles; the signature (traced into vector strokes) is written out at the end.
 - Motion respects `prefers-reduced-motion`.
 
 ## ⚡ Tech Stack

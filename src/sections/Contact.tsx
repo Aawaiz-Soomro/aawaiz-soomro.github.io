@@ -51,10 +51,12 @@ export default function Contact() {
           <div className="mt-6 flex items-stretch gap-2">
             <a
               href={`mailto:${PROFILE.email}`}
-              className="group flex min-h-16 min-w-0 flex-1 items-center justify-between gap-3 rounded-full border-2 border-ink px-5 transition-colors duration-300 hover:bg-ink hover:text-bg sm:px-8"
+              className="group flex min-h-16 min-w-0 flex-1 items-center justify-between gap-3 rounded-full bg-paper pl-5 pr-2.5 text-paper-ink transition-transform duration-300 ease-out hover:-translate-y-1 active:scale-[0.98] sm:pl-8"
             >
               <span className="truncate text-base font-medium sm:text-2xl">{PROFILE.email.toLowerCase()}</span>
-              <ArrowUpRight className="size-5 shrink-0 transition-transform duration-300 ease-out group-hover:rotate-45 sm:size-7" />
+              <span className="grid size-11 shrink-0 place-items-center rounded-full bg-paper-ink text-white transition-transform duration-500 ease-out group-hover:rotate-45">
+                <ArrowUpRight className="size-5" />
+              </span>
             </a>
             <button
               type="button"

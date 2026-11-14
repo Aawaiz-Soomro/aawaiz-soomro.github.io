@@ -1,4 +1,4 @@
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef } from "react";
 import { withBase } from "@/data/links";
 import { useReducedMotion } from "@/lib/hooks";
 
@@ -13,11 +13,22 @@ import { useReducedMotion } from "@/lib/hooks";
  * its own on touch screens. Dots flee from a moving pointer or finger, a tap
  * sends a shockwave through them, and they scatter as the page scrolls away.
  */
-const COLS = 78; // grid width used when baking
-const INK = "236,232,221";
-const DUST = 160; // loose dots drifting around the portrait
+const COLS = 70; // grid width used when baking
 
-export default function PortraitField({ active, floorRef }: { active: boolean; floorRef: RefObject<HTMLElement | null> }) {
+export default function PortraitField({
+  active,
+  ink = "23,26,33",
+  moved: movedColor = "#ffffff",
+  dust: DUST = 0,
+}: {
+  active: boolean;
+  /** Dot colour as "r,g,b". */
+  ink?: string;
+  /** Colour of dots knocked out of place. */
+  moved?: string;
+  /** Loose dots drifting around the portrait. */
+  dust?: number;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const activeRef = useRef(active);
   const reduced = useReducedMotion();
@@ -87,18 +98,17 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
         const tilt = { x: 0, y: 0 };
 
         const layout = () => {
-          const rect = host.getBoundingClientRect();
           const dpr = Math.min(window.devicePixelRatio || 1, dprCap);
-          W = rect.width;
-          H = rect.height;
+          // clientWidth ignores the tile's entrance transform; the bounding box would not.
+          W = host.clientWidth;
+          H = host.clientHeight;
           canvas.width = Math.round(W * dpr);
           canvas.height = Math.round(H * dpr);
           ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
           // The portrait fills the space above the name and sinks a little behind it.
-          const top = 72;
-          const floor = floorRef.current ? floorRef.current.getBoundingClientRect().top - rect.top : H * 0.6;
-          const boxH = Math.max(160, (floor - top) / 0.86);
-          boxW = Math.min(boxH / aspect, W * 0.96);
+          // Fill the box it lives in, standing on the bottom edge (the baked portrait fades out there).
+          boxW = Math.min((H * 1.04) / aspect, W * 1.02);
+          const top = H - boxW * aspect * 0.97;
           const bx = (W - boxW) / 2;
           cell = boxW / COLS;
           for (let i = 0; i < n; i++) {
@@ -139,8 +149,8 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
             }
           }
           prev = now;
-          const scroll = Math.min(1, Math.max(0, window.scrollY / Math.max(1, H)));
-          const scatter = Math.pow(scroll, 1.4) * Math.max(W, 500) * 0.9;
+          const scroll = Math.min(1, Math.max(0, window.scrollY / Math.max(1, window.innerHeight)));
+          const scatter = Math.pow(scroll, 1.4) * Math.max(W, 300) * 0.9;
 
           // Turn the face: toward the pointer, or a slow sway of its own.
           let tx = Math.sin(now * 0.0006) * 0.9;
@@ -158,7 +168,7 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
 
           ctx.clearRect(0, 0, W, H);
           const moved: number[] = [];
-          ctx.fillStyle = `rgba(${INK},${(1 - Math.min(1, scroll * 1.5)).toFixed(3)})`;
+          ctx.fillStyle = `rgba(${ink},${(1 - Math.min(1, scroll * 1.5)).toFixed(3)})`;
           ctx.beginPath();
           for (let i = 0; i < n; i++) {
             if (!reduced) {
@@ -204,7 +214,7 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
           }
           ctx.fill();
           if (moved.length) {
-            ctx.fillStyle = "#95e6cb";
+            ctx.fillStyle = movedColor;
             ctx.beginPath();
             for (const i of moved) {
               const r = Math.max(0.8, (0.08 + 0.92 * Math.pow(lum[i], 1.15)) * cell * 0.5);
@@ -255,7 +265,6 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
           kick();
         });
         ro.observe(host);
-        if (floorRef.current) ro.observe(floorRef.current);
         const io = new IntersectionObserver(([entry]) => {
           visible = entry.isIntersecting;
           if (visible) kick();
@@ -286,7 +295,7 @@ export default function PortraitField({ active, floorRef }: { active: boolean; f
       cancelled = true;
       cleanup();
     };
-  }, [floorRef, reduced]);
+  }, [reduced, ink, movedColor, DUST]);
 
   return <canvas ref={canvasRef} role="img" aria-label="Portrait of Aawaiz Soomro, drawn in dots" className="absolute inset-0 h-full w-full" />;
 }
