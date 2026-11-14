@@ -1,257 +1,229 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Menlo + Ayu Mirage (Dark) / Atom One Light variables */
 :root {
-  --font-sans: 'Fira Code', Menlo, monospace;
+  --bg: #14161c;
+  --surface: #191d26;
+  --raised: #212631;
+  --line: #2a303c;
+  --line-strong: #3d4554;
 
-  /* Default to dark theme */
-  --color-bg: #1f2430;
-  --color-panel: #232a36;
-  --color-border: #2b3240;
-  --color-text: #cbccc6;
-  --color-subtext: #828997;
+  --ink: #ece8dd;
+  --muted: #a2a9b6;
+  --faint: #7f8796;
 
-  --color-accent-blue: #59c2ff;
-  --color-accent-green: #bae67e;
-  --color-accent-yellow: #ffcc66;
-  --color-accent-red: #f28779;
-  --color-accent-purple: #d4bfff;
-  --color-accent-purple: #d4bfff;
-  --color-accent-cyan: #95E6CB;
-  --color-accent-pink: #f06292;
+  --accent: #95e6cb; /* the mint from the original site */
+  --on-accent: #12151c;
+  --ok: #95e6cb;
 
-  --color-mouse-glow: rgba(89, 194, 255, 0.08);
+  --paper: #efeadd; /* project cards */
+  --paper-ink: #171a21;
+  color-scheme: dark;
 }
 
-/* Dark Theme - Ayu Mirage */
-.dark {
-  --color-bg: #1f2430;
-  --color-panel: #232a36;
-  --color-border: #2b3240;
-  --color-text: #cbccc6;
-  --color-subtext: #828997;
-
-  --color-accent-blue: #59c2ff;
-  --color-accent-green: #bae67e;
-  --color-accent-yellow: #ffcc66;
-  --color-accent-red: #f28779;
-  --color-accent-purple: #d4bfff;
-  --color-accent-purple: #d4bfff;
-  --color-accent-cyan: #95E6CB;
-  --color-accent-pink: #f06292;
-
-  --color-mouse-glow: rgba(89, 194, 255, 0.08);
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-ok: var(--ok);
+  --color-paper: var(--paper);
+  --color-paper-ink: var(--paper-ink);
 }
 
-/* Light Theme - Cloud */
-.light {
-  --color-bg: #f1f1f1;
-  --color-panel: #fafbfc;
-  --color-border: #9e9fa0;
-  --color-text: #454545;
-  --color-subtext: #5a5a5a;
+@theme {
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Fira Code", ui-monospace, Menlo, monospace;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
 
-  --color-accent-blue: #008abd;
-  --color-accent-green: #678f03;
-  --color-accent-yellow: #cc6d00;
-  --color-accent-red: #d0372d;
-  --color-accent-purple: #7d57c2;
-  --color-accent-cyan: #00b7bd;
-  --color-accent-pink: #e91e63;
+  --animate-blink: blink 1.1s steps(1) infinite;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-grain: grain 0.9s steps(6) infinite;
 
-  --color-mouse-glow: rgb(255, 255, 255, 1);
+  @keyframes flood {
+    from { clip-path: circle(0% at var(--x) var(--y)); }
+    to { clip-path: circle(150% at var(--x) var(--y)); }
+  }
+  @keyframes letter-in {
+    0% { transform: translateY(118%) rotate(10deg); font-variation-settings: "wdth" 62, "wght" 100; }
+    50% { transform: translateY(0) rotate(0deg); font-variation-settings: "wdth" 62, "wght" 100; }
+    100% { transform: none; font-variation-settings: "wdth" 62, "wght" 900; }
+  }
+  @keyframes ripple {
+    0%, 100% { font-variation-settings: "wdth" 62, "wght" 900; }
+    45% { font-variation-settings: "wdth" 62, "wght" 140; }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-3%, 2%); }
+    40% { transform: translate(2%, -3%); }
+    60% { transform: translate(-2%, -2%); }
+    80% { transform: translate(3%, 3%); }
+    100% { transform: translate(0, 0); }
+  }
 }
 
-html,
-body,
-#root {
-  height: 100%;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  transition: background-color 0.3s ease, color 0.3s ease;
-  overflow-x: hidden;
-  max-width: 100vw;
-}
-
-/* Base font size scaling for different screen sizes */
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-}
-
-/* Scale up base font size only on large, LOW DPI screens (external monitors)
-   High DPI screens like MacBook Retina displays won't trigger this */
-@media (min-width: 1920px) and (max-resolution: 1.5dppx) {
+@layer base {
   html {
-    font-size: 18px;
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg font-sans text-ink antialiased;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Film grain over the whole site */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -10%;
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0.11;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.1 -0.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: var(--animate-grain);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-@media (min-width: 2560px) and (max-resolution: 1.5dppx) {
-  html {
-    font-size: 20px;
-  }
-}
-
-/* Improve image rendering quality - use high-quality scaling */
-img {
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: high-quality;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-  -webkit-font-smoothing: subpixel-antialiased;
-}
-
-/* For avatar and profile images, ensure smooth scaling */
-img[src*="avatar"],
-img[alt*="Headshot"] {
-  image-rendering: auto;
-}
-
-a {
-  color: var(--color-accent-blue);
-  transition: color .2s ease;
-}
-
-a:hover {
-  color: var(--color-accent-green);
-}
-
-.panel {
-  background-color: var(--color-panel);
-  border: 1px solid var(--color-border);
-  border-radius: 1rem;
-  padding: 1rem;
-}
-
-/* gentle fade for mobile */
-.mobile-fade {
-  animation: fadePulse 2.2s ease-in-out infinite;
-}
-
-@keyframes fadePulse {
-
-  0%,
-  100% {
-    opacity: 1;
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-[96rem] px-4 sm:px-8 lg:px-10;
   }
 
-  50% {
-    opacity: 0.5;
+  /* Heavy condensed display type */
+  .display {
+    font-family: var(--font-sans);
+    font-variation-settings: "wdth" 62, "wght" 900;
+    text-transform: uppercase;
+    line-height: 0.84;
+    letter-spacing: -0.005em;
   }
-}
 
-/* accessibility: kill intense motion everywhere if users prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-
-  .mobile-fade,
-  .glitch {
-    animation: none !important;
-    transition: none !important;
+  /* Outlined type: mint on the dark ground, ink inside a colour block. */
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent);
   }
-}
+  .text-paper-ink .outline-text,
+  .text-on-accent .outline-text {
+    -webkit-text-stroke-color: var(--paper-ink);
+  }
 
-/* ===== MOBILE RESPONSIVENESS UTILITIES ===== */
+  /* Small mono label */
+  .tag {
+    @apply font-mono text-xs uppercase tracking-[0.08em];
+  }
 
-/* Word breaking utilities to prevent text overflow on mobile */
-.break-words {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
-}
-
-/* Touch feedback for interactive elements */
-.touch-feedback {
-  transition: transform 0.1s ease;
-}
-
-.touch-feedback:active {
-  transform: scale(0.95);
-}
-
-/* Minimum touch target size (44x44px per WCAG) */
-.touch-target {
-  min-height: 44px;
-  min-width: 44px;
-}
-
-/* Hide scrollbar but keep functionality */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Disable hover effects on touch devices, use active states instead */
-@media (hover: none) and (pointer: coarse) {
-  .hover\:scale-105:hover {
+  /* Line that slides up out of a clip when it gets the .in class */
+  .rise {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.08em;
+    margin-block: -0.08em;
+  }
+  .rise > * {
+    display: block;
+    transform: translateY(115%);
+    transition: transform 1s var(--ease-out);
+    transition-delay: var(--d, 0ms);
+  }
+  .rise.in > * {
     transform: none;
   }
-}
 
-/* ===== ANIMATION & MICRO-INTERACTION UTILITIES (Set 15) ===== */
-
-/* Smooth transition for all interactive elements */
-.transition-smooth {
-  transition: all 0.2s ease-out;
-}
-
-/* Icon hover/active scaling */
-.icon-interactive {
-  transition: transform 0.15s ease, color 0.15s ease;
-}
-
-.icon-interactive:hover {
-  transform: scale(1.1);
-}
-
-.icon-interactive:active {
-  transform: scale(0.95);
-}
-
-/* Fade in animation for elements entering view */
-@keyframes fadeInUp {
-  from {
+  .fade {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(14px);
+    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    transition-delay: var(--d, 0ms);
   }
-
-  to {
+  .fade.in {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
-}
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.3s ease-out forwards;
-}
+  .paper-grid {
+    background-color: var(--paper);
+  }
 
-/* Card hover lift effect */
-.card-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.2);
-}
-
-/* Respect reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-
-  .transition-smooth,
-  .icon-interactive,
-  .card-lift,
-  .animate-fade-in-up {
+  /*
+   * Display letters. They rise thin and then ink in to full weight, once,
+   * when a parent gets .letters-in. .letters-done holds the final state.
+   */
+  .ltr {
+    display: inline-block;
+    transform: translateY(118%);
+    transition: font-variation-settings 0.3s ease-out;
+  }
+  .letters-in .ltr {
+    transform: none;
+    animation: letter-in 1.3s var(--ease-out) backwards;
+    animation-delay: calc(var(--d, 0ms) + var(--i) * 48ms);
+  }
+  .letters-done .ltr {
+    transform: none;
+  }
+  .measuring .ltr {
     animation: none !important;
-    transition: none !important;
-    transform: none !important;
+    font-variation-settings: "wdth" 62, "wght" 900 !important;
+  }
+  /* One pass of thin-to-heavy, used on tap */
+  .ripple .ltr {
+    animation: ripple 0.85s ease-in-out;
+    animation-delay: calc(var(--i) * 38ms);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }

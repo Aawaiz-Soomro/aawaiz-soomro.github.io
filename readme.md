@@ -3,22 +3,21 @@
 This is my personal portfolio website, built with **React**, **TypeScript**, and **Vite**.  
 It serves as a central place to highlight my projects, research, and experiences in robotics, embedded systems, and applied machine learning.
 
-## 🎨 Design & Inspirations
+## 🎨 Design
 
-The site design was inspired by a mix of modern portfolio trends and my own aesthetic preferences:
+One theme throughout: rounded pastel tiles (Ayu Mirage accents, `src/data/palette.ts`) with dark ink type, a corner icon and a round ink arrow button, on a flat dark page. Heavy condensed type (Archivo variable). The shared tile is `src/components/Tile.tsx`.
 
-- **Color theme**: Based on the [Ayu Mirage](https://github.com/ayu-theme) palette for a clean, dark-but-soft feel.
-- **Mouse glow effect**: Inspired by [Brittany Chiang’s portfolio](https://brittanychiang.com/) and adapted for React.
-- **Typing effect**: Borrowed from countless developer portfolios online, fine-tuned to fit my site’s introduction.
-- **Layout & feel**: Iteratively shaped after exploring an innumerable number of online portfolios for ideas on section flow, animations, and responsiveness.
-
-The goal was to create something visually engaging but lightweight, putting the focus on content.
+- **Hero**: a board of tiles that tip into place: name, a halftone portrait (`src/components/PortraitField.tsx`, data in `public/portrait.bin`), role, status, and a way in. The portrait's ink dots fly in and assemble, sway, flee from the pointer or a finger, and burst on a tap.
+- **Projects**: stacking cards. **FYP**: a mint tile with count-up stats. **Skills**: scroll-reactive rows of outlined type.
+- **Experience / Education**: one tile per entry, with a date pill.
+- **Contact**: email bar, copy button and social tiles; the signature (traced into vector strokes) is written out at the end.
+- Motion respects `prefers-reduced-motion`.
 
 ## ⚡ Tech Stack
 
-- **React + TypeScript + Vite** for a fast, modern frontend setup.
-- **TailwindCSS** for styling and responsive design.
-- **GitHub Pages** for deployment and hosting.
+- **React 19 + TypeScript + Vite**
+- **Tailwind CSS v4** (CSS-first config via `@theme`, no `tailwind.config.js`)
+- **GitHub Pages** for hosting, deployed from `main`
 
 ## 🚀 Development Setup
 

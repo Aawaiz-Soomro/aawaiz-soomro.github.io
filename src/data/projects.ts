@@ -1,6 +1,3 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Github, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
 
 // Images
 import karachiThumb from '@/media/karachi-transit-guide/thumbnail.png?w=600&format=webp';
@@ -24,7 +21,7 @@ import taskFlowSrcSet from '@/media/Task-Flow/Task-Flow-Logo.png?as=srcset&w=300
 import tetrisThumb from '@/media/Modified-tetris/Modified-Tetris-Logo.png?w=600&format=webp';
 import tetrisSrcSet from '@/media/Modified-tetris/Modified-Tetris-Logo.png?as=srcset&w=300;600;900&format=webp';
 
-import influenzaThumb from '@/media/AI-Powered-Influencer-MarketPlace/Influenza_Logo.png';
+import influenzaThumb from '@/media/AI-Powered-Influencer-MarketPlace/Influenza_Logo.png?w=900&format=webp';
 
 export type Project = {
   slug: string;
@@ -44,6 +41,8 @@ export type Project = {
   body?: string;
   gallery?: string[];
   objectFit?: 'contain' | 'cover';
+  featured?: boolean;
+  stats?: { value: string; label: string }[];
 
 };
 
@@ -51,6 +50,12 @@ export const PROJECTS: Project[] = [
   // Personal Projects
   {
     slug: "influenza",
+    featured: true,
+    stats: [
+      { value: "9.5M", label: "Instagram posts embedded" },
+      { value: "33K", label: "influencers profiled" },
+      { value: "256-d", label: "identity vector per creator" },
+    ],
     title: "Influenza",
     blurb: "An AI-powered influencer-brand matching platform using Multimodal Semantic Embeddings and Multi-Head Attention Profiling.",
     tags: ["React.js", "FastAPI", "Supabase", "PostgreSQL", "OpenCLIP", "pgvector", "PyTorch"],
@@ -182,7 +187,7 @@ export const PROJECTS: Project[] = [
     imageSrcSet: tetrisSrcSet,
     objectFit: "contain",
     links: {
-      code: "#" // Placeholder
+      code: undefined
     },
     body: `This project is a faithful recreation of the classic Tetris game, built from scratch using C++ and the Simple and Fast Multimedia Library (SFML). It handles complex game logic, real-time graphics rendering, and user input to provide a smooth and responsive gaming experience.
     
