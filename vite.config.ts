@@ -5,9 +5,11 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import { imagetools } from "vite-imagetools";
 import WebfontDownload from "vite-plugin-webfont-dl";
+import redirects from "./plugins/redirects";
 
 export default defineConfig({
   plugins: [
+    redirects(),
     tsconfigPaths() as unknown as PluginOption,
     svgr() as unknown as PluginOption,
     react(),

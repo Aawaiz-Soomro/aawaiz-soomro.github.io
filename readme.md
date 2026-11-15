@@ -65,3 +65,16 @@ for React-specific lint rules.
 ## 🌐 Deployment
 
 The site is deployed through GitHub Pages using default github domain.
+
+## 🔗 Redirect Links
+
+Short links like `/influenza` are defined in [`redirects.json`](redirects.json):
+
+```json
+{
+  "influenza": "https://influenza-ai.vercel.app/auth"
+}
+```
+
+Change a URL or add a new `"slug": "https://..."` line, push to `main`, and the
+build generates a static redirect page at `/<slug>/` for each entry.
